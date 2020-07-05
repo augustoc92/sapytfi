@@ -1,17 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Form from './components/Form';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+import styles from './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-       <Form>    
-       </Form>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div className={styles.App}>
+        { this.props.children }
+      </div>
+    );
+  }
 }
+
+App.propTypes = {
+  children: PropTypes.object.isRequired,
+};
 
 export default App;
