@@ -1,13 +1,12 @@
 import React from 'react';
-import Navigation from './Navigation';
+import NavBar from '../Shared/NavBar';
 
 class Home extends React.Component{
     render() {
         return(
             <div>
-                <Navigation>
-                </Navigation>
-                <button>'hola'</button>
+                <NavBar>
+                </NavBar>
             </div>
         )
 

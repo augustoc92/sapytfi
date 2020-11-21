@@ -1,12 +1,12 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React from 'react';
-import styles from './Form.module.css'
+import styles from './LoginForm.module.css'
 
-class NormalLoginForm extends React.Component {
- onFinish = values => {
-    this.props.history.push('./home')
-  };
+class LoginForm extends React.Component {
+    onFinish = values => {
+        this.props.history.push('./home')
+    };
 
 
     render() {
@@ -68,4 +68,4 @@ class NormalLoginForm extends React.Component {
     }
 };
 
-export default NormalLoginForm;
+export default LoginForm;
