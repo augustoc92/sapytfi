@@ -29,7 +29,11 @@ class NavBar extends React.Component {
         </Menu.Item>
         <SubMenu icon={<SettingOutlined />} title="Administracion">
           <Menu.ItemGroup title="Cursado">
-            <Menu.Item key="setting:1">Carrera</Menu.Item>
+            <Menu.Item key="setting:1">
+            <Link to="/Carrera">
+                Carrera
+              </Link>
+            </Menu.Item>
             <Menu.Item key="setting:2">
               <Link to="/Subject">
                 Materias

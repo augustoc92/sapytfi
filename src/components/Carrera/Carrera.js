@@ -2,17 +2,19 @@ import React from 'react';
 import NavBar from '../Shared/NavBar';
 import CRUDTable from '../Shared/CRUDTable';
 import { Button } from 'antd';
-import styles from './Subject.module.css'
+import styles from './Carrera.module.css'
 
-class Subject extends React.Component{
+class Carrera extends React.Component{
 
     componentDidMount() {
-        const { getMateria } = this.props
-        getMateria()
+        const { getCarrera } = this.props
+        getCarrera()
     }
 
     render() {
         const { data, cols } = this.props;
+
+        console.log('this.props carreara', this.props)
 
         return(
             <div>
@@ -20,13 +22,12 @@ class Subject extends React.Component{
                 <CRUDTable
                     columns={columns}
                     data={data}
-                    objToHandle='Materia'
+                    objToHandle='Carrera'
                 />
             </div>
         )
     }
 }
-
 
 const columns = [
     {
@@ -34,30 +35,18 @@ const columns = [
         dataIndex: 'nombre'
     },
     {
-        title: 'Duracion en horas',
-        dataIndex: 'duracion',
+        title: 'Materias',
+        dataIndex: 'materias',
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.duracion - b.duracion,
     },
     {
-        title: 'Lugar',
-        dataIndex: 'lugar',
-        filters: [
-        {
-            text: 'Rosario',
-            value: 'Rosario',
-        },
-        {
-            text: 'San Nicolas',
-            value: 'San Nicolas',
-        },
-        ],
-        filterMultiple: false,
-        onFilter: (value, record) => record.lugar.indexOf(value) === 0,
+        title: 'planDeEstudio',
+        dataIndex: 'planDeEstudio',
         sorter: (a, b) => a.lugar.length - b.lugar.length,
         sortDirections: ['descend', 'ascend'],
     },
 ];
 
-export default Subject;
+export default Carrera;
 
