@@ -20,7 +20,7 @@ class NavBar extends React.Component {
     return (
       <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" theme='dark'>
         <Menu.Item key="mail" icon={<MailOutlined />}>
-          <Link to="/Home">
+          <Link to="/home">
           Novedades
           </Link>
         </Menu.Item>
@@ -30,7 +30,11 @@ class NavBar extends React.Component {
         <SubMenu icon={<SettingOutlined />} title="Administracion">
           <Menu.ItemGroup title="Cursado">
             <Menu.Item key="setting:1">Carrera</Menu.Item>
-            <Menu.Item key="setting:2">Materias</Menu.Item>
+            <Menu.Item key="setting:2">
+              <Link to="/Subject">
+                Materias
+              </Link>
+            </Menu.Item>
           </Menu.ItemGroup>
           <Menu.ItemGroup title="Ciclo Lectivo">
             <Menu.Item key="setting:3">Calendario Academicos</Menu.Item>

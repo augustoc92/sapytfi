@@ -21,46 +21,43 @@ class LoginForm extends React.Component {
                     onFinish={this.onFinish}
                     >
                     <Form.Item
-                        name="username"
+                        name="usuario"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Ingrese su nombre de usuario',
                         },
                         ]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Usuario" />
                     </Form.Item>
                     <Form.Item
-                        name="password"
+                        name="contraseña"
                         rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: 'Ingrese contraseña!',
                         },
                         ]}
                     >
                         <Input
                         prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder="Password"
+                        type="contraseña"
+                        placeholder="Contraseña"
                         />
                     </Form.Item>
                     <Form.Item>
                         <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox>Recordarme</Checkbox>
                         </Form.Item>
-
                         <a className="login-form-forgot" href="">
-                        Forgot password
+                            Olvide Contraseña
                         </a>
                     </Form.Item>
-
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
-                        Log in
+                            Iniciar session
                         </Button>
-                        Or <a href="">register now!</a>
                     </Form.Item>
                 </Form>
             </div>

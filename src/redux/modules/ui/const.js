@@ -1,0 +1,3 @@
+// const
+export const CHANGE_COLLAPSED_SIDEBAR = 'CHANGE_COLLAPSED_DETAILS'
+export const SELECT_ROW = 'SELECT_ROW'

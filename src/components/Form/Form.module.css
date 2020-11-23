@@ -1,0 +1,35 @@
+.titleContainer {
+    color: black;
+  }
+
+  .selectContainer {
+    width: 170px;
+    height: 39px;;
+  }
+
+  .value {
+    font-weight: 100;
+    width: 170px;
+  }
+
+  .prop {
+    margin: 0.4rem 0;
+    width: 100%;
+    font-weight: 800;
+  }
+
+
+  .field {
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .field div div {
+    width: 100%;
+  }
+
+  .fieldsContainer {
+    overflow-y: auto;
+    height: 90vh;
+  }
