@@ -11,9 +11,9 @@ import {
     REMOVE_ALUMNO_REJECTED
 } from './const'
 
-export const getALUMNO = () => (dispatch) => {
+export const getAlumno = () => (dispatch) => {
     dispatch({
-        type: GET_MATERIA_FULFILLED,
+        type: GET_ALUMNO_FULFILLED,
         payload: {
             dataObj
         }
@@ -23,22 +23,32 @@ export const getALUMNO = () => (dispatch) => {
 const dataObj = [
     {
         key: '1',
-        materia: 'Matematica 1',
-        profesor: 40,
+        nombre: 'Augusto',
+        DNI: 3003454,
+        legajo: 101,
     },
     {
         key: '2',
-        materia: 'Matematica 1',
-        profesor: 40,
+        nombre: 'Pedro',
+        DNI: 3434954,
+        legajo: 102,
     },
     {
         key: '3',
-        materia: 'Matematica 1',
-        profesor: 40,
+        nombre: 'Julia',
+        DNI: 3463454,
+        legajo: 103,
     },
     {
         key: '4',
-        materia: 'Matematica 1',
-        profesor: 40,
+        nombre: 'Mateo',
+        DNI: 3434543,
+        legajo: 40,
+    },
+    {
+        key: '5',
+        nombre: 'Juan',
+        DNI: 3453454,
+        legajo: 40,
     },
 ];
