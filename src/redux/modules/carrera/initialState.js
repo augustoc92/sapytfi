@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  materiaXCarrera: [],
   isFetching: false,
   errorMsg: ''
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import NavBar from '../Shared/NavBar';
 import CRUDTable from '../Shared/CRUDTable';
-import { Button } from 'antd';
 import styles from './Alumno.module.css'
 
 class Alumno extends React.Component{

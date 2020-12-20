@@ -11,16 +11,60 @@ import {
     REMOVE_MATERIA_REJECTED
 } from './const'
 
+import { getMateriaAPI, adddMateriaAPI, deleteMateriaAPI, putMateriaAPI } from '../../../helpers/api/materia';
+
+
 export const getMateria = () => (dispatch) => {
-    dispatch({
-        type: GET_MATERIA_FULFILLED,
-        payload: {
-            dataObj
-        }
-    })
+    getMateriaAPI()
+        .then(result =>
+            dispatch({
+                type: GET_MATERIA_FULFILLED,
+                payload: {
+                    result
+                }
+            })
+        )
 }
 
-const dataObj = [
+export const addMateria = obj => (dispatch) => {
+    adddMateriaAPI(obj)
+        .then(idmax =>
+            dispatch({
+                type: ADD_MATERIA_FULLFILED,
+                payload: {
+                    obj,
+                    idmax
+                }
+            })
+        )
+}
+
+export const putMateria = (id, obj) => (dispatch) => {
+    putMateriaAPI(id, obj)
+        .then(res =>
+            dispatch({
+                type: UPDATE_MATERIA_FULLFILED,
+                payload: {
+                    id,
+                    obj
+                }
+            })
+        )
+}
+
+export const deleteMateria = id => (dispatch) => {
+    deleteMateriaAPI(id)
+        .then(res =>
+            dispatch({
+                type: REMOVE_MATERIA_FULFILLED,
+                payload: {
+                    id
+                }
+            })
+        )
+}
+
+const ModelObj = [
     {
         key: '1',
         nombre: 'Matematica 1',

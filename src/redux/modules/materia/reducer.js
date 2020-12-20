@@ -12,11 +12,10 @@ import map from 'lodash/map'
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_MATERIA_FULFILLED: {
-      console.log('action.payload', action.payload)
       return {
         ...state,
         isFetching: false,
-        data: action.payload.dataObj
+        data: action.payload.result
       }
     }
 
@@ -26,9 +25,19 @@ const reducer = (state = initialState, action) => {
         data: state.data.filter(x => x.id !== action.payload.id)
       }
     }
+
     case ADD_MATERIA_FULLFILED: {
+      const { idmax, obj } = action.payload;
+
+      const id = idmax.data.body;
+      const objToAdd = {
+        ...obj,
+        id
+      }
+
       return {
         ...state,
+        data: [...state.data, objToAdd]
       }
     }
     case UPDATE_MATERIA_REJETED: {
@@ -37,11 +46,12 @@ const reducer = (state = initialState, action) => {
         errorMsg: action.payload.errorMsg
       }
     }
+
     case UPDATE_MATERIA_FULLFILED: {
-      const { item } = action.payload
-      const index = state.data.findIndex(x => x.id === item.id)
+      const { id, obj } = action.payload
+      const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
-      newList[index] = item
+      newList[index] = { ...obj, id }
       return {
         ...state,
         data: newList

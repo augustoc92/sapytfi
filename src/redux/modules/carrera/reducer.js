@@ -5,6 +5,7 @@ import {
   UPDATE_CARRERA_REJETED,
   ADD_CARRERA_FULLFILED,
   REMOVE_CARRERA_FULFILLED,
+  GET_CARRERAMATERIA_FULFILLED
 } from './const'
 import map from 'lodash/map'
 
@@ -15,7 +16,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        data: action.payload.dataObj
+        data: action.payload.result
+      }
+    }
+
+    case GET_CARRERAMATERIA_FULFILLED: {
+      return {
+        ...state,
+        isFetching: false,
+        materiaXCarrera: action.payload.result
       }
     }
 
@@ -26,8 +35,19 @@ const reducer = (state = initialState, action) => {
       }
     }
     case ADD_CARRERA_FULLFILED: {
+      const { idmax, obj } = action.payload;
+      const id = idmax.data.body;
+      const objToAdd = {
+        plan_de_estudio: obj.plan,
+        nombre: obj.nombre,
+        lugar: obj.lugarCarrera,
+        duracion: obj.duracion,
+        id
+      }
+
       return {
         ...state,
+        data: [...state.data, objToAdd]
       }
     }
     case UPDATE_CARRERA_REJETED: {
@@ -37,10 +57,19 @@ const reducer = (state = initialState, action) => {
       }
     }
     case UPDATE_CARRERA_FULLFILED: {
-      const { item } = action.payload
-      const index = state.data.findIndex(x => x.id === item.id)
+      const { id, obj } = action.payload
+
+      const objToAdd = {
+        plan_de_estudio: obj.plan,
+        nombre: obj.nombre,
+        lugar: obj.lugarCarrera,
+        duracion: obj.duracion,
+        id
+      }
+
+      const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
-      newList[index] = item
+      newList[index] = { ...objToAdd, id }
       return {
         ...state,
         data: newList

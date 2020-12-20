@@ -10,3 +10,17 @@
     display: flex;
     justify-content: space-around;
 }
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.eraseIcon {
+    margin-left: 3px;
+}
+
+.materiasContainer {
+    display: flex;
+    flex-flow: wrap;
+}

@@ -2,9 +2,7 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 
 const getList = (state, reduxModule) => {
-    console.log('state', state);
-
-    return state[reduxModule].data
+    return state[reduxModule].data || [];
 }
 
 const getColumnsFromData = createSelector([
