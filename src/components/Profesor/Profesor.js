@@ -1,15 +1,15 @@
 import React from 'react';
 import NavBar from '../Shared/NavBar';
-import { Modal, Button, Input, Table } from 'antd';
-import styles from './Subject.module.css'
+import { Modal, Button, Input, InputNumber, Table } from 'antd';
+import styles from './Profesor.module.css'
 import { map, omit } from 'lodash'
 
-class Subject extends React.Component{
+class Profesor extends React.Component{
 
     componentDidMount() {
-        const { getMateria } = this.props
+        const { getProfesor } = this.props
 
-        getMateria()
+        getProfesor()
     }
 
     state = {
@@ -30,7 +30,7 @@ class Subject extends React.Component{
         }
         if(document.getElementById('nombreModificar')) {
             document.getElementById('nombreModificar').value = '';
-            document.getElementById('duracionModificar').value = '';
+            document.getElementById('dniModificar').value = '';
         }
     }
 
@@ -57,40 +57,40 @@ class Subject extends React.Component{
     }
 
     handleOkAgregar = e => {
-        const { addMateria } = this.props;
-        let nombre = document.getElementById('nombreMateria').value;
-        let horas_catedra = document.getElementById('duracionMateria').value;
+        const { addProfesor } = this.props;
+        let nombre = document.getElementById('nombreProfesor').value;
+        let DNI = document.getElementById('dniProfesor').value;
 
         let objToAdd = {
             nombre,
-            horas_catedra
+            DNI
         }
 
-        addMateria(objToAdd);
+        addProfesor(objToAdd);
         this.clearModals();
     }
 
 
     handleOkModificar = e => {
-        const { putMateria, selectedRow } = this.props;
+        const { putProfesor, selectedRow } = this.props;
         let nombre = document.getElementById('nombreModificar').value;
-        let horas_catedra = document.getElementById('duracionModificar').value;
+        let DNI = document.getElementById('dniModificar').value;
 
         const idToSend = selectedRow[0].id
 
         let objToAdd = {
             nombre,
-            horas_catedra
+            DNI
         }
 
-        putMateria(idToSend, objToAdd);
+        putProfesor(idToSend, objToAdd);
         this.clearModals();
     }
 
     handleOkEliminar = e => {
-        const { selectedRow, deleteMateria, selectRow } = this.props;
+        const { selectedRow, deleteProfesor, selectRow } = this.props;
         if (selectedRow && selectedRow[0]) {
-            deleteMateria(selectedRow[0].id);
+            deleteProfesor(selectedRow[0].id);
             selectRow(null);
         }
 
@@ -155,15 +155,15 @@ class Subject extends React.Component{
                     onCancel={this.handleCancel}
                 >
                     <div className={styles.formContainer}>
-                        <label for="nombreMateria">Nombre (de 4 a 12 caracteres):</label>
+                        <label for="nombreProfesor">Nombre (de 4 a 30 caracteres):</label>
                         <Input
-                            id="nombreMateria"
-                            maxLength="12"
+                            id="nombreProfesor"
+                            maxLength="30"
                         />
-                        <label for="duracionMateria">Duracion</label>
-                        <Input
-                            id="duracionMateria"
-                            maxLength="8"
+                        <label for="dniProfesor">DNI</label>
+                        <InputNumber
+                            id="dniProfesor"
+                            max={99999999}
                         />
                     </div>
                 </Modal>
@@ -177,21 +177,21 @@ class Subject extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label for="nombreModificar">Nombre (de 4 a 12 caracteres):</label>
+                                <label for="nombreModificar">Nombre (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre}
                                     maxLength="30"
                                 />
-                                <label for="duracionModificar">Duracion</label>
-                                <Input
-                                    id="duracionModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].horas_catedra}
-                                    maxLength="8"
+                                <label for="dniModificar">DNI</label>
+                                <InputNumber
+                                    id="dniModificar"
+                                    defaultValue={selectedRow[0] && selectedRow[0].dni}
+                                    max={99999999}
                                 />
                             </React.Fragment>
                             ||
-                            <div> Seleccione una materia para modificar </div>
+                            <div> Seleccione una profesor para modificar </div>
                         }
                     </div>
                 </Modal>
@@ -203,8 +203,8 @@ class Subject extends React.Component{
                 >
                     <div className={styles.formContainer}>
                         {
-                            selectedRow && selectedRow[0] && <div> Esta seguro que desea eliminar la materia {selectedRow[0].nombre} </div> ||
-                            <div> Seleccione una materia </div>
+                            selectedRow && selectedRow[0] && <div> Esta seguro que desea eliminar el profesor {selectedRow[0].nombre} </div> ||
+                            <div> Seleccione un profesor </div>
                         }
 
                     </div>
@@ -233,7 +233,6 @@ class Subject extends React.Component{
     }
 }
 
-
 const columns = [
     {
         title: 'ID',
@@ -244,12 +243,12 @@ const columns = [
         dataIndex: 'nombre'
     },
     {
-        title: 'Duracion en horas',
-        dataIndex: 'horas_catedra',
+        title: 'DNI',
+        dataIndex: 'dni',
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.horas_catedra - b.horas_catedra,
+        sorter: (a, b) => a.dni - b.dni,
     }
 ];
 
-export default Subject;
+export default Profesor;
 

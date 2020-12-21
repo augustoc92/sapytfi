@@ -1,5 +1,5 @@
 // import const
-import { CHANGE_COLLAPSED_SIDEBAR, SELECT_ROW } from './const'
+import { CHANGE_COLLAPSED_SIDEBAR, SELECT_ROW, LOGIN_FULLFILLED, LOGIN_REJECTED, LOGIN_PENDING} from './const'
 
 // eslint-disable-next-line
 export const toggleSideBar = shouldCollapse => (dispatch) => {
@@ -7,6 +7,14 @@ export const toggleSideBar = shouldCollapse => (dispatch) => {
     type: CHANGE_COLLAPSED_SIDEBAR,
     payload: {
       collapsed: !shouldCollapse
+    }
+  })
+}
+export const loggear = user => (dispatch) => {
+  dispatch({
+    type: LOGIN_FULLFILLED,
+    payload: {
+      user
     }
   })
 }

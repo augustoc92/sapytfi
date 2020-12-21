@@ -12,11 +12,10 @@ import map from 'lodash/map'
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_AULA_FULFILLED: {
-      console.log('action.payload', action.payload)
       return {
         ...state,
         isFetching: false,
-        data: action.payload.dataObj
+        data: action.payload.result
       }
     }
 
@@ -26,9 +25,21 @@ const reducer = (state = initialState, action) => {
         data: state.data.filter(x => x.id !== action.payload.id)
       }
     }
+
     case ADD_AULA_FULLFILED: {
+      const { idmax, objToAdd } = action.payload;
+      const id = idmax.data.body;
+      const formatObject = {
+        id,
+        materia: objToAdd.id_materia,
+        profesor: objToAdd.id_profesor,
+        horario_clase: objToAdd.horario_clase,
+        nombre_aula: objToAdd.nombre_aula
+      }
+
       return {
         ...state,
+        data: [...state.data, formatObject]
       }
     }
     case UPDATE_AULA_REJETED: {
@@ -37,11 +48,21 @@ const reducer = (state = initialState, action) => {
         errorMsg: action.payload.errorMsg
       }
     }
+
     case UPDATE_AULA_FULLFILED: {
-      const { item } = action.payload
-      const index = state.data.findIndex(x => x.id === item.id)
+      const { obj, id } = action.payload
+
+      const formatObject = {
+        id,
+        materia: obj.materia.id,
+        profesor: obj.profesor.id,
+        horario_clase: obj.horario_clase,
+        nombre_aula: obj.nombre_aula
+      }
+
+      const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
-      newList[index] = item
+      newList[index] = formatObject
       return {
         ...state,
         data: newList

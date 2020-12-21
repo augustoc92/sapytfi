@@ -1,26 +1,26 @@
 import { reject } from 'ramda'
 import {
-    GET_CARRERA_PENDING,
-    GET_CARRERA_FULFILLED,
-    GET_CARRERAMATERIA_FULFILLED,
-    GET_CARRERA_REJECTED,
-    UPDATE_CARRERA_FULLFILED,
-    UPDATE_CARRERA_REJETED,
-    ADD_CARRERA_FULLFILED,
-    ADD_CARRERA_REJECTED,
-    REMOVE_CARRERA_FULFILLED,
-    REMOVE_CARRERA_REJECTED
+    GET_PROFESOR_PENDING,
+    GET_PROFESOR_FULFILLED,
+    GET_PROFESORMATERIA_FULFILLED,
+    GET_PROFESOR_REJECTED,
+    UPDATE_PROFESOR_FULLFILED,
+    UPDATE_PROFESOR_REJETED,
+    ADD_PROFESOR_FULLFILED,
+    ADD_PROFESOR_REJECTED,
+    REMOVE_PROFESOR_FULFILLED,
+    REMOVE_PROFESOR_REJECTED
 } from './const'
 
 
-import { getCarreraAPI, getCarreraMateriaAPI, addCarerraAPI, deleteCarreraAPI, putCarreraAPI } from '../../../helpers/api/carrera';
+import { getProfesorAPI, addProfesorAPI, deleteProfesorAPI, putProfesorAPI } from '../../../helpers/api/profesor';
 
 
-export const getCarrera = () => (dispatch) => {
-    getCarreraAPI()
+export const getProfesor = () => (dispatch) => {
+    getProfesorAPI()
         .then(result =>
             dispatch({
-                type: GET_CARRERA_FULFILLED,
+                type: GET_PROFESOR_FULFILLED,
                 payload: {
                     result
                 }
@@ -28,24 +28,11 @@ export const getCarrera = () => (dispatch) => {
         )
 }
 
-export const getMateriasXCarrera = () => (dispatch) => {
-    getCarreraMateriaAPI()
-        .then(result =>
-            dispatch({
-                type: GET_CARRERAMATERIA_FULFILLED,
-                payload: {
-                    result
-                }
-            })
-        )
-}
-
-
-export const addCarrera = obj => (dispatch) => {
-    addCarerraAPI(obj)
+export const addProfesor = obj => (dispatch) => {
+    addProfesorAPI(obj)
         .then(idmax =>
             dispatch({
-                type: ADD_CARRERA_FULLFILED,
+                type: ADD_PROFESOR_FULLFILED,
                 payload: {
                     obj,
                     idmax
@@ -54,11 +41,24 @@ export const addCarrera = obj => (dispatch) => {
         )
 }
 
-export const putCarrera = (id, obj) => (dispatch) => {
-    putCarreraAPI(id, obj)
+export const guardarExamen = obj => (dispatch) => {
+    addProfesorAPI(obj)
+        .then(idmax =>
+            dispatch({
+                type: ADD_PROFESOR_FULLFILED,
+                payload: {
+                    obj,
+                    idmax
+                }
+            })
+        )
+}
+
+export const putProfesor = (id, obj) => (dispatch) => {
+    putProfesorAPI(id, obj)
         .then(res =>
             dispatch({
-                type: UPDATE_CARRERA_FULLFILED,
+                type: UPDATE_PROFESOR_FULLFILED,
                 payload: {
                     id,
                     obj,
@@ -68,11 +68,11 @@ export const putCarrera = (id, obj) => (dispatch) => {
         )
 }
 
-export const deleteCarrera = id => (dispatch) => {
-    deleteCarreraAPI(id)
+export const deleteProfesor = id => (dispatch) => {
+    deleteProfesorAPI(id)
         .then(res =>
             dispatch({
-                type: REMOVE_CARRERA_FULFILLED,
+                type: REMOVE_PROFESOR_FULFILLED,
                 payload: {
                     id
                 }

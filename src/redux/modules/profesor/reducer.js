@@ -1,17 +1,18 @@
 import initialState from './initialState'
 import {
-  GET_ALUMNO_FULFILLED,
-  UPDATE_ALUMNO_FULLFILED,
-  UPDATE_ALUMNO_REJETED,
-  ADD_ALUMNO_FULLFILED,
-  REMOVE_ALUMNO_FULFILLED,
+  GET_PROFESOR_FULFILLED,
+  UPDATE_PROFESOR_FULLFILED,
+  UPDATE_PROFESOR_REJETED,
+  ADD_PROFESOR_FULLFILED,
+  REMOVE_PROFESOR_FULFILLED,
+  GET_PROFESORMATERIA_FULFILLED
 } from './const'
 import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALUMNO_FULFILLED: {
+    case GET_PROFESOR_FULFILLED: {
       return {
         ...state,
         isFetching: false,
@@ -19,21 +20,26 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case REMOVE_ALUMNO_FULFILLED: {
+    case GET_PROFESORMATERIA_FULFILLED: {
+      return {
+        ...state,
+        isFetching: false,
+        materiaXPROFESOR: action.payload.result
+      }
+    }
+
+    case REMOVE_PROFESOR_FULFILLED: {
       return {
         ...state,
         data: state.data.filter(x => x.id !== action.payload.id)
       }
     }
-    case ADD_ALUMNO_FULLFILED: {
+    case ADD_PROFESOR_FULLFILED: {
       const { idmax, obj } = action.payload;
       const id = idmax.data.body;
-
-      console.log('obj', obj);
       const objToAdd = {
         nombre: obj.nombre,
-        dni: obj.dni,
-        carrera: obj.id_carrera,
+        dni: obj.DNI,
         password: obj.password,
         id
       }
@@ -43,20 +49,19 @@ const reducer = (state = initialState, action) => {
         data: [...state.data, objToAdd]
       }
     }
-    case UPDATE_ALUMNO_REJETED: {
+    case UPDATE_PROFESOR_REJETED: {
       return {
         ...state,
         errorMsg: action.payload.errorMsg
       }
     }
-    case UPDATE_ALUMNO_FULLFILED: {
+    case UPDATE_PROFESOR_FULLFILED: {
       const { id, obj, res } = action.payload
 
       const objToAdd = {
         nombre: obj.nombre,
-        dni: obj.dni,
+        dni: obj.DNI,
         password: obj.password,
-        carrera: obj.id_carrera ,
         id
       }
 

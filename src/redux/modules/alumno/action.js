@@ -11,13 +11,57 @@ import {
     REMOVE_ALUMNO_REJECTED
 } from './const'
 
+import { getAlumnoAPI, addAlumnoAPI, deleteAlumnoAPI, putAlumnoAPI } from '../../../helpers/api/alumno';
+
 export const getAlumno = () => (dispatch) => {
-    dispatch({
-        type: GET_ALUMNO_FULFILLED,
-        payload: {
-            dataObj
-        }
-    })
+    getAlumnoAPI()
+        .then(result =>
+            dispatch({
+                type: GET_ALUMNO_FULFILLED,
+                payload: {
+                    result
+                }
+            })
+        )
+}
+
+export const addAlumno = obj => (dispatch) => {
+    addAlumnoAPI(obj)
+        .then(idmax =>
+            dispatch({
+                type: ADD_ALUMNO_FULLFILED,
+                payload: {
+                    obj,
+                    idmax
+                }
+            })
+        )
+}
+
+export const putAlumno = (id, obj) => (dispatch) => {
+    putAlumnoAPI(id, obj)
+        .then(res =>
+            dispatch({
+                type: UPDATE_ALUMNO_FULLFILED,
+                payload: {
+                    id,
+                    obj,
+                    res
+                }
+            })
+        )
+}
+
+export const deleteAlumno = id => (dispatch) => {
+    deleteAlumnoAPI(id)
+        .then(res =>
+            dispatch({
+                type: REMOVE_ALUMNO_FULFILLED,
+                payload: {
+                    id
+                }
+            })
+        )
 }
 
 const dataObj = [

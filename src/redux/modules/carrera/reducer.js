@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     case UPDATE_CARRERA_FULLFILED: {
-      const { id, obj } = action.payload
+      const { id, obj, res } = action.payload
 
       const objToAdd = {
         plan_de_estudio: obj.plan,
@@ -72,7 +72,9 @@ const reducer = (state = initialState, action) => {
       newList[index] = { ...objToAdd, id }
       return {
         ...state,
-        data: newList
+        data: newList,
+        materiasXCarrera: [...res.data.success]
+
       }
     }
     default:

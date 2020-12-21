@@ -17,7 +17,6 @@ const mapStateToProps = (state) => {
 }
 
 const validate = (values) => {
-  console.log('values', values);
   const errors = {}
   const requiredFields = ['lugar', 'duracion', 'nombre']
   requiredFields.forEach((field) => {

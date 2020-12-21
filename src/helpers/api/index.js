@@ -1,7 +1,6 @@
 // Standardize API response format across the app
 // Decouple from implementation (here using axios)
 const parseResponse = (response) => {
-    console.log('response', response)
     if (!response.ok) {
         return response.json().then((json) => { if (json.error) throw new Error(JSON.stringify(json)) })
     }

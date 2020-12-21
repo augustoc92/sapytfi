@@ -87,17 +87,18 @@ class Carrera extends React.Component{
     };
 
     handleVisibleModificar = e => {
-        const { selectedRow, materiasCarrera, materias } = this.props
+        const { selectedRow, materiasCarrera, materias } = this.props;
+
         if (selectedRow && selectedRow[0]) {
             const idsMateriasDeLaCarrera = materiasCarrera.filter(x => {
                 return x.id_carrera === selectedRow[0].id.toString()
             }).map(x => x.id_materia);
 
-            const materiasDeLaMateria = materias.filter(x => idsMateriasDeLaCarrera.includes(x.id.toString()));
+            const materiasDeLaCarrera = materias.filter(x => idsMateriasDeLaCarrera.includes(x.id.toString()));
 
             this.setState({
                 visibleModificar: true,
-                materias: materiasDeLaMateria
+                materias: materiasDeLaCarrera
             });
         }
     }
@@ -117,7 +118,6 @@ class Carrera extends React.Component{
 
         return (
             materias.map(materia => {
-                console.log('materia render', materia);
                 return (
                     <Button key={materia.id} type="text" onClick={() => this.removeMateriaFromArray(materia.id)}>
                         {materia.nombre}
@@ -172,6 +172,7 @@ class Carrera extends React.Component{
         }
 
         putCarrera(idToSend, objToAdd);
+
         this.clearModals();
     }
 
