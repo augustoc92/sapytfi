@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 
 const mapStateToProps = state => {
     return ({
-
+        user: state.ui.user,
     })
 }
 

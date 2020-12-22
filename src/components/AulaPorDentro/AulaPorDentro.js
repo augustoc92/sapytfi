@@ -16,7 +16,7 @@ class AulaPorDentro extends Component {
         respuesta: '',
         preguntasExamen: [],
         valueRadio: '',
-        tipoExamen: 'prueba'
+        tipoExamen: '0'
     }
 
     setVisible = () => {
@@ -78,12 +78,18 @@ class AulaPorDentro extends Component {
 
     handleOk = () => {
         const { valueRadio, rta, tipoExamen, pregunta, preguntasExamen } = this.state;
+        const { guardarExamen } = this.props;
 
-        console.log('preguntas examen', preguntasExamen);
+        const Examen = {
+            preguntas: [...preguntasExamen],
+            tipoExamen
+        }
+        guardarExamen(Examen);
 
         this.setState({
             visible: false,
             rta: [],
+            // preguntasExamen: [],
             respuesta: '',
             pregunta: '',
             valueRadio: ''
@@ -143,16 +149,13 @@ class AulaPorDentro extends Component {
                                 })}
                             </Radio.Group>
                             <div>
-                            {rta.length > 0 && <label> Recuerde seleccionar la respuesta correcta </label> }
+                            {rta.length > 0 && <h4> Recuerde seleccionar al menos una respuesta correcta! </h4> }
                             </div>
-                            <div className={styles.agregarPreguntaContainer}>
-                                <Button type="primary" onClick={this.agregarPregunta}> Agregar esta pregunta y finalizar </Button>
-                                <Button type="primary" onClick={this.agregarPregunta}> Agregar otra pregunta </Button>
-                            </div>
+                            <Button type="primary" onClick={this.agregarPregunta}> Agregar otra pregunta </Button>
                             <div style={{marginTop: '15px'}}>
                                 <Radio.Group name="radiogroup" onChange={this.handleExamenType} defaultValue='prueba'>
-                                    <Radio value='prueba'>Examen de prueba</Radio>
-                                    <Radio value='nota'>Examen con nota</Radio>
+                                    <Radio value={0}>Examen de prueba</Radio>
+                                    <Radio value={1}>Examen con nota</Radio>
                                 </Radio.Group>
                             </div>
                         </Modal>

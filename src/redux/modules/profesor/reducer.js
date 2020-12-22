@@ -5,7 +5,9 @@ import {
   UPDATE_PROFESOR_REJETED,
   ADD_PROFESOR_FULLFILED,
   REMOVE_PROFESOR_FULFILLED,
-  GET_PROFESORMATERIA_FULFILLED
+  GET_PROFESORMATERIA_FULFILLED,
+  GET_EXAMEN_FULLFILLED,
+  ADD_EXAMEN_FULLFILLED
 } from './const'
 import map from 'lodash/map'
 
@@ -17,6 +19,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         data: action.payload.result
+      }
+    }
+
+    case GET_EXAMEN_FULLFILLED: {
+      console.log('action.payload', action.payload);
+
+      return {
+        ...state,
+        isFetching: false,
+        examen: action.payload.result
       }
     }
 
@@ -32,6 +44,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: state.data.filter(x => x.id !== action.payload.id)
+      }
+    }
+
+    case ADD_EXAMEN_FULLFILLED: {
+      const { idmax, obj } = action.payload;
+      const id = idmax.data.body;
+
+      return {
+        ...state,
       }
     }
     case ADD_PROFESOR_FULLFILED: {

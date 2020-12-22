@@ -10,8 +10,15 @@ const addProfesorAPI = data => post('http://localhost:8080/profesors', data)
 const deleteProfesorAPI = id => del(`http://localhost:8080/profesors/${id}`)
 const putProfesorAPI = (id, data) => put(`http://localhost:8080/profesors/${id}`, data)
 
+
+const getExamenAPI = () => get('http://localhost:8080/profexamen')
+const guardarExamenAPI = (data) => post('http://localhost:8080/profexamen', data)
+
+
 export {
 getProfesorAPI,
+getExamenAPI,
+guardarExamenAPI,
 addProfesorAPI,
 deleteProfesorAPI,
 putProfesorAPI

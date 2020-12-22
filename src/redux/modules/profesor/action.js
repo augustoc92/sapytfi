@@ -9,11 +9,13 @@ import {
     ADD_PROFESOR_FULLFILED,
     ADD_PROFESOR_REJECTED,
     REMOVE_PROFESOR_FULFILLED,
-    REMOVE_PROFESOR_REJECTED
+    REMOVE_PROFESOR_REJECTED,
+    ADD_EXAMEN_FULLFILLED,
+    GET_EXAMEN_FULLFILLED
 } from './const'
 
 
-import { getProfesorAPI, addProfesorAPI, deleteProfesorAPI, putProfesorAPI } from '../../../helpers/api/profesor';
+import { getProfesorAPI, getExamenAPI, guardarExamenAPI, addProfesorAPI, deleteProfesorAPI, putProfesorAPI } from '../../../helpers/api/profesor';
 
 
 export const getProfesor = () => (dispatch) => {
@@ -27,6 +29,19 @@ export const getProfesor = () => (dispatch) => {
             })
         )
 }
+
+export const getExamen = () => (dispatch) => {
+    getExamenAPI()
+        .then(result =>
+            dispatch({
+                type: GET_EXAMEN_FULLFILLED,
+                payload: {
+                    result
+                }
+            })
+        )
+}
+
 
 export const addProfesor = obj => (dispatch) => {
     addProfesorAPI(obj)
@@ -42,10 +57,10 @@ export const addProfesor = obj => (dispatch) => {
 }
 
 export const guardarExamen = obj => (dispatch) => {
-    addProfesorAPI(obj)
+    guardarExamenAPI(obj)
         .then(idmax =>
             dispatch({
-                type: ADD_PROFESOR_FULLFILED,
+                type: ADD_EXAMEN_FULLFILLED,
                 payload: {
                     obj,
                     idmax

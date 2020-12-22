@@ -10,6 +10,7 @@ import Profesor from './components/Profesor';
 import Aula from './components/Aula';
 import VistaAulas from './components/VistaAulas';
 import AulaPorDentro from './components/AulaPorDentro'
+import AulaAlumno from './components/AulaAlumno'
 
 const Routes = () => {
     return (
@@ -24,6 +25,7 @@ const Routes = () => {
                 <Route exact path="/aula" component={Aula} />
                 <Route exact path="/vistaaulas" component={VistaAulas} />
                 <Route exact path="/aulapordentro" component={AulaPorDentro} />
+                <Route exact path="/aulaalumno" component={AulaAlumno} />
                 <Route exact path="/" component={Login} />
                 <Route path="/" component={Login} />
             </Switch>

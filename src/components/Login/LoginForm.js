@@ -16,10 +16,6 @@ class LoginForm extends React.Component {
     onFinish = values => {
         const { profesor, alumno, loggear } = this.props;
 
-        console.log('values', values)
-        console.log('profesor', profesor)
-        console.log('alumno', alumno)
-
         if (values.usuario === 'admin') {
             loggear({usuario: 'admin', permisos: '0'})
             this.props.history.push('./home')

@@ -1,6 +1,8 @@
 import AulaPorDentro from './AulaPorDentro';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { guardarExamen } from '../../redux/modules/profesor/action'
+
 
 const mapStateToProps = state => {
     return ({
@@ -9,7 +11,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-
+    guardarExamen
 }, dispatch)
 
 

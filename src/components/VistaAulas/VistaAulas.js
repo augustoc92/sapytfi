@@ -10,12 +10,19 @@ const { SubMenu } = Menu;
 
 class VistaAulas extends Component {
     render() {
+
+    const { user } = this.props;
+    const { permisos } = user;
+
+    const isProfe = permisos === '1';
+    const isAlumno = permisos === '2';
+
         return (
             <div>
                 <NavBar>
                 </NavBar>
                     <div className={styles.containerAula}>
-                        <Link to="./aulapordentro">
+                        <Link to={isProfe ? "./aulapordentro" : "./aulaalumno"}>
                             <Card
                                 hoverable
                                 style={{ width: 240 }}
