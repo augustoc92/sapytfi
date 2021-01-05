@@ -61,6 +61,7 @@ const reducer = (state = initialState, action) => {
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.DNI,
+        email: obj.email,
         password: obj.password,
         id
       }
@@ -82,6 +83,7 @@ const reducer = (state = initialState, action) => {
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.DNI,
+        email: obj.email,
         password: obj.password,
         id
       }

@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../Shared/NavBar';
-import { Modal, Button, Input, Table } from 'antd';
+import { Modal, Button, Input, Table, InputNumber } from 'antd';
 import styles from './Subject.module.css'
 import { map, omit } from 'lodash'
 
@@ -15,22 +15,22 @@ class Subject extends React.Component{
     state = {
         visibleAgregar: false,
         visibleEliminar: false,
-        visibleModificar: false
+        visibleModificar: false,
+        hoursValue: 0
     }
 
     clearModals = () => {
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
-            visibleModificar: false
+            visibleModificar: false,
+            hoursValue: 0
         });
         if(document.getElementById('nombreMateria')) {
             document.getElementById('nombreMateria').value = '';
-            document.getElementById('duracionMateria').value = '';
         }
         if(document.getElementById('nombreModificar')) {
             document.getElementById('nombreModificar').value = '';
-            document.getElementById('duracionModificar').value = '';
         }
     }
 
@@ -51,8 +51,15 @@ class Subject extends React.Component{
     };
 
     handleVisibleModificar = e => {
+        const { selectedRow } = this.props;
+
+        const hoursString = selectedRow[0].horas_catedra;
+
+        const hours = parseInt(hoursString)
+
         this.setState({
             visibleModificar: true,
+            hoursValue: hours
         });
     }
 
@@ -102,6 +109,12 @@ class Subject extends React.Component{
         // console.log('params', pagination, filters, sorter, extra);
     };
 
+    onChangeHours = (val) => {
+        this.setState({
+            hoursValue: val
+        });
+    }
+
     rowSelection = {
         onChange: (selectedRowKeys, selectedRow) => {
             const { selectRow } = this.props;
@@ -127,7 +140,7 @@ class Subject extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, hoursValue } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -161,9 +174,12 @@ class Subject extends React.Component{
                             maxLength="12"
                         />
                         <label for="duracionMateria">Duracion</label>
-                        <Input
+                        <InputNumber
+                            onChange={val => this.onChangeHours(val)}
+                            value={hoursValue}
+                            min={0}
+                            max={200}
                             id="duracionMateria"
-                            maxLength="8"
                         />
                     </div>
                 </Modal>
@@ -184,10 +200,12 @@ class Subject extends React.Component{
                                     maxLength="30"
                                 />
                                 <label for="duracionModificar">Duracion</label>
-                                <Input
+                                <InputNumber
+                                    onChange={val => this.onChangeHours(val)}
+                                    value={hoursValue}
+                                    min={0}
+                                    max={200}
                                     id="duracionModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].horas_catedra}
-                                    maxLength="8"
                                 />
                             </React.Fragment>
                             ||

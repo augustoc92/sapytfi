@@ -24,12 +24,14 @@ class Profesor extends React.Component{
             visibleEliminar: false,
             visibleModificar: false
         });
-        if(document.getElementById('nombreMateria')) {
-            document.getElementById('nombreMateria').value = '';
-            document.getElementById('duracionMateria').value = '';
+        if(document.getElementById('nombreProfesor')) {
+            document.getElementById('nombreProfesor').value = '';
+            document.getElementById('emailProfesor').value = '';
+            document.getElementById('emailProfesor').value = '';
         }
         if(document.getElementById('nombreModificar')) {
             document.getElementById('nombreModificar').value = '';
+            document.getElementById('emailModificar').value = '';
             document.getElementById('dniModificar').value = '';
         }
     }
@@ -59,10 +61,12 @@ class Profesor extends React.Component{
     handleOkAgregar = e => {
         const { addProfesor } = this.props;
         let nombre = document.getElementById('nombreProfesor').value;
+        let email = document.getElementById('emailProfesor').value;
         let DNI = document.getElementById('dniProfesor').value;
 
         let objToAdd = {
             nombre,
+            email,
             DNI
         }
 
@@ -74,12 +78,14 @@ class Profesor extends React.Component{
     handleOkModificar = e => {
         const { putProfesor, selectedRow } = this.props;
         let nombre = document.getElementById('nombreModificar').value;
+        let email = document.getElementById('emailModificar').value;
         let DNI = document.getElementById('dniModificar').value;
 
         const idToSend = selectedRow[0].id
 
         let objToAdd = {
             nombre,
+            email,
             DNI
         }
 
@@ -160,6 +166,11 @@ class Profesor extends React.Component{
                             id="nombreProfesor"
                             maxLength="30"
                         />
+                        <label for="emailProfesor">Email (de 4 a 30 caracteres):</label>
+                        <Input
+                            id="emailProfesor"
+                            maxLength="30"
+                        />
                         <label for="dniProfesor">DNI</label>
                         <InputNumber
                             id="dniProfesor"
@@ -181,6 +192,12 @@ class Profesor extends React.Component{
                                 <Input
                                     id="nombreModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre}
+                                    maxLength="30"
+                                />
+                                <label for="emailModificar">Email (de 4 a 30 caracteres):</label>
+                                <Input
+                                    id="emailModificar"
+                                    defaultValue={selectedRow[0] && selectedRow[0].email}
                                     maxLength="30"
                                 />
                                 <label for="dniModificar">DNI</label>
@@ -247,6 +264,12 @@ const columns = [
         dataIndex: 'dni',
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.dni - b.dni,
+    },
+    {
+        title: 'EMAIL',
+        dataIndex: 'email',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.email.length - b.email.length,
     }
 ];
 

@@ -29,10 +29,10 @@ const reducer = (state = initialState, action) => {
       const { idmax, obj } = action.payload;
       const id = idmax.data.body;
 
-      console.log('obj', obj);
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.dni,
+        email: obj.email,
         carrera: obj.id_carrera,
         password: obj.password,
         id
@@ -55,6 +55,7 @@ const reducer = (state = initialState, action) => {
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.dni,
+        email: obj.email,
         password: obj.password,
         carrera: obj.id_carrera ,
         id
