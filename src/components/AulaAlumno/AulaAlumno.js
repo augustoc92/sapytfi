@@ -3,6 +3,7 @@ import styles from './AulaAlumno.module.css';
 import NavBar from '../Shared/NavBar';
 import { Menu, Card, Button, Modal, Input, Radio } from 'antd';
 import { Link } from "react-router-dom";
+import RadioPreguntasGroup from './radioPreguntasGroup';
 
 const { Meta } = Card;
 
@@ -22,6 +23,13 @@ class AulaAlumno extends Component {
         getExamen();
     }
 
+
+    handleRadioChange = e => {
+        this.setState({
+            valueRadio: e.target.value,
+        });
+    }
+
     state = {
         visible: false,
         preguntas: []
@@ -33,21 +41,13 @@ class AulaAlumno extends Component {
         })
     }
 
+    handleOk = () => {
+
+    }
+
     armarExamen = (elemen, indx) => {
-        const posibleRta = elemen.posibles_rtas.split('-');
-
-
         return (
-            <React.Fragment>
-                <div> {elemen.pregunta} </div>
-                <Radio.Group onChange={this.handleRadioChange} value={1}>
-                    {posibleRta.map((x, index) => {
-                        return (
-                        <Radio key={index} value={index} style={radioStyle}> {x} </Radio>
-                        )
-                    })}
-                </Radio.Group>
-            </React.Fragment>
+            <RadioPreguntasGroup elementos={elemen} indice={indx} ></RadioPreguntasGroup>
         )
     }
 
@@ -57,6 +57,8 @@ class AulaAlumno extends Component {
         console.log('this.props', this.props);
         const { visible } = this.state;
         const { examen } = this.props;
+
+        console.log('examen', examen);
             // aula: "3"
             // esPrueba: false
             // id: 6
@@ -77,7 +79,7 @@ class AulaAlumno extends Component {
                         <Modal
                             title="Matemoto"
                             centered
-                            okText="Crear examen"
+                            okText="Entregar examen"
                             visible={visible}
                             onOk={this.handleOk}
                             onCancel={() => this.setVisible(false)}

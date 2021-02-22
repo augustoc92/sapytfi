@@ -15,14 +15,16 @@ class Profesor extends React.Component{
     state = {
         visibleAgregar: false,
         visibleEliminar: false,
-        visibleModificar: false
+        visibleModificar: false,
+        errorMessage: ''
     }
 
     clearModals = () => {
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
-            visibleModificar: false
+            visibleModificar: false,
+            errorMessage: ''
         });
         if(document.getElementById('nombreProfesor')) {
             document.getElementById('nombreProfesor').value = '';
@@ -70,6 +72,43 @@ class Profesor extends React.Component{
             DNI
         }
 
+        const mails = this.props.data.map(x => x.email)
+        const dnis = this.props.data.map(x => x.dni)
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreProfesor').focus();
+            return ;
+        }
+        if (mails.indexOf(email) > -1) {
+            this.setState({
+                errorMessage: 'Este mail ya esta en uso'
+            })
+            document.getElementById('emailProfesor').focus();
+            return ;
+        } else if(!this.validateEmail(email)) {
+            this.setState({
+                errorMessage: 'Ingrese un email valido'
+            })
+            document.getElementById('emailProfesor').focus();
+            return ;
+        }
+        if (dnis.indexOf(DNI) > -1 ){
+            this.setState({
+                errorMessage: 'Este DNI ya esta en uso'
+            });
+            document.getElementById('dniProfesor').focus();
+            return ;
+        }  else if(!/^\d+$/.test(DNI)) {
+            this.setState({
+                errorMessage: 'Ingrese un DNI correcto'
+            });
+            document.getElementById('dniProfesor').focus();
+            return;
+        }
+
         addProfesor(objToAdd);
         this.clearModals();
     }
@@ -82,6 +121,43 @@ class Profesor extends React.Component{
         let DNI = document.getElementById('dniModificar').value;
 
         const idToSend = selectedRow[0].id
+
+        const mails = this.props.data.map(x => x.email)
+        const dnis = this.props.data.map(x => x.dni)
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreModificar').focus();
+            return ;
+        }
+        if (mails.indexOf(email) > -1  && email !== selectedRow[0].email) {
+            this.setState({
+                errorMessage: 'Este mail ya esta en uso'
+            })
+            document.getElementById('emailModificar').focus();
+            return ;
+        } else if(!this.validateEmail(email)) {
+            this.setState({
+                errorMessage: 'Ingrese un email valido'
+            })
+            document.getElementById('emailModificar').focus();
+            return ;
+        }
+        if (dnis.indexOf(DNI) > -1 ){
+            this.setState({
+                errorMessage: 'Este DNI ya esta en uso'
+            });
+            document.getElementById('dniModificar').focus();
+            return ;
+        }  else if(!/^\d+$/.test(DNI)) {
+            this.setState({
+                errorMessage: 'Ingrese un DNI correcto'
+            });
+            document.getElementById('dniModificar').focus();
+            return;
+        }
 
         let objToAdd = {
             nombre,
@@ -131,9 +207,14 @@ class Profesor extends React.Component{
         return newArray;
     }
 
+    validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -172,10 +253,14 @@ class Profesor extends React.Component{
                             maxLength="30"
                         />
                         <label for="dniProfesor">DNI</label>
-                        <InputNumber
+                        <Input
                             id="dniProfesor"
-                            max={99999999}
+                            maxLength={8}
                         />
+                        <br></br>
+                        { errorMessage &&
+                            <label className={styles.errorMessage}> {errorMessage} </label>
+                        }
                     </div>
                 </Modal>
                 {/* MODIFICAR */}
@@ -201,11 +286,15 @@ class Profesor extends React.Component{
                                     maxLength="30"
                                 />
                                 <label for="dniModificar">DNI</label>
-                                <InputNumber
+                                <Input
                                     id="dniModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].dni}
-                                    max={99999999}
+                                    maxLength={8}
                                 />
+                                <br></br>
+                                { errorMessage &&
+                                    <label className={styles.errorMessage}> {errorMessage} </label>
+                                }
                             </React.Fragment>
                             ||
                             <div> Seleccione una profesor para modificar </div>

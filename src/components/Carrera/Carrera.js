@@ -19,6 +19,7 @@ class Carrera extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
+        errorMessage: '',
         materias: []
     }
 
@@ -27,6 +28,7 @@ class Carrera extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
+            errorMessage: '',
             materias: []
         });
         if(document.getElementById('nombreCarrera')) {
@@ -148,6 +150,43 @@ class Carrera extends React.Component{
             materias
         }
 
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreCarrera').focus();
+            return ;
+        }
+        if (!plan) {
+            this.setState({
+                errorMessage: 'Ingrese un plan'
+            })
+            document.getElementById('planDeEstudio').focus();
+            return ;
+        }
+
+        if (!lugarCarrera) {
+            this.setState({
+                errorMessage: 'Ingrese un lugar'
+            })
+            document.getElementById('lugarCarrera').focus();
+            return ;
+        }
+
+        if (!duracion) {
+            this.setState({
+                errorMessage: 'Ingrese la duracion'
+            })
+            document.getElementById('duracionCarrera').focus();
+            return ;
+        }
+        if (!materias.length > 0){
+            this.setState({
+                errorMessage: 'Seleccione las materias de la carrera'
+            });
+            return ;
+        }
+
         addCarrera(objToAdd);
         this.clearModals();
     }
@@ -169,6 +208,43 @@ class Carrera extends React.Component{
             plan,
             duracion,
             materias
+        }
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreCarreraModificar').focus();
+            return ;
+        }
+        if (!plan) {
+            this.setState({
+                errorMessage: 'Ingrese un plan'
+            })
+            document.getElementById('planDeEstudioModificar').focus();
+            return ;
+        }
+
+        if (!lugarCarrera) {
+            this.setState({
+                errorMessage: 'Ingrese un lugar'
+            })
+            document.getElementById('lugarCarreraModificar').focus();
+            return ;
+        }
+
+        if (!duracion) {
+            this.setState({
+                errorMessage: 'Ingrese la duracion'
+            })
+            document.getElementById('duracionCarreraModificar').focus();
+            return ;
+        }
+        if (!materias.length > 0){
+            this.setState({
+                errorMessage: 'Seleccione las materias de la carrera'
+            });
+            return ;
         }
 
         putCarrera(idToSend, objToAdd);
@@ -212,7 +288,7 @@ class Carrera extends React.Component{
 
     render() {
         const { data, cols, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage } = this.state;
         const tableData = this.createKeys(data);
         const hasSelectedRow = selectedRow && !!selectedRow[0]
 
@@ -266,6 +342,10 @@ class Carrera extends React.Component{
                         <div className={styles.materiasContainer}>
                             { this.renderMaterias() }
                         </div>
+                        <br></br>
+                        { errorMessage &&
+                            <label className={styles.errorMessage}> {errorMessage} </label>
+                        }
                     </div>
                 </Modal>
                 {/* MODIFICAR */}
@@ -313,6 +393,10 @@ class Carrera extends React.Component{
                                 <div className={styles.materiasContainer}>
                                     { this.renderMaterias() }
                                 </div>
+                                <br></br>
+                                { errorMessage &&
+                                    <label className={styles.errorMessage}> {errorMessage} </label>
+                                }
                             </React.Fragment>
                             ||
                             <div> Seleccione una materia para modificar </div>

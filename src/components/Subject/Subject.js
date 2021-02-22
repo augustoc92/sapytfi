@@ -16,6 +16,7 @@ class Subject extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
+        errorMessage: '',
         hoursValue: 0
     }
 
@@ -24,6 +25,7 @@ class Subject extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
+            errorMessage: '',
             hoursValue: 0
         });
         if(document.getElementById('nombreMateria')) {
@@ -73,6 +75,14 @@ class Subject extends React.Component{
             horas_catedra
         }
 
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreMateria').focus();
+            return ;
+        }
+
         addMateria(objToAdd);
         this.clearModals();
     }
@@ -88,6 +98,14 @@ class Subject extends React.Component{
         let objToAdd = {
             nombre,
             horas_catedra
+        }
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreModificar').focus();
+            return ;
         }
 
         putMateria(idToSend, objToAdd);
@@ -140,7 +158,7 @@ class Subject extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, hoursValue } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, hoursValue, errorMessage } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -181,6 +199,10 @@ class Subject extends React.Component{
                             max={200}
                             id="duracionMateria"
                         />
+                        <br></br>
+                        { errorMessage &&
+                            <label className={styles.errorMessage}> {errorMessage} </label>
+                        }
                     </div>
                 </Modal>
                 {/* MODIFICAR */}
@@ -207,6 +229,10 @@ class Subject extends React.Component{
                                     max={200}
                                     id="duracionModificar"
                                 />
+                                <br></br>
+                                { errorMessage &&
+                                    <label className={styles.errorMessage}> {errorMessage} </label>
+                                }
                             </React.Fragment>
                             ||
                             <div> Seleccione una materia para modificar </div>

@@ -22,14 +22,19 @@ class Aula extends React.Component{
         visibleEliminar: false,
         visibleModificar: false,
         profesorDelAula: {},
-        materiaDelAula: {}
+        materiaDelAula: {},
+        errorMessage: ''
     }
 
     clearModals = () => {
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
-            visibleModificar: false
+            visibleModificar: false,
+            materiaDelAula: {},
+            profesorDelAula: {},
+            errorMessage: ''
+
         });
         if(document.getElementById('nombreAula')) {
             document.getElementById('nombreAula').value = '';
@@ -61,10 +66,6 @@ class Aula extends React.Component{
 
     handleVisibleModificar = e => {
         const { materia, profesor, selectedRow } = this.props;
-
-        console.log('selectedRow', selectedRow);
-
-
         const profesorDelAula = profesor.filter((carrier => carrier.id.toString() === selectedRow[0].profesor.toString()));
         const materiaDelAula = materia.filter((carrier => carrier.id.toString() === selectedRow[0].materia.toString()));
 
@@ -88,6 +89,35 @@ class Aula extends React.Component{
             materia: materiaDelAula
         }
 
+        if (!nombre_aula) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreAula').focus();
+            return ;
+        }
+        if (!horario_clase) {
+            this.setState({
+                errorMessage: 'Ingrese un horario de clase'
+            })
+            document.getElementById('horarioClaseAula').focus();
+            return ;
+        }
+        if (!(profesorDelAula && profesorDelAula.id)){
+            console.log('profesor')
+            this.setState({
+                errorMessage: 'Seleccione el profesor a cargo del aula'
+            });
+            return ;
+        }
+        if (!(materiaDelAula && materiaDelAula.id)){
+            this.setState({
+                errorMessage: 'Seleccione la materia del aula'
+            });
+            return ;
+        }
+
+
         addAula(objToAdd);
         this.clearModals();
     }
@@ -107,6 +137,33 @@ class Aula extends React.Component{
             horario_clase,
             profesor: profesorDelAula,
             materia: materiaDelAula
+        }
+
+        if (!nombre_aula) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreAulaModificar').focus();
+            return ;
+        }
+        if (!horario_clase) {
+            this.setState({
+                errorMessage: 'Ingrese un horario de clase'
+            })
+            document.getElementById('horarioClaseAulaModificar').focus();
+            return ;
+        }
+        if (!(profesorDelAula && profesorDelAula.id)){
+            this.setState({
+                errorMessage: 'Seleccione el profesor a cargo del aula'
+            });
+            return ;
+        }
+        if (!(materiaDelAula && materiaDelAula.id)){
+            this.setState({
+                errorMessage: 'Seleccione las materias del aula'
+            });
+            return ;
         }
 
         putAula(idToSend, objToAdd);
@@ -200,7 +257,7 @@ class Aula extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, profesorDelAula, materiaDelAula } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, profesorDelAula, errorMessage, materiaDelAula } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -255,6 +312,10 @@ class Aula extends React.Component{
                             </Button>
                             </Dropdown>
                         </Space>
+                        <br></br>
+                        { errorMessage &&
+                            <label className={styles.errorMessage}> {errorMessage} </label>
+                        }
                     </div>
                 </Modal>
                 {/* MODIFICAR */}
@@ -297,6 +358,10 @@ class Aula extends React.Component{
                                     </Button>
                                     </Dropdown>
                                 </Space>
+                                <br></br>
+                                { errorMessage &&
+                                    <label className={styles.errorMessage}> {errorMessage} </label>
+                                }
                             </React.Fragment>
                             ||
                             <div> Seleccione una Aula para modificar </div>

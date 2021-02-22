@@ -19,14 +19,16 @@ class Alumno extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
-        carreraDelAlumno: {}
+        carreraDelAlumno: {},
+        errorMessage: ''
     }
 
     clearModals = () => {
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
-            visibleModificar: false
+            visibleModificar: false,
+            errorMessage: ''
         });
         if(document.getElementById('nombreAlumno')) {
             document.getElementById('nombreAlumno').value = '';
@@ -66,6 +68,11 @@ class Alumno extends React.Component{
         });
     }
 
+    validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     handleOkAgregar = e => {
         const { addAlumno } = this.props;
         let nombre = document.getElementById('nombreAlumno').value;
@@ -78,6 +85,43 @@ class Alumno extends React.Component{
             dni,
             email,
             id_carrera: carrera.id
+        }
+
+        const mails = this.props.data.map(x => x.email)
+        const dnis = this.props.data.map(x => x.dni)
+
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreAlumno').focus();
+            return ;
+        }
+        if (mails.indexOf(email) > -1 ) {
+            this.setState({
+                errorMessage: 'Este mail ya esta en uso'
+            })
+            document.getElementById('emailAlumno').focus();
+            return ;
+        } else if(!this.validateEmail(email)) {
+            this.setState({
+                errorMessage: 'Ingrese un email valido'
+            })
+            document.getElementById('emailAlumno').focus();
+            return ;
+        }
+        if (dnis.indexOf(dni) > -1 ){
+            this.setState({
+                errorMessage: 'Este DNI ya esta en uso'
+            });
+            document.getElementById('dniAlumno').focus();
+            return ;
+        } else if(!/^\d+$/.test(dni)) {
+            this.setState({
+                errorMessage: 'Ingrese un DNI correcto'
+            });
+            return;
         }
 
         addAlumno(objToAdd);
@@ -99,6 +143,42 @@ class Alumno extends React.Component{
             dni,
             email,
             id_carrera: carrera.id
+        }
+
+        const mails = this.props.data.map(x => x.email)
+        const dnis = this.props.data.map(x => x.dni)
+
+        if (!nombre) {
+            this.setState({
+                errorMessage: 'Ingrese un nombre'
+            })
+            document.getElementById('nombreModificar').focus();
+            return ;
+        }
+        if (mails.indexOf(email) > -1  && email !== selectedRow[0].email) {
+            this.setState({
+                errorMessage: 'Este mail ya esta en uso'
+            })
+            document.getElementById('emailModificar').focus();
+            return ;
+        } else if(!this.validateEmail(email)) {
+            this.setState({
+                errorMessage: 'Ingrese un email valido'
+            })
+            document.getElementById('emailModificar').focus();
+            return ;
+        }
+        if (dnis.indexOf(dni) > -1 ){
+            this.setState({
+                errorMessage: 'Este DNI ya esta en uso'
+            });
+            document.getElementById('dniModificar').focus();
+            return ;
+        }  else if(!/^\d+$/.test(dni)) {
+            this.setState({
+                errorMessage: 'Ingrese un DNI correcto'
+            });
+            return;
         }
 
         putAlumno(idToSend, objToAdd);
@@ -168,7 +248,7 @@ class Alumno extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, carreraDelAlumno } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, carreraDelAlumno, errorMessage } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -207,9 +287,9 @@ class Alumno extends React.Component{
                             maxLength="30"
                         />
                         <label for="dniAlumno">DNI</label>
-                        <InputNumber
+                        <Input
                             id="dniAlumno"
-                            max={99999999}
+                            maxLength="8"
                         />
                         <br></br>
                         <label> Carrera del alumno </label>
@@ -220,6 +300,10 @@ class Alumno extends React.Component{
                             </Button>
                             </Dropdown>
                         </Space>
+                        <br></br>
+                        { errorMessage &&
+                            <label className={styles.errorMessage}> {errorMessage} </label>
+                        }
                     </div>
                 </Modal>
                 {/* MODIFICAR */}
@@ -245,10 +329,10 @@ class Alumno extends React.Component{
                                     maxLength="30"
                                 />
                                 <label for="dniModificar">DNI</label>
-                                <InputNumber
+                                <Input
                                     id="dniModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].dni}
-                                    max={99999999}
+                                    maxLength="8"
                                 />
                                 <br></br>
                                 <label> Carrera del alumno </label>
@@ -259,6 +343,10 @@ class Alumno extends React.Component{
                                     </Button>
                                     </Dropdown>
                                 </Space>
+                            <br></br>
+                            { errorMessage &&
+                                <label className={styles.errorMessage}> {errorMessage} </label>
+                            }
                             </React.Fragment>
                             ||
                             <div> Seleccione una Alumno para modificar </div>

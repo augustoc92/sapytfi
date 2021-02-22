@@ -24,3 +24,8 @@
     display: flex;
     flex-flow: wrap;
 }
+
+.errorMessage {
+    color: red;
+    font-weight: 600;
+}
