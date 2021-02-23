@@ -19,6 +19,10 @@ class Carrera extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
+        nombreCarrera: '',
+        planCarrera: '',
+        lugarCarrera: '',
+        duracionCarrera: '',
         errorMessage: '',
         materias: []
     }
@@ -42,6 +46,10 @@ class Carrera extends React.Component{
             visibleEliminar: false,
             visibleModificar: false,
             errorMessage: '',
+            nombreCarrera: '',
+            planCarrera: '',
+            lugarCarrera: '',
+            duracionCarrera: '',
             materias: []
         });
     }
@@ -151,7 +159,7 @@ class Carrera extends React.Component{
             materias
         }
 
-        const planes = this.props.data.map(x => x.plan)
+        const planes = this.props.data.map(x => x.plan_de_estudio)
 
         if (!nombre) {
             this.setState({
@@ -167,6 +175,10 @@ class Carrera extends React.Component{
             document.getElementById('planDeEstudio').focus();
             return ;
         }
+        console.log('planes', planes)
+        console.log('planes', plan)
+        console.log('planes.indexOf(plan) > -1)', planes.indexOf(plan));
+
         if (planes.indexOf(plan) > -1) {
             this.setState({
                 errorMessage: 'Ya existe una carrera con este plan'
@@ -201,6 +213,26 @@ class Carrera extends React.Component{
         this.clearModals();
     }
 
+    handleNameChange = val => {
+        this.setState({
+            nombreCarrera: val
+        })
+    }
+    handlePlanChange = val => {
+        this.setState({
+            planCarrera: val
+        })
+    }
+    handleLugarChange = val => {
+        this.setState({
+            lugarCarrera: val
+        })
+    }
+    handleDuracionChange = val => {
+        this.setState({
+            duracionCarrera: val
+        })
+    }
 
     handleOkModificar = e => {
         const { putCarrera, selectedRow } = this.props;
@@ -307,7 +339,8 @@ class Carrera extends React.Component{
 
     render() {
         const { data, cols, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage,
+        nombreCarrera, duracionCarrera, planCarrera, lugarCarrera } = this.state;
         const tableData = this.createKeys(data);
         const hasSelectedRow = selectedRow && !!selectedRow[0]
 
@@ -333,21 +366,29 @@ class Carrera extends React.Component{
                         <label htmlFor="nombreCarrera">Nombre (de 4 a 25 caracteres)</label>
                         <Input
                             id="nombreCarrera"
+                            value={nombreCarrera}
+                            onChange={(e) => this.handleNameChange(e.target.value)}
                             maxLength="25"
                         />
                         <label htmlFor="planDeEstudio">Plan de estudio (de 4 a 25 caracteres)</label>
                         <Input
                             id="planDeEstudio"
+                            value={planCarrera}
+                            onChange={(e) => this.handlePlanChange(e.target.value)}
                             maxLength="25"
                         />
                         <label htmlFor="lugarCarrera">Lugar</label>
                         <Input
                             id="lugarCarrera"
+                            value={lugarCarrera}
+                            onChange={(e) => this.handleLugarChange(e.target.value)}
                             maxLength="8"
                         />
                         <label htmlFor="duracionCarrera">Duracion</label>
                         <Input
                             id="duracionCarrera"
+                            value={duracionCarrera}
+                            onChange={(e) => this.handleDuracionChange(e.target.value)}
                             maxLength="12"
                         />
                         <br></br>
