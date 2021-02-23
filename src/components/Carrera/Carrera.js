@@ -24,6 +24,19 @@ class Carrera extends React.Component{
     }
 
     clearModals = () => {
+        if(document.getElementById('nombreCarrera')) {
+            document.getElementById('nombreCarrera').value = "";
+            document.getElementById('planDeEstudio').value = "";
+            document.getElementById('lugarCarrera').value = "";
+            document.getElementById('duracionCarrera').value = "";
+        }
+        if(document.getElementById('nombreCarreraModificar')) {
+            document.getElementById('nombreCarreraModificar').value = "";
+            document.getElementById('planDeEstudioModificar').value = "";
+            document.getElementById('lugarCarreraModificar').value = "";
+            document.getElementById('duracionCarreraModificar').value = "";
+        }
+
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
@@ -31,18 +44,6 @@ class Carrera extends React.Component{
             errorMessage: '',
             materias: []
         });
-        if(document.getElementById('nombreCarrera')) {
-            document.getElementById('nombreCarrera').value = '';
-            document.getElementById('planDeEstudio').value = '';
-            document.getElementById('lugarCarrera').value = '';
-            document.getElementById('duracionCarrera').value = '';
-        }
-        if(document.getElementById('nombreCarreraModificar')) {
-            document.getElementById('nombreCarreraModificar').value = '';
-            document.getElementById('planDeEstudioModificar').value = '';
-            document.getElementById('lugarCarreraModificar').value = '';
-            document.getElementById('duracionCarreraModificar').value = '';
-        }
     }
 
     handleMenuClick = (e) => {
@@ -73,7 +74,7 @@ class Carrera extends React.Component{
 
 
     handleCancel = e => {
-        this.clearModals()
+        this.clearModals();
     };
 
     handleVisibleAgregar = e => {
@@ -150,6 +151,8 @@ class Carrera extends React.Component{
             materias
         }
 
+        const planes = this.props.data.map(x => x.plan)
+
         if (!nombre) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
@@ -160,6 +163,13 @@ class Carrera extends React.Component{
         if (!plan) {
             this.setState({
                 errorMessage: 'Ingrese un plan'
+            })
+            document.getElementById('planDeEstudio').focus();
+            return ;
+        }
+        if (planes.indexOf(plan) > -1) {
+            this.setState({
+                errorMessage: 'Ya existe una carrera con este plan'
             })
             document.getElementById('planDeEstudio').focus();
             return ;
@@ -210,6 +220,8 @@ class Carrera extends React.Component{
             materias
         }
 
+        const planes = this.props.data.map(x => x.plan)
+
         if (!nombre) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
@@ -220,6 +232,13 @@ class Carrera extends React.Component{
         if (!plan) {
             this.setState({
                 errorMessage: 'Ingrese un plan'
+            })
+            document.getElementById('planDeEstudioModificar').focus();
+            return ;
+        }
+        if (planes.indexOf(plan) > -1) {
+            this.setState({
+                errorMessage: 'Ya existe una carrera con este plan'
             })
             document.getElementById('planDeEstudioModificar').focus();
             return ;
@@ -311,22 +330,22 @@ class Carrera extends React.Component{
                     onCancel={this.handleCancel}
                 >
                     <div className={styles.formContainer}>
-                        <label for="nombreCarrera">Nombre (de 4 a 25 caracteres)</label>
+                        <label htmlFor="nombreCarrera">Nombre (de 4 a 25 caracteres)</label>
                         <Input
                             id="nombreCarrera"
                             maxLength="25"
                         />
-                        <label for="planDeEstudio">Plan de estudio (de 4 a 25 caracteres)</label>
+                        <label htmlFor="planDeEstudio">Plan de estudio (de 4 a 25 caracteres)</label>
                         <Input
                             id="planDeEstudio"
                             maxLength="25"
                         />
-                        <label for="lugarCarrera">Lugar</label>
+                        <label htmlFor="lugarCarrera">Lugar</label>
                         <Input
                             id="lugarCarrera"
                             maxLength="8"
                         />
-                        <label for="duracionCarrera">Duracion</label>
+                        <label htmlFor="duracionCarrera">Duracion</label>
                         <Input
                             id="duracionCarrera"
                             maxLength="12"
@@ -358,25 +377,25 @@ class Carrera extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label for="nombreCarreraModificar">Nombre (de 4 a 12 caracteres)</label>
+                                <label htmlFor="nombreCarreraModificar">Nombre (de 4 a 12 caracteres)</label>
                                 <Input
                                     id="nombreCarreraModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre}
                                     maxLength="12"
                                 />
-                                <label for="planDeEstudioModificar">Plan de estudio (de 4 a 12 caracteres)</label>
+                                <label htmlFor="planDeEstudioModificar">Plan de estudio (de 4 a 12 caracteres)</label>
                                 <Input
                                     id="planDeEstudioModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].plan_de_estudio}
                                     maxLength="12"
                                 />
-                                <label for="lugarCarreraModificar">Lugar</label>
+                                <label htmlFor="lugarCarreraModificar">Lugar</label>
                                 <Input
                                     id="lugarCarreraModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].lugar}
                                     maxLength="8"
                                 />
-                                <label for="duracionCarreraModificar">Duracion</label>
+                                <label htmlFor="duracionCarreraModificar">Duracion</label>
                                 <Input
                                     id="duracionCarreraModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].duracion}

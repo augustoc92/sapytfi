@@ -5,6 +5,11 @@ import styles from './Subject.module.css'
 import { map, omit } from 'lodash'
 
 class Subject extends React.Component{
+    constructor(props) {
+        super(props);
+        this.refName = React.createRef();
+
+    }
 
     componentDidMount() {
         const { getMateria } = this.props
@@ -17,23 +22,25 @@ class Subject extends React.Component{
         visibleEliminar: false,
         visibleModificar: false,
         errorMessage: '',
+        nombreMateria: '',
         hoursValue: 0
     }
 
     clearModals = () => {
+        if(document.getElementById('nombreMateria').value) {
+            document.getElementById('nombreMateria').value = '';
+        };
+        if(document.getElementById('nombreModificar')) {
+            document.getElementById('nombreModificar').value = '';
+        };
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
             errorMessage: '',
+            nombreMateria: '',
             hoursValue: 0
         });
-        if(document.getElementById('nombreMateria')) {
-            document.getElementById('nombreMateria').value = '';
-        }
-        if(document.getElementById('nombreModificar')) {
-            document.getElementById('nombreModificar').value = '';
-        }
     }
 
     handleCancel = e => {
@@ -75,6 +82,16 @@ class Subject extends React.Component{
             horas_catedra
         }
 
+
+        const nombres = this.props.data.map(x => x.nombre)
+
+        if (nombres.indexOf(nombre) > -1) {
+            this.setState({
+                errorMessage: 'Ya existe una materia con este nombre'
+            })
+            document.getElementById('nombreMateria').focus();
+            return ;
+        }
         if (!nombre) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
@@ -100,6 +117,15 @@ class Subject extends React.Component{
             horas_catedra
         }
 
+        const nombres = this.props.data.map(x => x.nombre)
+
+        if (nombres.indexOf(nombre) > -1) {
+            this.setState({
+                errorMessage: 'Ya existe una materia con este nombre'
+            })
+            document.getElementById('nombreModificar').focus();
+            return ;
+        }
         if (!nombre) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
@@ -133,6 +159,12 @@ class Subject extends React.Component{
         });
     }
 
+    handleNameChange = (val) => {
+        this.setState({
+            nombreMateria: val
+        });
+    }
+
     rowSelection = {
         onChange: (selectedRowKeys, selectedRow) => {
             const { selectRow } = this.props;
@@ -158,7 +190,7 @@ class Subject extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, hoursValue, errorMessage } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, hoursValue, errorMessage, nombreMateria } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -186,12 +218,14 @@ class Subject extends React.Component{
                     onCancel={this.handleCancel}
                 >
                     <div className={styles.formContainer}>
-                        <label for="nombreMateria">Nombre (de 4 a 12 caracteres):</label>
+                        <label htmlFor="nombreMateria">Nombre (de 4 a 12 caracteres):</label>
                         <Input
                             id="nombreMateria"
                             maxLength="12"
+                            value={nombreMateria}
+                            onChange={(e) => this.handleNameChange(e.target.value)}
                         />
-                        <label for="duracionMateria">Duracion</label>
+                        <label htmlFor="duracionMateria">Duracion</label>
                         <InputNumber
                             onChange={val => this.onChangeHours(val)}
                             value={hoursValue}
@@ -215,13 +249,13 @@ class Subject extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label for="nombreModificar">Nombre (de 4 a 12 caracteres):</label>
+                                <label htmlFor="nombreModificar">Nombre (de 4 a 12 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre}
                                     maxLength="30"
                                 />
-                                <label for="duracionModificar">Duracion</label>
+                                <label htmlFor="duracionModificar">Duracion</label>
                                 <InputNumber
                                     onChange={val => this.onChangeHours(val)}
                                     value={hoursValue}

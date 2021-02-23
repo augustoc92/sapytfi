@@ -128,13 +128,13 @@ class AulaPorDentro extends Component {
                             onCancel={() => this.setVisible(false)}
                             width={1000}
                         >
-                            <label for="pregunta">Pregunta</label>
+                            <label htmlFor="pregunta">Pregunta</label>
                             <Input
                                 id="pregunta"
                                 value={pregunta}
                                 onChange={this.handleChangePregunta}
                             />
-                            <label for="respuesta">Respuesta</label>
+                            <label htmlFor="respuesta">Respuesta</label>
                             <Input
                                 value={respuesta}
                                 onChange={this.handleChangeRespuesta}

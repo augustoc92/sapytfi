@@ -20,6 +20,9 @@ class Alumno extends React.Component{
         visibleEliminar: false,
         visibleModificar: false,
         carreraDelAlumno: {},
+        nombreAlumno: '',
+        emailAlumno: '',
+        DNI: '',
         errorMessage: ''
     }
 
@@ -28,6 +31,10 @@ class Alumno extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
+            nombreAlumno: '',
+            emailAlumno: '',
+            DNI: '',
+            carreraDelAlumno: {},
             errorMessage: ''
         });
         if(document.getElementById('nombreAlumno')) {
@@ -128,6 +135,23 @@ class Alumno extends React.Component{
         this.clearModals();
     }
 
+    handleNameChange = (val) => {
+        this.setState({
+            nombreAlumno: val
+        });
+    }
+
+    handleEmailChange = (val) => {
+        this.setState({
+            emailAlumno: val
+        });
+    }
+
+    handleDNIChange = (val) => {
+        this.setState({
+            DNI: val
+        });
+    }
 
     handleOkModificar = e => {
         const { putAlumno, selectedRow } = this.props;
@@ -248,7 +272,10 @@ class Alumno extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, carreraDelAlumno, errorMessage } = this.state;
+        const { visibleAgregar, visibleEliminar,
+            visibleModificar, carreraDelAlumno, errorMessage,
+            nombreAlumno, emailAlumno, DNI
+        } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -276,19 +303,25 @@ class Alumno extends React.Component{
                     onCancel={this.handleCancel}
                 >
                     <div className={styles.formContainer}>
-                        <label for="nombreAlumno">Nombre (de 4 a 30 caracteres):</label>
+                        <label htmlFor="nombreAlumno">Nombre (de 4 a 30 caracteres):</label>
                         <Input
                             id="nombreAlumno"
+                            value={nombreAlumno}
+                            onChange={(e) => this.handleNameChange(e.target.value)}
                             maxLength="30"
                         />
-                        <label for="emailAlumno">Email (de 4 a 30 caracteres):</label>
+                        <label htmlFor="emailAlumno">Email (de 4 a 30 caracteres):</label>
                         <Input
                             id="emailAlumno"
+                            value={emailAlumno}
+                            onChange={(e) => this.handleEmailChange(e.target.value)}
                             maxLength="30"
                         />
-                        <label for="dniAlumno">DNI</label>
+                        <label htmlFor="dniAlumno">DNI</label>
                         <Input
                             id="dniAlumno"
+                            value={DNI}
+                            onChange={(e) => this.handleDNIChange(e.target.value)}
                             maxLength="8"
                         />
                         <br></br>
@@ -316,19 +349,19 @@ class Alumno extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label for="nombreModificar">Nombre (de 4 a 30 caracteres):</label>
+                                <label htmlFor="nombreModificar">Nombre (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre}
                                     maxLength="30"
                                 />
-                                <label for="emailModificar">Email (de 4 a 30 caracteres):</label>
+                                <label htmlFor="emailModificar">Email (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="emailModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].email}
                                     maxLength="30"
                                 />
-                                <label for="dniModificar">DNI</label>
+                                <label htmlFor="dniModificar">DNI</label>
                                 <Input
                                     id="dniModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].dni}

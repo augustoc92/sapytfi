@@ -36,14 +36,19 @@ class Aula extends React.Component{
             errorMessage: ''
 
         });
+
         if(document.getElementById('nombreAula')) {
             document.getElementById('nombreAula').value = '';
+
             document.getElementById('horarioClaseAula').value = '';
         }
         if(document.getElementById('nombreAulaModificar')) {
             document.getElementById('nombreAulaModificar').value = '';
             document.getElementById('horarioClaseAulaModificar').value = '';
         }
+
+        document.getElementById('nombreAula').value = 'TITO'
+        debugger;
     }
 
     handleCancel = e => {
@@ -284,12 +289,12 @@ class Aula extends React.Component{
                     onCancel={this.handleCancel}
                 >
                     <div className={styles.formContainer}>
-                        <label for="nombreAula">Nombre Aula</label>
+                        <label htmlFor="nombreAula">Nombre Aula</label>
                         <Input
                             id="nombreAula"
                             maxLength="30"
                         />
-                        <label for="horarioClaseAula"> Horario Clase</label>
+                        <label htmlFor="horarioClaseAula"> Horario Clase</label>
                         <Input
                             id="horarioClaseAula"
                             maxLength="45"
@@ -328,13 +333,13 @@ class Aula extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label for="nombreAulaModificar">Nombre Aula</label>
+                                <label htmlFor="nombreAulaModificar">Nombre Aula</label>
                                 <Input
                                     id="nombreAulaModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].nombre_aula}
                                     maxLength="30"
                                 />
-                                <label for="horarioClaseAulaModificar">Horario Clase</label>
+                                <label htmlFor="horarioClaseAulaModificar">Horario Clase</label>
                                 <Input
                                     id="horarioClaseAulaModificar"
                                     defaultValue={selectedRow[0] && selectedRow[0].horario_clase}
