@@ -1,7 +1,7 @@
 // Initial State
 import initialState from './initialState'
 
-import { CHANGE_COLLAPSED_SIDEBAR, SELECT_ROW, LOGIN_FULLFILLED } from './const'
+import { CHANGE_COLLAPSED_SIDEBAR, SELECT_ROW, LOGIN_FULLFILLED, CHANGE_PASSWORD } from './const'
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -15,8 +15,15 @@ export default (state = initialState, action) => {
       console.log('actio.payload', action.payload);
       return {
         ...state,
-        user: action.payload.user
+        user: action.payload.userFacade,
+        userObj: action.payload.userObj
       }
+    }
+    case CHANGE_PASSWORD: {
+      console.log('actio.payload', action.payload);
+        return {
+          ...state
+        }
     }
     case SELECT_ROW: {
       return {

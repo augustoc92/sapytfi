@@ -45,8 +45,9 @@ export const addAula = obj => (dispatch) => {
     const objToAdd = {
         id_materia: obj.materia.id,
         id_profesor: obj.profesor.id,
-        horario_clase: obj.horario_clase,
-        nombre_aula: obj.nombre_aula
+        horario_clase: obj.horario_aula,
+        nombre_aula: obj.nombre_aula,
+        alumnos: obj.alumnos
     }
 
     addAulaAPI(objToAdd)

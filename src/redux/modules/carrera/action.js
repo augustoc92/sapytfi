@@ -9,12 +9,37 @@ import {
     ADD_CARRERA_FULLFILED,
     ADD_CARRERA_REJECTED,
     REMOVE_CARRERA_FULFILLED,
-    REMOVE_CARRERA_REJECTED
+    REMOVE_CARRERA_REJECTED,
+    GET_MATERIACARRERA_FULL,
+    GET_ALUMNOCARRERA_FULL
 } from './const'
 
 
-import { getCarreraAPI, getCarreraMateriaAPI, addCarerraAPI, deleteCarreraAPI, putCarreraAPI } from '../../../helpers/api/carrera';
+import { getCarreraAPI, addCarerraAPI, deleteCarreraAPI, putCarreraAPI, getAlumnoXCarreraAPI, getMateriaXCarreraAPI } from '../../../helpers/api/carrera';
 
+export const getAlumnosXCarrera = () => (dispatch) => {
+    getAlumnoXCarreraAPI()
+        .then(result =>
+            dispatch({
+                type: GET_ALUMNOCARRERA_FULL,
+                payload: {
+                    result
+                }
+            })
+        )
+}
+
+export const getMateriaXCarrera = () => (dispatch) => {
+    getMateriaXCarreraAPI()
+        .then(result =>
+            dispatch({
+                type: GET_MATERIACARRERA_FULL,
+                payload: {
+                    result
+                }
+            })
+        )
+}
 
 export const getCarrera = () => (dispatch) => {
     getCarreraAPI()
@@ -27,19 +52,6 @@ export const getCarrera = () => (dispatch) => {
             })
         )
 }
-
-export const getMateriasXCarrera = () => (dispatch) => {
-    getCarreraMateriaAPI()
-        .then(result =>
-            dispatch({
-                type: GET_CARRERAMATERIA_FULFILLED,
-                payload: {
-                    result
-                }
-            })
-        )
-}
-
 
 export const addCarrera = obj => (dispatch) => {
     addCarerraAPI(obj)

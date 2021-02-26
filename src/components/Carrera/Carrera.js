@@ -3,15 +3,15 @@ import NavBar from '../Shared/NavBar';
 import { Modal, Button, Input, Table } from 'antd';
 import { Menu, Dropdown, message, Space, Tooltip } from 'antd';
 import styles from './Carrera.module.css'
-import { map, omit } from 'lodash'
+import { map, omit, differenceBy } from 'lodash'
 import { DownOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 
 class Carrera extends React.Component{
 
     componentDidMount() {
-        const { getCarrera, getMateriasXCarrera, getMateria } = this.props
+        const { getCarrera, getMateriaXCarrera, getMateria } = this.props
         getCarrera()
-        getMateriasXCarrera()
+        getMateriaXCarrera()
         getMateria()
     }
 
@@ -60,10 +60,14 @@ class Carrera extends React.Component{
 
     createMenu = () => {
         const { materias } = this.props
+        const materiaState = this.state.materias
+
+        const myDifferences = differenceBy(materias, materiaState, 'nombre')
+
 
         return (
             <Menu onClick={this.handleMenuClick}>
-            {materias.map(x =>
+            {myDifferences.map(x =>
                 <Menu.Item key={x.id} onClick={() => this.addMateriaToArray(x)}> {x.nombre} </Menu.Item>
             )
             }
@@ -175,9 +179,6 @@ class Carrera extends React.Component{
             document.getElementById('planDeEstudio').focus();
             return ;
         }
-        console.log('planes', planes)
-        console.log('planes', plan)
-        console.log('planes.indexOf(plan) > -1)', planes.indexOf(plan));
 
         if (planes.indexOf(plan) > -1) {
             this.setState({

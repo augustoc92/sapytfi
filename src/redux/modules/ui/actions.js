@@ -1,5 +1,13 @@
 // import const
-import { CHANGE_COLLAPSED_SIDEBAR, SELECT_ROW, LOGIN_FULLFILLED, LOGIN_REJECTED, LOGIN_PENDING} from './const'
+import { CHANGE_COLLAPSED_SIDEBAR,
+  SELECT_ROW,
+  LOGIN_FULLFILLED,
+  LOGIN_REJECTED,
+  LOGIN_PENDING,
+  CHANGE_PASSWORD
+} from './const'
+
+import { cambiarPasswordAPI } from '../../../helpers/api/ui';
 
 // eslint-disable-next-line
 export const toggleSideBar = shouldCollapse => (dispatch) => {
@@ -10,14 +18,29 @@ export const toggleSideBar = shouldCollapse => (dispatch) => {
     }
   })
 }
-export const loggear = user => (dispatch) => {
+export const loggear = (userFacade, userObj) => (dispatch) => {
   dispatch({
     type: LOGIN_FULLFILLED,
     payload: {
-      user
+      userFacade,
+      userObj
     }
   })
 }
+
+export const changePass = newUser => (dispatch) => {
+  console.log('newUser', newUser);
+  cambiarPasswordAPI(newUser)
+  .then(() =>
+      dispatch({
+          type: CHANGE_PASSWORD,
+          payload: {
+            newUser
+          }
+      })
+  );
+}
+
 export const selectRow = row => (dispatch) => {
   dispatch({
     type: SELECT_ROW,

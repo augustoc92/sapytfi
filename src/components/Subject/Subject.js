@@ -27,12 +27,6 @@ class Subject extends React.Component{
     }
 
     clearModals = () => {
-        if(document.getElementById('nombreMateria').value) {
-            document.getElementById('nombreMateria').value = '';
-        };
-        if(document.getElementById('nombreModificar')) {
-            document.getElementById('nombreModificar').value = '';
-        };
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
@@ -117,7 +111,7 @@ class Subject extends React.Component{
             horas_catedra
         }
 
-        const nombres = this.props.data.map(x => x.nombre)
+        const nombres = this.props.data.filter(x => x.nombre !== selectedRow[0].nombre).map(x => x.nombre)
 
         if (nombres.indexOf(nombre) > -1) {
             this.setState({

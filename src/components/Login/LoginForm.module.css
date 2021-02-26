@@ -5,3 +5,8 @@
     align-items: center;
     height: 100vh;
 }
+
+.errorMessage {
+    color: red;
+    font-weight: 600;
+}

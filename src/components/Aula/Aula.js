@@ -2,7 +2,8 @@ import React from 'react';
 import NavBar from '../Shared/NavBar';
 import { Modal, Button, Input, Table, InputNumber, Space, Tooltip, Dropdown, Menu } from 'antd';
 import styles from './Aula.module.css'
-import { map, omit } from 'lodash'
+import { map, omit, differenceBy, union, filter } from 'lodash'
+
 import { getMateria } from '../../redux/modules/materia/action';
 import { DownOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 
@@ -10,17 +11,25 @@ import { DownOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 class Aula extends React.Component{
 
     componentDidMount() {
-        const { getAula, getMateria, getProfesor } = this.props
+        const { getAula, getMateria, getProfesor, getAlumno, getCarrera, getAlumnosXCarrera, getMateriaXCarrera } = this.props
 
         getAula()
         getMateria();
         getProfesor();
+        getAlumno();
+        getMateriaXCarrera();
+        getAlumnosXCarrera();
+        getCarrera();
     }
 
     state = {
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
+        nommbreAula: '',
+        horarioAula: '',
+        alumnos: [],
+        carreraDelAula: {},
         profesorDelAula: {},
         materiaDelAula: {},
         errorMessage: ''
@@ -31,24 +40,28 @@ class Aula extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
+            nommbreAula: '',
+            horarioAula: '',
+            carreraDelAula: {},
+            alumnos: [],
             materiaDelAula: {},
             profesorDelAula: {},
             errorMessage: ''
 
         });
 
-        if(document.getElementById('nombreAula')) {
-            document.getElementById('nombreAula').value = '';
+    }
 
-            document.getElementById('horarioClaseAula').value = '';
-        }
-        if(document.getElementById('nombreAulaModificar')) {
-            document.getElementById('nombreAulaModificar').value = '';
-            document.getElementById('horarioClaseAulaModificar').value = '';
-        }
+    handleNameChange = (val) => {
+        this.setState({
+            nommbreAula: val
+        });
+    }
 
-        document.getElementById('nombreAula').value = 'TITO'
-        debugger;
+    handleHoraChange = (val) => {
+        this.setState({
+            horarioAula: val
+        });
     }
 
     handleCancel = e => {
@@ -83,25 +96,24 @@ class Aula extends React.Component{
 
     handleOkAgregar = e => {
         const { addAula } = this.props;
-        const { profesorDelAula, materiaDelAula } = this.state;
-        let nombre_aula = document.getElementById('nombreAula').value;
-        let horario_clase = document.getElementById('horarioClaseAula').value;
+        const { profesorDelAula, materiaDelAula, nommbreAula, horarioAula, alumnos } = this.state;
 
         let objToAdd = {
-            nombre_aula,
-            horario_clase,
+            nombre_aula: nommbreAula,
+            horario_aula: horarioAula,
             profesor: profesorDelAula,
-            materia: materiaDelAula
+            materia: materiaDelAula,
+            alumnos
         }
 
-        if (!nombre_aula) {
+        if (!nommbreAula) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
             })
             document.getElementById('nombreAula').focus();
             return ;
         }
-        if (!horario_clase) {
+        if (!horarioAula) {
             this.setState({
                 errorMessage: 'Ingrese un horario de clase'
             })
@@ -130,28 +142,25 @@ class Aula extends React.Component{
 
     handleOkModificar = e => {
         const { putAula, selectedRow } = this.props;
-        const { profesorDelAula, materiaDelAula } = this.state;
-
-        let nombre_aula = document.getElementById('nombreAulaModificar').value;
-        let horario_clase = document.getElementById('horarioClaseAulaModificar').value;
+        const { profesorDelAula, materiaDelAula, horarioAula , nombreAula } = this.state;
 
         const idToSend = selectedRow[0].id
 
         let objToAdd = {
-            nombre_aula,
-            horario_clase,
+            nombreAula,
+            horarioAula,
             profesor: profesorDelAula,
             materia: materiaDelAula
         }
 
-        if (!nombre_aula) {
+        if (!nombreAula) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
             })
             document.getElementById('nombreAulaModificar').focus();
             return ;
         }
-        if (!horario_clase) {
+        if (!horarioAula) {
             this.setState({
                 errorMessage: 'Ingrese un horario de clase'
             })
@@ -190,12 +199,39 @@ class Aula extends React.Component{
         // console.log('params', pagination, filters, sorter, extra);
     };
 
-    createMenuMateria = () => {
-        const { materia } = this.props
+    createMenuCarrera = () => {
+        const { carrera } = this.props
 
         return (
             <Menu onClick={this.handleMenuClick}>
-            {materia.map(x =>
+            {  carrera.map(x =>
+                <Menu.Item key={x.id} onClick={() => this.setState({ carreraDelAula: x })}> {x.nombre} </Menu.Item>
+                )
+            }
+            </Menu>
+        )
+    }
+
+    createMenuMateria = () => {
+        const { materia, materiaXCarrera } = this.props
+        const { carreraDelAula } = this.state;
+
+        const idCarrera = carreraDelAula.id;
+
+        const IdMateriasDeLaCarrera = materiaXCarrera.filter(x => x.id_carrera === idCarrera.toString()).map(x => x.id_materia)
+        let materiasDeCarrera = [];
+
+        for (let index = 0; index < materia.length; index++) {
+            IdMateriasDeLaCarrera.forEach(element => {
+                if (materia[index].id.toString() === element) {
+                    materiasDeCarrera.push(materia[index]);
+                }
+            });
+        }
+
+        return (
+            <Menu onClick={this.handleMenuClick}>
+            {materiasDeCarrera.map(x =>
                 <Menu.Item key={x.id} onClick={() => {this.agregarMateriAula(x)}}> {x.nombre} </Menu.Item>
             )
             }
@@ -213,6 +249,81 @@ class Aula extends React.Component{
         this.setState({
             profesorDelAula: prof
         })
+    }
+
+    createAlumnoMenu = () => {
+        const { alumno, alumnoXCarrera } = this.props
+        const { carreraDelAula } = this.state;
+        const alumnoState = this.state.alumnos
+        const idCarrera = carreraDelAula.id;
+
+        console.log('aluno,', alumno)
+        console.log('alumnoXCarrera,', alumnoXCarrera)
+
+        const idAlumnosCarrera = alumnoXCarrera.filter(x => x.id_carrera === idCarrera.toString()).map(x => x.id_alumno)
+        let alumnosCarrera = [];
+
+        for (let index = 0; index < alumno.length; index++) {
+            idAlumnosCarrera.forEach(element => {
+                if (alumno[index].id.toString() === element) {
+                    alumnosCarrera.push(alumno[index]);
+                }
+            });
+        }
+
+        console.log('idAlumnosCarrera', idAlumnosCarrera)
+        console.log('alumnosCarrera', alumnosCarrera)
+
+        const myDifferences = differenceBy(alumnosCarrera, alumnoState, 'email')
+
+        console.log('myDifferences', myDifferences)
+
+
+        return (
+            <Menu onClick={this.handleMenuClick}>
+            {myDifferences.map(x =>
+                <Menu.Item key={x.id} onClick={() => this.addAlumnoToArray(x)}> {x.email} </Menu.Item>
+            )
+            }
+            </Menu>
+        )
+    };
+
+    addAlumnoToArray = (alumno) => {
+        const { alumnos } = this.state;
+
+        this.setState({
+            ...this.state,
+            alumnos: [...alumnos, alumno]
+        })
+    }
+
+    removeAlumnoFromArray = (id) => {
+        const { alumnos } = this.state;
+        const filteredItems = alumnos.filter(al => al.id !== id);
+
+        this.setState({
+            alumnos: [...filteredItems]
+        })
+
+    }
+
+
+    renderAlumnos = () => {
+        const { alumnos } = this.state;
+
+        return (
+            alumnos.map(alumn => {
+                return (
+                    <Button key={alumn.id} type="text" onClick={() => this.removeAlumnoFromArray(alumn.id)}>
+                        {alumn.email}
+                        <span className={styles.eraseIcon}>
+                            <DeleteOutlined />
+                        </span>
+                    </Button>
+                )
+            })
+        )
     }
 
     createMenuProfesor = () => {
@@ -262,7 +373,10 @@ class Aula extends React.Component{
 
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, profesorDelAula, errorMessage, materiaDelAula } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar,
+            profesorDelAula, errorMessage, materiaDelAula,
+            carreraDelAula
+        } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -292,11 +406,13 @@ class Aula extends React.Component{
                         <label htmlFor="nombreAula">Nombre Aula</label>
                         <Input
                             id="nombreAula"
+                            onChange={(e) => this.handleNameChange(e.target.value)}
                             maxLength="30"
                         />
                         <label htmlFor="horarioClaseAula"> Horario Clase</label>
                         <Input
                             id="horarioClaseAula"
+                            onChange={(e) => this.handleHoraChange(e.target.value)}
                             maxLength="45"
                         />
                         <br></br>
@@ -309,14 +425,39 @@ class Aula extends React.Component{
                             </Dropdown>
                         </Space>
                         <br></br>
-                        <label> Materia del aula </label>
+                        <label> Carrera </label>
                         <Space>
-                            <Dropdown overlay={this.createMenuMateria()}>
+                            <Dropdown overlay={this.createMenuCarrera()}>
                             <Button>
-                                {materiaDelAula && materiaDelAula.nombre || "Seleccione una materia"} <DownOutlined />
+                                {carreraDelAula && carreraDelAula.nombre || "Seleccione una carrera"} <DownOutlined />
                             </Button>
                             </Dropdown>
                         </Space>
+                        {carreraDelAula && carreraDelAula.nombre &&
+                            <React.Fragment>
+                                <br></br>
+                                <label> Materia del aula </label>
+                                <Space>
+                                    <Dropdown overlay={this.createMenuMateria()}>
+                                    <Button>
+                                        {materiaDelAula && materiaDelAula.nombre || "Seleccione una materia"} <DownOutlined />
+                                    </Button>
+                                    </Dropdown>
+                                </Space>
+                                <br></br>
+                                <Space>
+                                    <Dropdown overlay={this.createAlumnoMenu()}>
+                                    <Button>
+                                        Agregar alumnos <DownOutlined />
+                                    </Button>
+                                    </Dropdown>
+                                </Space>
+                                <br></br>
+                                <div className={styles.alumnosContainer}>
+                                    { this.renderAlumnos() }
+                                </div>
+                            </React.Fragment>
+                        }
                         <br></br>
                         { errorMessage &&
                             <label className={styles.errorMessage}> {errorMessage} </label>
@@ -355,6 +496,17 @@ class Aula extends React.Component{
                                     </Dropdown>
                                 </Space>
                                 <br></br>
+                                <label> Carrera </label>
+                                <Space>
+                                    <Dropdown overlay={this.createMenuCarrera()}>
+                                    <Button>
+                                        {carreraDelAula && carreraDelAula.nombre || "Seleccione una carrera"} <DownOutlined />
+                                    </Button>
+                                    </Dropdown>
+                                </Space>
+                                {carreraDelAula && carreraDelAula.nombre &&
+                                    <React.Fragment>
+                                <br></br>
                                 <label> Materia del aula </label>
                                 <Space>
                                     <Dropdown overlay={this.createMenuMateria()}>
@@ -363,6 +515,20 @@ class Aula extends React.Component{
                                     </Button>
                                     </Dropdown>
                                 </Space>
+                                <br></br>
+                                <Space>
+                                    <Dropdown overlay={this.createAlumnoMenu()}>
+                                    <Button>
+                                        Agregar alumnos <DownOutlined />
+                                    </Button>
+                                    </Dropdown>
+                                </Space>
+                                <br></br>
+                                <div className={styles.alumnosContainer}>
+                                    { this.renderAlumnos() }
+                                </div>
+                            </React.Fragment>
+                        }
                                 <br></br>
                                 { errorMessage &&
                                     <label className={styles.errorMessage}> {errorMessage} </label>
@@ -431,10 +597,6 @@ const columns = [
     {
         title: 'Horario',
         dataIndex: 'horario_clase'
-    },
-    {
-        title: 'Prof Aux',
-        dataIndex: 'profesor_auxiliar'
     }
 ];
 

@@ -37,16 +37,6 @@ class Alumno extends React.Component{
             carreraDelAlumno: {},
             errorMessage: ''
         });
-        if(document.getElementById('nombreAlumno')) {
-            document.getElementById('nombreAlumno').value = '';
-            document.getElementById('emailAlumno').value = '';
-            document.getElementById('dniAlumno').value = '';
-        }
-        if(document.getElementById('nombreModificar')) {
-            document.getElementById('nombreModificar').value = '';
-            document.getElementById('emailModificar').value = '';
-            document.getElementById('dniModificar').value = '';
-        }
     }
 
     handleCancel = e => {

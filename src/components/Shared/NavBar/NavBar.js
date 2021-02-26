@@ -1,4 +1,4 @@
-import { Menu, Avatar, Layout } from 'antd';
+import { Menu, Input, Avatar, Layout, Modal, message } from 'antd';
 import { Link } from "react-router-dom";
 import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -9,6 +9,9 @@ const { Header } = Layout;
 class NavBar extends React.Component {
   state = {
     current: 'home',
+    visible: false,
+    cambiarPass: false,
+    newPassword: ''
   };
 
   handleClick = e => {
@@ -17,9 +20,44 @@ class NavBar extends React.Component {
   };
 
 
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+      cambiarPass: false,
+      newPassword: ''
+
+    });
+  }
+
+  handleOk = () => {
+    const { newPassword } = this.state;
+    const { userObj } = this.props;
+    const obj = {
+      ...userObj,
+      password: newPassword
+    }
+    this.props.changePass(obj)
+
+    this.setState({
+      visible: false,
+      cambiarPass: false,
+      newPassword: ''
+    });
+
+    message.info('Cambio de contraseña realizado');
+
+  }
+
+
+  handlePassChange = (val) => {
+    this.setState({
+      newPassword: val
+    })
+  }
+
 
   render() {
-    const { current } = this.state;
+    const { current, visible, cambiarPass } = this.state;
     const { user } = this.props;
     const { permisos } = user;
 
@@ -29,6 +67,29 @@ class NavBar extends React.Component {
 
     return (
       <Layout className="layout">
+        <Modal
+            visible={visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+        >
+          <React.Fragment>
+            <button onClick={() => this.setState({cambiarPass: true})}>
+              Cambiar contraseña
+            </button>
+            {cambiarPass &&
+              <React.Fragment>
+                <br></br>
+                <span> Nueva contraseña </span>
+                <Input onChange={(e) => this.handlePassChange(e.target.value)} />
+              </React.Fragment>
+            }
+            <br></br><br></br>
+            <button>
+            <Link to="/Usuario" style={{"color": "black" }}> Cerrar sesion </Link>
+            </button>
+          </React.Fragment>
+
+        </Modal>
         <Header style={{ display: 'flex', justifyContent: 'space-between', padding: '0 50px 0 0'}}>
           <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" theme='dark'>
             <Menu.Item key="mail" icon={<MailOutlined />}>
@@ -87,7 +148,7 @@ class NavBar extends React.Component {
               </Menu.ItemGroup>
             </SubMenu>
           </Menu>
-          <Link to="/Usuario">
+          <Link onClick={() => this.setState({visible: true})}>
           <Avatar
               style={{
                   backgroundColor: '#00a2ae',

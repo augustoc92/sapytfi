@@ -16,6 +16,9 @@ class Profesor extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
+        nombreProfesor: '',
+        emailProfesor: '',
+        dniProfesor: '',
         errorMessage: ''
     }
 
@@ -24,18 +27,11 @@ class Profesor extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
+            nombreProfesor: '',
+            emailProfesor: '',
+            dniProfesor: '',
             errorMessage: ''
         });
-        if(document.getElementById('nombreProfesor')) {
-            document.getElementById('nombreProfesor').value = '';
-            document.getElementById('emailProfesor').value = '';
-            document.getElementById('emailProfesor').value = '';
-        }
-        if(document.getElementById('nombreModificar')) {
-            document.getElementById('nombreModificar').value = '';
-            document.getElementById('emailModificar').value = '';
-            document.getElementById('dniModificar').value = '';
-        }
     }
 
     handleCancel = e => {
@@ -74,6 +70,7 @@ class Profesor extends React.Component{
 
         const mails = this.props.data.map(x => x.email)
         const dnis = this.props.data.map(x => x.dni)
+
 
         if (!nombre) {
             this.setState({
@@ -122,8 +119,9 @@ class Profesor extends React.Component{
 
         const idToSend = selectedRow[0].id
 
-        const mails = this.props.data.map(x => x.email)
-        const dnis = this.props.data.map(x => x.dni)
+        const mails = this.props.data.filter(x => x.email !== selectedRow[0].email).map(x => x.email)
+        const dnis = this.props.data.filter(x => x.dni !== selectedRow[0].dni).map(x => x.dni)
+
 
         if (!nombre) {
             this.setState({
@@ -212,9 +210,28 @@ class Profesor extends React.Component{
         return re.test(String(email).toLowerCase());
     }
 
+    handleNameChange = (val) => {
+        this.setState({
+            nombreProfesor: val
+        })
+    }
+
+    handleEmailChange = (val) => {
+        this.setState({
+            emailProfesor: val
+        })
+    }
+
+    handleDNIChange = (val) => {
+        this.setState({
+            dniProfesor: val
+        })
+    }
+
     render() {
         const { data, cols, addMateria, selectedRow } = this.props;
-        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage } = this.state;
+        const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage,
+            nombreProfesor, emailProfesor, dniProfesor } = this.state;
 
         const tableData = this.createKeys(data);
 
@@ -245,16 +262,22 @@ class Profesor extends React.Component{
                         <label htmlFor="nombreProfesor">Nombre (de 4 a 30 caracteres):</label>
                         <Input
                             id="nombreProfesor"
+                            value={nombreProfesor}
+                            onChange={(e) => this.handleNameChange(e.target.value)}
                             maxLength="30"
                         />
                         <label htmlFor="emailProfesor">Email (de 4 a 30 caracteres):</label>
                         <Input
                             id="emailProfesor"
+                            value={emailProfesor}
+                            onChange={(e) => this.handleEmailChange(e.target.value)}
                             maxLength="30"
                         />
                         <label htmlFor="dniProfesor">DNI</label>
                         <Input
                             id="dniProfesor"
+                            value={dniProfesor}
+                            onChange={(e) => this.handleDNIChange(e.target.value)}
                             maxLength={8}
                         />
                         <br></br>

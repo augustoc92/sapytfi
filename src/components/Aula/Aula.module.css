@@ -17,7 +17,16 @@
 }
 
 
+.eraseIcon {
+    margin-left: 3px;
+}
+
 .errorMessage {
     color: red;
     font-weight: 600;
+}
+
+.alumnosContainer {
+    display: flex;
+    flex-flow: wrap;
 }

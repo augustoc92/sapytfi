@@ -6,6 +6,10 @@ import { getAlumno } from '../../redux/modules/alumno/action';
 
 class LoginForm extends React.Component {
 
+    state = {
+        errorMessage: ''
+    }
+
     componentDidMount() {
         const { getProfesor, getAlumno } = this.props;
 
@@ -20,21 +24,34 @@ class LoginForm extends React.Component {
             loggear({usuario: 'admin', permisos: '0'})
             this.props.history.push('./home')
         }
-
-        const usuarioEsAlumno = alumno.filter(x => x.dni.toString() === values.usuario)
-        const usuarioEsProfesor = profesor.filter(x => x.dni.toString() === values.usuario)
+        const usuarioEsAlumno = alumno.filter(x => x.email.toString() === values.usuario)
+        const usuarioEsProfesor = profesor.filter(x => x.email.toString() === values.usuario)
 
         if (usuarioEsProfesor && usuarioEsProfesor[0]) {
-            loggear({usuario: usuarioEsProfesor[0].nombre, permisos: '1'})
+            if (usuarioEsProfesor[0].password !== values.contraseña) {
+                this.setState({
+                    errorMessage: 'La contraseña no es correcta'
+                });
+                return;
+            }
+            loggear({usuario: usuarioEsProfesor[0].nombre, permisos: '1'}, usuarioEsProfesor[0])
             this.props.history.push('./home')
         } else if (usuarioEsAlumno && usuarioEsAlumno[0]) {
-            loggear({usuario: usuarioEsAlumno[0].nombre, permisos: '2'})
+            if (usuarioEsAlumno[0].password !== values.contraseña) {
+                this.setState({
+                    errorMessage: 'La contraseña no es correcta'
+                });
+                return;
+            }
+            loggear({usuario: usuarioEsAlumno[0].nombre, permisos: '2'}, usuarioEsAlumno[0])
             this.props.history.push('./home')
         }
     };
 
 
     render() {
+        const { errorMessage } = this.state;
+
         return (
             <div className={styles.container}>
                 <Form
@@ -71,6 +88,10 @@ class LoginForm extends React.Component {
                         placeholder="Contraseña"
                         />
                     </Form.Item>
+                    <br></br>
+                    { errorMessage &&
+                        <label className={styles.errorMessage}> {errorMessage} </label>
+                    }
                     <Form.Item>
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                         <Checkbox>Recordarme</Checkbox>

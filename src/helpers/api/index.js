@@ -49,6 +49,7 @@ export const put = (
     data
 ) => {
     const body = JSON.stringify(data)
+    console.log('body', body);
     return (
         fetch(endpoint, { method: 'PUT', body, headers: { 'Content-Type': 'application/json' }})
     .then(result => parseResponse(result))

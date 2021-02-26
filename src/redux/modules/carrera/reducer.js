@@ -5,13 +5,27 @@ import {
   UPDATE_CARRERA_REJETED,
   ADD_CARRERA_FULLFILED,
   REMOVE_CARRERA_FULFILLED,
-  GET_CARRERAMATERIA_FULFILLED
+  GET_CARRERAMATERIA_FULFILLED,
+  GET_MATERIACARRERA_FULL,
+  GET_ALUMNOCARRERA_FULL
 } from './const'
 import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_MATERIACARRERA_FULL: {
+      return {
+        ...state,
+        materiaXCarrera: action.payload.result
+      }
+    }
+    case GET_ALUMNOCARRERA_FULL: {
+      return {
+        ...state,
+        alumnoXCarrera: action.payload.result
+      }
+    }
     case GET_CARRERA_FULFILLED: {
       return {
         ...state,
