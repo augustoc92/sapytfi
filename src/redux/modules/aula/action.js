@@ -66,10 +66,12 @@ export const addAula = obj => (dispatch) => {
 export const putAula = (id, obj) => (dispatch) => {
 
     const objToAdd = {
+        id_carrera: obj.carreraDelAula.id,
         id_materia: obj.materia.id,
         id_profesor: obj.profesor.id,
-        horario_clase: obj.horario_clase,
-        nombre_aula: obj.nombre_aula
+        horario_clase: obj.horarioAula,
+        nombre_aula: obj.nombreAula,
+        alumnos: obj.alumnos
     }
 
     putAulaAPI(id, objToAdd)

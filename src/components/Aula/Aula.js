@@ -37,6 +37,7 @@ class Aula extends React.Component{
     }
 
     clearModals = () => {
+        const { selectRow } = this.props
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
@@ -48,8 +49,8 @@ class Aula extends React.Component{
             materiaDelAula: {},
             profesorDelAula: {},
             errorMessage: ''
-
         });
+        selectRow(null);
 
     }
 
@@ -94,12 +95,7 @@ class Aula extends React.Component{
             return x.id_aula === selectedRow[0].id.toString()
         }).map(x => x.id_alumno);
 
-        console.log('alumnoXAula', alumnoXAula);
-        console.log('idsAlumnosDelAula', idsAlumnosDelAula)
-
         const alumnosCarrera = alumno.filter(x => idsAlumnosDelAula.includes(x.id.toString()));
-
-        console.log('alumnosCarrera', alumnosCarrera)
 
         this.setState({
             nombreAula: selectedRow[0].nombre_aula ,
@@ -139,6 +135,12 @@ class Aula extends React.Component{
             document.getElementById('horarioClaseAula').focus();
             return ;
         }
+        if (!(carreraDelAula && carreraDelAula.id)){
+            this.setState({
+                errorMessage: 'Seleccione una carrera'
+            });
+            return ;
+        }
         if (!(profesorDelAula && profesorDelAula.id)){
             console.log('profesor')
             this.setState({
@@ -161,7 +163,7 @@ class Aula extends React.Component{
 
     handleOkModificar = e => {
         const { putAula, selectedRow } = this.props;
-        const { profesorDelAula, materiaDelAula, horarioAula , nombreAula } = this.state;
+        const { profesorDelAula, materiaDelAula, horarioAula , nombreAula, alumnos, carreraDelAula } = this.state;
 
         const idToSend = selectedRow[0].id
 
@@ -169,7 +171,9 @@ class Aula extends React.Component{
             nombreAula,
             horarioAula,
             profesor: profesorDelAula,
-            materia: materiaDelAula
+            materia: materiaDelAula,
+            alumnos: alumnos,
+            carreraDelAula: carreraDelAula
         }
 
         if (!nombreAula) {
@@ -189,6 +193,12 @@ class Aula extends React.Component{
         if (!(profesorDelAula && profesorDelAula.id)){
             this.setState({
                 errorMessage: 'Seleccione el profesor a cargo del aula'
+            });
+            return ;
+        }
+        if (!(carreraDelAula && carreraDelAula.id)){
+            this.setState({
+                errorMessage: 'Seleccione una carrera'
             });
             return ;
         }
@@ -275,9 +285,6 @@ class Aula extends React.Component{
         const { carreraDelAula } = this.state;
         const alumnoState = this.state.alumnos
         const idCarrera = carreraDelAula.id;
-
-        console.log('aluno,', alumno)
-        console.log('alumnoXCarrera,', alumnoXCarrera)
 
         const idAlumnosCarrera = alumnoXCarrera.filter(x => x.id_carrera === idCarrera.toString()).map(x => x.id_alumno)
         let alumnosCarrera = [];

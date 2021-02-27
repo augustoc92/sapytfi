@@ -40,7 +40,6 @@ const reducer = (state = initialState, action) => {
       const { body } = objData.data;
 
       const { alumnosRows, maxId } = body;
-
       const formatObject = {
         id: maxId,
         materia: objToAdd.id_materia,
@@ -64,21 +63,26 @@ const reducer = (state = initialState, action) => {
     }
 
     case UPDATE_AULA_FULLFILED: {
-      const { obj, id } = action.payload
+      const { obj, id, res } = action.payload
+
+      const alumnosAula = res.data;
 
       const formatObject = {
         id,
         materia: obj.materia.id,
+        id_carrera: obj.carreraDelAula.id,
         profesor: obj.profesor.id,
-        horario_clase: obj.horario_clase,
-        nombre_aula: obj.nombre_aula
+        horario_clase: obj.horarioAula,
+        nombre_aula: obj.nombreAula
       }
 
       const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
       newList[index] = formatObject
+
       return {
         ...state,
+        alumnoXAula: [...alumnosAula],
         data: newList
       }
     }
