@@ -58,9 +58,13 @@ class Alumno extends React.Component{
     handleVisibleModificar = e => {
         const { carrera, selectedRow } = this.props;
         const carreraDelAlumno = carrera.filter((carrier => carrier.id === selectedRow[0].carrera));
+        const { email, dni, nombre } = selectedRow[0];
 
         this.setState({
             carreraDelAlumno: carreraDelAlumno[0],
+            nombreAlumno: nombre,
+            DNI: dni,
+            emailAlumno: email,
             visibleModificar: true,
         });
     }
@@ -159,8 +163,9 @@ class Alumno extends React.Component{
             id_carrera: carrera.id
         }
 
-        const mails = this.props.data.map(x => x.email)
-        const dnis = this.props.data.map(x => x.dni)
+        const mails = this.props.data.filter(x => x.email !== selectedRow[0].email).map(x => x.email)
+        const dnis = this.props.data.filter(x => x.dni !== selectedRow[0].dni).map(x => x.dni)
+
 
         if (!nombre) {
             this.setState({
@@ -342,19 +347,22 @@ class Alumno extends React.Component{
                                 <label htmlFor="nombreModificar">Nombre (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].nombre}
+                                    value={nombreAlumno}
+                                    onChange={(e) => this.handleNameChange(e.target.value)}
                                     maxLength="30"
                                 />
                                 <label htmlFor="emailModificar">Email (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="emailModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].email}
+                                    value={emailAlumno}
+                                    onChange={(e) => this.handleEmailChange(e.target.value)}
                                     maxLength="30"
                                 />
                                 <label htmlFor="dniModificar">DNI</label>
                                 <Input
                                     id="dniModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].dni}
+                                    value={DNI}
+                                    onChange={(e) => this.handleDNIChange(e.target.value)}
                                     maxLength="8"
                                 />
                                 <br></br>

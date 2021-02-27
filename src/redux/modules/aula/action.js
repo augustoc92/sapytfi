@@ -9,11 +9,11 @@ import {
     ADD_AULA_REJECTED,
     GET_AULAALUMNO_FULFILLED,
     REMOVE_AULA_FULFILLED,
-    REMOVE_AULA_REJECTED
+    REMOVE_AULA_REJECTED,
+    GET_ALUMNOS_AULA
 } from './const'
 
 import { getAulaAPI, getAulaAlumnosAPI, addAulaAPI, deleteAulaAPI, putAulaAPI } from '../../../helpers/api/aula';
-
 
 export const getAula = () => (dispatch) => {
     getAulaAPI()
@@ -27,7 +27,7 @@ export const getAula = () => (dispatch) => {
         )
 }
 
-export const getAlumnosAula = () => (dispatch) => {
+export const getAlumnosXAula = () => (dispatch) => {
     getAulaAlumnosAPI()
         .then(result =>
             dispatch({
@@ -45,18 +45,19 @@ export const addAula = obj => (dispatch) => {
     const objToAdd = {
         id_materia: obj.materia.id,
         id_profesor: obj.profesor.id,
+        id_carrera: obj.carreraDelAula.id,
         horario_clase: obj.horario_aula,
         nombre_aula: obj.nombre_aula,
         alumnos: obj.alumnos
     }
 
     addAulaAPI(objToAdd)
-        .then(idmax =>
+        .then(objData =>
             dispatch({
                 type: ADD_AULA_FULLFILED,
                 payload: {
                     objToAdd,
-                    idmax
+                    objData
                 }
             })
         )

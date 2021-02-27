@@ -5,12 +5,21 @@ import {
   UPDATE_AULA_REJETED,
   ADD_AULA_FULLFILED,
   REMOVE_AULA_FULFILLED,
+  GET_AULAALUMNO_FULFILLED,
+  GET_ALUMNOS_AULA
 } from './const'
 import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_AULAALUMNO_FULFILLED: {
+      return {
+        ...state,
+        isFetching: false,
+        alumnoXAula: action.payload.result
+      }
+    }
     case GET_AULA_FULFILLED: {
       return {
         ...state,
@@ -27,19 +36,24 @@ const reducer = (state = initialState, action) => {
     }
 
     case ADD_AULA_FULLFILED: {
-      const { idmax, objToAdd } = action.payload;
-      const id = idmax.data.body;
+      const { objData, objToAdd } = action.payload;
+      const { body } = objData.data;
+
+      const { alumnosRows, maxId } = body;
+
       const formatObject = {
-        id,
+        id: maxId,
         materia: objToAdd.id_materia,
         profesor: objToAdd.id_profesor,
+        id_carrera: objToAdd.id_carrera,
         horario_clase: objToAdd.horario_clase,
         nombre_aula: objToAdd.nombre_aula
       }
 
       return {
         ...state,
-        data: [...state.data, formatObject]
+        data: [...state.data, formatObject],
+        alumnoXAula: [...alumnosRows]
       }
     }
     case UPDATE_AULA_REJETED: {

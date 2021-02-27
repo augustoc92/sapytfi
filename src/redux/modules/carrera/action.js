@@ -55,12 +55,12 @@ export const getCarrera = () => (dispatch) => {
 
 export const addCarrera = obj => (dispatch) => {
     addCarerraAPI(obj)
-        .then(idmax =>
+        .then(data =>
             dispatch({
                 type: ADD_CARRERA_FULLFILED,
                 payload: {
                     obj,
-                    idmax
+                    data
                 }
             })
         )

@@ -49,19 +49,24 @@ const reducer = (state = initialState, action) => {
       }
     }
     case ADD_CARRERA_FULLFILED: {
-      const { idmax, obj } = action.payload;
-      const id = idmax.data.body;
+      const { data: DataObj, obj } = action.payload;
+      const { data } = DataObj;
+      const { maxId, rows } = data.body;
+      console.log('rows', rows)
+      console.log('data.body', data.body)
+
       const objToAdd = {
         plan_de_estudio: obj.plan,
         nombre: obj.nombre,
         lugar: obj.lugarCarrera,
         duracion: obj.duracion,
-        id
+        id: maxId
       }
 
       return {
         ...state,
-        data: [...state.data, objToAdd]
+        data: [...state.data, objToAdd],
+        materiaXCarrera: [...rows]
       }
     }
     case UPDATE_CARRERA_REJETED: {
@@ -84,11 +89,11 @@ const reducer = (state = initialState, action) => {
       const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
       newList[index] = { ...objToAdd, id }
+
       return {
         ...state,
         data: newList,
-        materiasXCarrera: [...res.data.success]
-
+        materiaXCarrera: [...res.data.success]
       }
     }
     default:

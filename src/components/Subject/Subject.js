@@ -57,12 +57,15 @@ class Subject extends React.Component{
         const { selectedRow } = this.props;
 
         const hoursString = selectedRow[0].horas_catedra;
+        const nombre = selectedRow[0].nombre;
+
 
         const hours = parseInt(hoursString)
 
         this.setState({
             visibleModificar: true,
-            hoursValue: hours
+            hoursValue: hours,
+            nombreMateria: nombre
         });
     }
 
@@ -246,7 +249,8 @@ class Subject extends React.Component{
                                 <label htmlFor="nombreModificar">Nombre (de 4 a 12 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].nombre}
+                                    onChange={(e) => this.handleNameChange(e.target.value)}
+                                    value={nombreMateria}
                                     maxLength="30"
                                 />
                                 <label htmlFor="duracionModificar">Duracion</label>

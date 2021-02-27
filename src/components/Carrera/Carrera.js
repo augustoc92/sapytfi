@@ -28,19 +28,7 @@ class Carrera extends React.Component{
     }
 
     clearModals = () => {
-        if(document.getElementById('nombreCarrera')) {
-            document.getElementById('nombreCarrera').value = "";
-            document.getElementById('planDeEstudio').value = "";
-            document.getElementById('lugarCarrera').value = "";
-            document.getElementById('duracionCarrera').value = "";
-        }
-        if(document.getElementById('nombreCarreraModificar')) {
-            document.getElementById('nombreCarreraModificar').value = "";
-            document.getElementById('planDeEstudioModificar').value = "";
-            document.getElementById('lugarCarreraModificar').value = "";
-            document.getElementById('duracionCarreraModificar').value = "";
-        }
-
+        const { selectRow } = this.props;
         this.setState({
             visibleAgregar: false,
             visibleEliminar: false,
@@ -52,6 +40,7 @@ class Carrera extends React.Component{
             duracionCarrera: '',
             materias: []
         });
+        selectRow(null);
     }
 
     handleMenuClick = (e) => {
@@ -109,10 +98,16 @@ class Carrera extends React.Component{
                 return x.id_carrera === selectedRow[0].id.toString()
             }).map(x => x.id_materia);
 
+
             const materiasDeLaCarrera = materias.filter(x => idsMateriasDeLaCarrera.includes(x.id.toString()));
+            const { nombre, lugar, plan_de_estudio, duracion } = selectedRow[0];
 
             this.setState({
                 visibleModificar: true,
+                nombreCarrera: nombre,
+                planCarrera: plan_de_estudio,
+                lugarCarrera: lugar,
+                duracionCarrera: duracion,
                 materias: materiasDeLaCarrera
             });
         }
@@ -146,7 +141,7 @@ class Carrera extends React.Component{
     }
 
     handleOkAgregar = e => {
-        const { addCarrera } = this.props;
+        const { addCarrera, getCarrera, getMateria, getMateriaXCarrera } = this.props;
         const { materias } = this.state;
 
         let nombre = document.getElementById('nombreCarrera').value;
@@ -230,13 +225,15 @@ class Carrera extends React.Component{
         })
     }
     handleDuracionChange = val => {
+        const res = val.replace(/\D/g, "");
         this.setState({
-            duracionCarrera: val
+            duracionCarrera: res
         })
     }
 
     handleOkModificar = e => {
         const { putCarrera, selectedRow } = this.props;
+        const { getCarrera, getMateria, getMateriaXCarrera } = this.props;
         const { materias } = this.state;
         let nombre = document.getElementById('nombreCarreraModificar').value;
         let plan = document.getElementById('planDeEstudioModificar').value;
@@ -253,7 +250,7 @@ class Carrera extends React.Component{
             materias
         }
 
-        const planes = this.props.data.map(x => x.plan)
+        const planes = this.props.data.filter(x => x.plan_de_estudio !== selectedRow[0].plan_de_estudio).map(x => x.plan_de_estudio)
 
         if (!nombre) {
             this.setState({
@@ -419,28 +416,32 @@ class Carrera extends React.Component{
                         { selectedRow && selectedRow[0]
                             &&
                             <React.Fragment>
-                                <label htmlFor="nombreCarreraModificar">Nombre (de 4 a 12 caracteres)</label>
+                                <label htmlFor="nombreCarreraModificar">Nombre (de 4 a 20 caracteres)</label>
                                 <Input
                                     id="nombreCarreraModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].nombre}
-                                    maxLength="12"
+                                    value={nombreCarrera}
+                                    onChange={(e) => this.handleNameChange(e.target.value)}
+                                    maxLength="20"
                                 />
                                 <label htmlFor="planDeEstudioModificar">Plan de estudio (de 4 a 12 caracteres)</label>
                                 <Input
                                     id="planDeEstudioModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].plan_de_estudio}
+                                    value={planCarrera}
+                                    onChange={(e) => this.handlePlanChange(e.target.value)}
                                     maxLength="12"
                                 />
                                 <label htmlFor="lugarCarreraModificar">Lugar</label>
                                 <Input
                                     id="lugarCarreraModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].lugar}
+                                    value={lugarCarrera}
+                                    onChange={(e) => this.handleLugarChange(e.target.value)}
                                     maxLength="8"
                                 />
                                 <label htmlFor="duracionCarreraModificar">Duracion</label>
                                 <Input
                                     id="duracionCarreraModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].duracion}
+                                    value={duracionCarrera}
+                                    onChange={(e) => this.handleDuracionChange(e.target.value)}
                                     maxLength="12"
                                 />
                                 <br></br>

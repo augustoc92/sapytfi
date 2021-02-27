@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  alumnoXAula: [],
   isFetching: false,
   errorMsg: ''
 }

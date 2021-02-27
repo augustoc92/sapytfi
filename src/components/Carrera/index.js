@@ -12,6 +12,7 @@ const mapStateToProps = state => {
         data: state.carrera.data,
         materias: state.materia.data,
         materiasCarrera: state.carrera.materiaXCarrera,
+        materiasDeLaCarrera: state.carrera.materiasConCarreas,
         selectedRow: state.ui.selectedRow,
         cols
     })

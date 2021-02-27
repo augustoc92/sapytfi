@@ -11,7 +11,7 @@ import { DownOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 class Aula extends React.Component{
 
     componentDidMount() {
-        const { getAula, getMateria, getProfesor, getAlumno, getCarrera, getAlumnosXCarrera, getMateriaXCarrera } = this.props
+        const { getAula, getMateria, getProfesor, getAlumno, getCarrera, getAlumnosXCarrera, getMateriaXCarrera, getAlumnosXAula } = this.props
 
         getAula()
         getMateria();
@@ -19,6 +19,7 @@ class Aula extends React.Component{
         getAlumno();
         getMateriaXCarrera();
         getAlumnosXCarrera();
+        getAlumnosXAula();
         getCarrera();
     }
 
@@ -26,7 +27,7 @@ class Aula extends React.Component{
         visibleAgregar: false,
         visibleEliminar: false,
         visibleModificar: false,
-        nommbreAula: '',
+        nombreAula: '',
         horarioAula: '',
         alumnos: [],
         carreraDelAula: {},
@@ -40,7 +41,7 @@ class Aula extends React.Component{
             visibleAgregar: false,
             visibleEliminar: false,
             visibleModificar: false,
-            nommbreAula: '',
+            nombreAula: '',
             horarioAula: '',
             carreraDelAula: {},
             alumnos: [],
@@ -54,7 +55,7 @@ class Aula extends React.Component{
 
     handleNameChange = (val) => {
         this.setState({
-            nommbreAula: val
+            nombreAula: val
         });
     }
 
@@ -83,30 +84,48 @@ class Aula extends React.Component{
     };
 
     handleVisibleModificar = e => {
-        const { materia, profesor, selectedRow } = this.props;
+        const { materia, profesor, carrera, alumnoXAula, alumno, selectedRow } = this.props;
+
         const profesorDelAula = profesor.filter((carrier => carrier.id.toString() === selectedRow[0].profesor.toString()));
         const materiaDelAula = materia.filter((carrier => carrier.id.toString() === selectedRow[0].materia.toString()));
+        const carreraDelAula =  carrera.filter((carrier => carrier.id.toString() === selectedRow[0].id_carrera.toString()));
+
+        const idsAlumnosDelAula = alumnoXAula.filter(x => {
+            return x.id_aula === selectedRow[0].id.toString()
+        }).map(x => x.id_alumno);
+
+        console.log('alumnoXAula', alumnoXAula);
+        console.log('idsAlumnosDelAula', idsAlumnosDelAula)
+
+        const alumnosCarrera = alumno.filter(x => idsAlumnosDelAula.includes(x.id.toString()));
+
+        console.log('alumnosCarrera', alumnosCarrera)
 
         this.setState({
+            nombreAula: selectedRow[0].nombre_aula ,
+            horarioAula: selectedRow[0].horario_clase ,
             profesorDelAula: profesorDelAula[0],
             materiaDelAula: materiaDelAula[0],
+            carreraDelAula: carreraDelAula[0],
+            alumnos: [...alumnosCarrera],
             visibleModificar: true,
         });
     }
 
     handleOkAgregar = e => {
         const { addAula } = this.props;
-        const { profesorDelAula, materiaDelAula, nommbreAula, horarioAula, alumnos } = this.state;
+        const { profesorDelAula, materiaDelAula, nombreAula, horarioAula, alumnos, carreraDelAula } = this.state;
 
         let objToAdd = {
-            nombre_aula: nommbreAula,
+            nombre_aula: nombreAula,
             horario_aula: horarioAula,
             profesor: profesorDelAula,
             materia: materiaDelAula,
+            carreraDelAula:  carreraDelAula,
             alumnos
         }
 
-        if (!nommbreAula) {
+        if (!nombreAula) {
             this.setState({
                 errorMessage: 'Ingrese un nombre'
             })
@@ -205,7 +224,7 @@ class Aula extends React.Component{
         return (
             <Menu onClick={this.handleMenuClick}>
             {  carrera.map(x =>
-                <Menu.Item key={x.id} onClick={() => this.setState({ carreraDelAula: x })}> {x.nombre} </Menu.Item>
+                <Menu.Item key={x.id} onClick={() => this.setState({ carreraDelAula: x, materiaDelAula: [], alumnos: [] })}> {x.nombre} </Menu.Item>
                 )
             }
             </Menu>
@@ -271,13 +290,7 @@ class Aula extends React.Component{
             });
         }
 
-        console.log('idAlumnosCarrera', idAlumnosCarrera)
-        console.log('alumnosCarrera', alumnosCarrera)
-
         const myDifferences = differenceBy(alumnosCarrera, alumnoState, 'email')
-
-        console.log('myDifferences', myDifferences)
-
 
         return (
             <Menu onClick={this.handleMenuClick}>
@@ -375,7 +388,7 @@ class Aula extends React.Component{
         const { data, cols, addMateria, selectedRow } = this.props;
         const { visibleAgregar, visibleEliminar, visibleModificar,
             profesorDelAula, errorMessage, materiaDelAula,
-            carreraDelAula
+            carreraDelAula, nombreAula, horarioAula
         } = this.state;
 
         const tableData = this.createKeys(data);
@@ -407,12 +420,14 @@ class Aula extends React.Component{
                         <Input
                             id="nombreAula"
                             onChange={(e) => this.handleNameChange(e.target.value)}
+                            value={nombreAula}
                             maxLength="30"
                         />
                         <label htmlFor="horarioClaseAula"> Horario Clase</label>
                         <Input
                             id="horarioClaseAula"
                             onChange={(e) => this.handleHoraChange(e.target.value)}
+                            value={horarioAula}
                             maxLength="45"
                         />
                         <br></br>
@@ -477,13 +492,15 @@ class Aula extends React.Component{
                                 <label htmlFor="nombreAulaModificar">Nombre Aula</label>
                                 <Input
                                     id="nombreAulaModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].nombre_aula}
+                                    onChange={(e) => this.handleNameChange(e.target.value)}
+                                    value={nombreAula}
                                     maxLength="30"
                                 />
                                 <label htmlFor="horarioClaseAulaModificar">Horario Clase</label>
                                 <Input
                                     id="horarioClaseAulaModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].horario_clase}
+                                    onChange={(e) => this.handleHoraChange(e.target.value)}
+                                    value={horarioAula}
                                     maxLength="35"
                                 />
                                 <br></br>

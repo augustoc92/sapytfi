@@ -51,8 +51,15 @@ class Profesor extends React.Component{
     };
 
     handleVisibleModificar = e => {
+        const { selectedRow } = this.props;
+
+        const { nombre, dni, email } = selectedRow[0];
+
         this.setState({
             visibleModificar: true,
+            nombreProfesor: nombre,
+            emailProfesor: email,
+            dniProfesor: dni,
         });
     }
 
@@ -299,19 +306,22 @@ class Profesor extends React.Component{
                                 <label htmlFor="nombreModificar">Nombre (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="nombreModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].nombre}
+                                    onChange={(e) => this.handleNameChange(e.target.value)}
+                                    value={nombreProfesor}
                                     maxLength="30"
                                 />
                                 <label htmlFor="emailModificar">Email (de 4 a 30 caracteres):</label>
                                 <Input
                                     id="emailModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].email}
+                                    onChange={(e) => this.handleEmailChange(e.target.value)}
+                                    value={emailProfesor}
                                     maxLength="30"
                                 />
                                 <label htmlFor="dniModificar">DNI</label>
                                 <Input
                                     id="dniModificar"
-                                    defaultValue={selectedRow[0] && selectedRow[0].dni}
+                                    onChange={(e) => this.handleDNIChange(e.target.value)}
+                                    value={dniProfesor}
                                     maxLength={8}
                                 />
                                 <br></br>
