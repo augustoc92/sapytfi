@@ -4,10 +4,11 @@ import { CHANGE_COLLAPSED_SIDEBAR,
   LOGIN_FULLFILLED,
   LOGIN_REJECTED,
   LOGIN_PENDING,
-  CHANGE_PASSWORD
+  CHANGE_PASSWORD,
+  GET_ADMIN
 } from './const'
 
-import { cambiarPasswordAPI } from '../../../helpers/api/ui';
+import { cambiarPasswordAPI, getAdminAPI } from '../../../helpers/api/ui';
 
 // eslint-disable-next-line
 export const toggleSideBar = shouldCollapse => (dispatch) => {
@@ -29,7 +30,6 @@ export const loggear = (userFacade, userObj) => (dispatch) => {
 }
 
 export const changePass = newUser => (dispatch) => {
-  console.log('newUser', newUser);
   cambiarPasswordAPI(newUser)
   .then(() =>
       dispatch({
@@ -39,6 +39,17 @@ export const changePass = newUser => (dispatch) => {
           }
       })
   );
+}
+
+export const getAdmin = () => (dispatch) => {
+  getAdminAPI()
+    .then(admin =>
+      dispatch({
+        type: GET_ADMIN,
+        payload: {
+          admin
+        }
+  }))
 }
 
 export const selectRow = row => (dispatch) => {

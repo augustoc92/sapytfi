@@ -11,17 +11,22 @@ class LoginForm extends React.Component {
     }
 
     componentDidMount() {
-        const { getProfesor, getAlumno } = this.props;
+        const { getProfesor, getAlumno, getAdmin } = this.props;
 
         getAlumno();
         getProfesor();
+        getAdmin();
     }
 
     onFinish = values => {
-        const { profesor, alumno, loggear } = this.props;
+        const { profesor, alumno, admin, loggear } = this.props;
 
-        if (values.usuario === 'admin') {
-            loggear({usuario: 'admin', permisos: '0'})
+
+        const esAdmin = admin.filter(x => x.userName.toString() === values.usuario)
+
+        if (esAdmin[0]) {
+            const adminUser = esAdmin[0];
+            loggear({usuario: `${adminUser.userName}`, permisos: '0'}, adminUser)
             this.props.history.push('./home')
         }
         const usuarioEsAlumno = alumno.filter(x => x.email.toString() === values.usuario)

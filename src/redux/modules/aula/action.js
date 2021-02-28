@@ -48,7 +48,8 @@ export const addAula = obj => (dispatch) => {
         id_carrera: obj.carreraDelAula.id,
         horario_clase: obj.horario_aula,
         nombre_aula: obj.nombre_aula,
-        alumnos: obj.alumnos
+        alumnos: obj.alumnos,
+        imagenDelAula: obj.imagenDelAula
     }
 
     addAulaAPI(objToAdd)
@@ -71,7 +72,8 @@ export const putAula = (id, obj) => (dispatch) => {
         id_profesor: obj.profesor.id,
         horario_clase: obj.horarioAula,
         nombre_aula: obj.nombreAula,
-        alumnos: obj.alumnos
+        alumnos: obj.alumnos,
+        imagenDelAula: obj.imagenDelAula
     }
 
     putAulaAPI(id, objToAdd)

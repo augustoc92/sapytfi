@@ -3,6 +3,7 @@ const initialState = {
   collapsed: true,
   user: {},
   userObj: {},
+  admin: [],
   errorMsg: '',
   shouldUpdate: false,
   selectedRow: {},

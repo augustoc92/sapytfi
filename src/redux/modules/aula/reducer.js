@@ -46,7 +46,8 @@ const reducer = (state = initialState, action) => {
         profesor: objToAdd.id_profesor,
         id_carrera: objToAdd.id_carrera,
         horario_clase: objToAdd.horario_clase,
-        nombre_aula: objToAdd.nombre_aula
+        nombre_aula: objToAdd.nombre_aula,
+        imagenDelAula: objToAdd.imagenDelAula
       }
 
       return {
@@ -73,7 +74,8 @@ const reducer = (state = initialState, action) => {
         id_carrera: obj.carreraDelAula.id,
         profesor: obj.profesor.id,
         horario_clase: obj.horarioAula,
-        nombre_aula: obj.nombreAula
+        nombre_aula: obj.nombreAula,
+        imagenDelAula: obj.imagenDelAula
       }
 
       const index = state.data.findIndex(x => x.id === id)

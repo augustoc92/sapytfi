@@ -29,6 +29,7 @@ class Aula extends React.Component{
         visibleModificar: false,
         nombreAula: '',
         horarioAula: '',
+        imagenDelAula: '',
         alumnos: [],
         carreraDelAula: {},
         profesorDelAula: {},
@@ -44,6 +45,7 @@ class Aula extends React.Component{
             visibleModificar: false,
             nombreAula: '',
             horarioAula: '',
+            imagenDelAula: '',
             carreraDelAula: {},
             alumnos: [],
             materiaDelAula: {},
@@ -64,6 +66,12 @@ class Aula extends React.Component{
         this.setState({
             horarioAula: val
         });
+    }
+
+    handleUrlChange = (val) => {
+        this.setState({
+            imagenDelAula: val
+        })
     }
 
     handleCancel = e => {
@@ -110,7 +118,7 @@ class Aula extends React.Component{
 
     handleOkAgregar = e => {
         const { addAula } = this.props;
-        const { profesorDelAula, materiaDelAula, nombreAula, horarioAula, alumnos, carreraDelAula } = this.state;
+        const { profesorDelAula, materiaDelAula, nombreAula, horarioAula, alumnos, carreraDelAula, imagenDelAula } = this.state;
 
         let objToAdd = {
             nombre_aula: nombreAula,
@@ -118,7 +126,8 @@ class Aula extends React.Component{
             profesor: profesorDelAula,
             materia: materiaDelAula,
             carreraDelAula:  carreraDelAula,
-            alumnos
+            alumnos,
+            imagenDelAula
         }
 
         if (!nombreAula) {
@@ -163,7 +172,7 @@ class Aula extends React.Component{
 
     handleOkModificar = e => {
         const { putAula, selectedRow } = this.props;
-        const { profesorDelAula, materiaDelAula, horarioAula , nombreAula, alumnos, carreraDelAula } = this.state;
+        const { profesorDelAula, materiaDelAula, horarioAula , nombreAula, alumnos, carreraDelAula, imagenDelAula } = this.state;
 
         const idToSend = selectedRow[0].id
 
@@ -173,7 +182,8 @@ class Aula extends React.Component{
             profesor: profesorDelAula,
             materia: materiaDelAula,
             alumnos: alumnos,
-            carreraDelAula: carreraDelAula
+            carreraDelAula: carreraDelAula,
+            imagenDelAula
         }
 
         if (!nombreAula) {
@@ -395,7 +405,7 @@ class Aula extends React.Component{
         const { data, cols, addMateria, selectedRow } = this.props;
         const { visibleAgregar, visibleEliminar, visibleModificar,
             profesorDelAula, errorMessage, materiaDelAula,
-            carreraDelAula, nombreAula, horarioAula
+            carreraDelAula, nombreAula, horarioAula, imagenDelAula
         } = this.state;
 
         const tableData = this.createKeys(data);
@@ -436,6 +446,13 @@ class Aula extends React.Component{
                             onChange={(e) => this.handleHoraChange(e.target.value)}
                             value={horarioAula}
                             maxLength="45"
+                        />
+                        <br></br>
+                        <label> Imagen del aula (opcional) </label>
+                        <Input
+                            id="horarioClaseAula"
+                            onChange={(e) => this.handleUrlChange(e.target.value)}
+                            value={imagenDelAula}
                         />
                         <br></br>
                         <label> Profesor del aula </label>
@@ -511,6 +528,12 @@ class Aula extends React.Component{
                                     maxLength="35"
                                 />
                                 <br></br>
+                                <label> Imagen del aula (opcional) </label>
+                                <Input
+                                    id="horarioClaseAula"
+                                    onChange={(e) => this.handleUrlChange(e.target.value)}
+                                    value={imagenDelAula}
+                                />
                                 <label> Profesor del aula </label>
                                 <Space>
                                     <Dropdown overlay={this.createMenuProfesor()}>

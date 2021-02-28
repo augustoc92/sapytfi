@@ -9,6 +9,10 @@ const { Meta } = Card;
 const { SubMenu } = Menu;
 
 class AulaPorDentro extends Component {
+
+    componentDidMount() {
+        console.log('this.props', this.props);
+    }
     state = {
         visible: false,
         rta: [],
@@ -98,6 +102,8 @@ class AulaPorDentro extends Component {
 
 
     render() {
+        console.log('this.props', this.props);
+
         const { visible, rta, valueRadio, pregunta, respuesta } = this.state;
 
         const radioStyle = {
