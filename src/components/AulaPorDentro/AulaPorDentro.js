@@ -3,6 +3,8 @@ import styles from './AulaPorDentro.module.css';
 import NavBar from '../Shared/NavBar';
 import { Menu, Card, Button, Modal, Input, Radio } from 'antd';
 import CrearExamen from './CrearExamen';
+import LineChart from '../Shared/LineChart'
+
 import {
     AppstoreOutlined,
     MenuUnfoldOutlined,
@@ -44,6 +46,16 @@ class AulaPorDentro extends Component {
         const { guardarExamen } = this.props;
         const { collapsed } = this.state
 
+        const data = [{
+            "name": "A",
+            "value": 46
+            },
+            {
+            "name": "B",
+            "value": 87
+            }
+        ];
+
         return (
             <div>
                 <NavBar />
@@ -56,7 +68,12 @@ class AulaPorDentro extends Component {
                             >
                                 <Menu.Item onClick={this.toggleCollapsed} icon={React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)} />
                                 <SubMenu  icon={<MailOutlined />} title="Examenes">
-                                    <Menu.Item > <CrearExamen guardarExamen={guardarExamen} /> </Menu.Item>
+                                    <Menu.Item >
+                                        <CrearExamen
+                                            idAulaExamen={this.props.location.param1.x.id}
+                                            guardarExamen={guardarExamen}
+                                        />
+                                    </Menu.Item>
                                     <Menu.Item >
                                         <div type="primary"  onClick={this.handleEstadisticasExamenes}>
                                             Estadisticas examenes
@@ -66,6 +83,7 @@ class AulaPorDentro extends Component {
                             </Menu>
                         </div>
                         <div className={styles.containerRightBracket}>
+                            <LineChart label="Gucci" data={data}> </LineChart>
                             <div> Resto pagina </div>
                         </div>
                     </div>

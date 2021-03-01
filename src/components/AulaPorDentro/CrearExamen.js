@@ -81,14 +81,12 @@ export default class CrearExamen extends React.Component {
 
     handleOk = () => {
         const { valueRadio, rta, tipoExamen, pregunta, preguntasExamen, nombre } = this.state;
-        const { guardarExamen } = this.props;
-
-        const idAula = this.props.location.param1.x.id
+        const { guardarExamen, idAulaExamen } = this.props;
 
         const Examen = {
             preguntas: [...preguntasExamen],
             tipoExamen,
-            aula: idAula,
+            aula: idAulaExamen,
             nombre: nombre,
         }
 
