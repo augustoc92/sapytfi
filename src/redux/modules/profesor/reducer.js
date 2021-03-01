@@ -7,10 +7,10 @@ import {
   REMOVE_PROFESOR_FULFILLED,
   GET_PROFESORMATERIA_FULFILLED,
   GET_EXAMEN_FULLFILLED,
-  ADD_EXAMEN_FULLFILLED
+  ADD_EXAMEN_FULLFILLED,
+  SUMAR_INTENTO_EXAMEN
 } from './const'
 import map from 'lodash/map'
-
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -22,13 +22,21 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case GET_EXAMEN_FULLFILLED: {
-      console.log('action.payload', action.payload);
+    case SUMAR_INTENTO_EXAMEN: {
+      const newList = action.payload.result.data;
 
       return {
         ...state,
+        examen: [...newList]
+      }
+    }
+
+    case GET_EXAMEN_FULLFILLED: {
+      const { result } = action.payload;
+      return {
+        ...state,
         isFetching: false,
-        examen: action.payload.result
+        examen: result
       }
     }
 

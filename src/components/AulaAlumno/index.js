@@ -1,7 +1,7 @@
 import AulaAlumno from './AulaAlumno';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getExamen } from '../../redux/modules/profesor/action';
+import { getExamen, intentoExamen } from '../../redux/modules/profesor/action';
 
 const mapStateToProps = state => {
     return ({
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getExamen
+    getExamen,
+    intentoExamen
 }, dispatch)
 
 

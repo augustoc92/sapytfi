@@ -16,8 +16,28 @@ export default class AulaAlumno extends Component {
         valueRadio: ''
     }
 
+    componentWillReceiveProps(props) {
+        const { intento } = props;
+        const { intento: intentoOld  } = this.props;
+
+        if (intento !== intentoOld) {
+            this.setState({
+                valueRadio: ''
+            })
+        }
+    }
 
     handleRadioChange = (e) => {
+        const elemen = this.props.elementos;
+
+        const { createValidation, removeFromValidation } = this.props
+
+        if (parseInt(elemen.respuesta) === e.target.value) {
+            createValidation(elemen.id)
+        } else {
+            removeFromValidation(elemen.id)
+        }
+
         this.setState({
             valueRadio: e.target.value,
         });

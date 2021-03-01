@@ -8,10 +8,10 @@ import {
     ADD_ALUMNO_FULLFILED,
     ADD_ALUMNO_REJECTED,
     REMOVE_ALUMNO_FULFILLED,
-    REMOVE_ALUMNO_REJECTED
+    REMOVE_ALUMNO_REJECTED,
 } from './const'
 
-import { getAlumnoAPI, addAlumnoAPI, deleteAlumnoAPI, putAlumnoAPI } from '../../../helpers/api/alumno';
+import { getAlumnoAPI, addAlumnoAPI, deleteAlumnoAPI, putAlumnoAPI, sumarIntentoAPI } from '../../../helpers/api/alumno';
 
 export const getAlumno = () => (dispatch) => {
     getAlumnoAPI()

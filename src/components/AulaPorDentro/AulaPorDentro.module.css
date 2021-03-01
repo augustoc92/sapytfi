@@ -16,6 +16,23 @@
     flex-direction: column;
 }
 
+.containerAulaPag {
+    display: flex;
+    height: 93vh;
+}
+
+.containerRightBracket {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.sider {
+    background-color: #001529;
+}
+
 .containerAula {
     padding: 20px;
     display: flex;

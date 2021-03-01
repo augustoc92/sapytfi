@@ -55,8 +55,8 @@ class VistaAulas extends Component {
 
         return aulasDelAlumno.map(x => {
             const newTo = {
-                pathname: "/aulapordentro",
-                param1: { idAula: x.id, val: x.nombre_aula}
+                pathname: "/aulaalumno",
+                param1: {x}
             };
 
             return (
@@ -82,11 +82,11 @@ class VistaAulas extends Component {
 
             const newTo = {
                 pathname: "/aulapordentro",
-                param1: { idAula: x.id, val: x.nombre_aula}
+                param1: {x}
             };
 
             return (
-                <Link to={newTo} params={{ testvalue: "hello" }}>
+                <Link key={x.id} to={newTo} params={{ testvalue: "hello" }}>
                     <Card
                         hoverable
                         style={{ width: 240 }}

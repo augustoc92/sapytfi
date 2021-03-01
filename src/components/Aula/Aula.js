@@ -108,6 +108,7 @@ class Aula extends React.Component{
         this.setState({
             nombreAula: selectedRow[0].nombre_aula ,
             horarioAula: selectedRow[0].horario_clase ,
+            imagenDelAula: selectedRow[0].imagenUrl,
             profesorDelAula: profesorDelAula[0],
             materiaDelAula: materiaDelAula[0],
             carreraDelAula: carreraDelAula[0],

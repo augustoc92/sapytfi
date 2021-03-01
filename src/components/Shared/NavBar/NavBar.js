@@ -148,7 +148,7 @@ class NavBar extends React.Component {
               </Menu.ItemGroup>
             </SubMenu>
           </Menu>
-          <Link onClick={() => this.setState({visible: true})}>
+          <span onClick={() => this.setState({visible: true})}>
           <Avatar
               style={{
                   backgroundColor: '#00a2ae',
@@ -160,7 +160,7 @@ class NavBar extends React.Component {
             >
               {this.props.user && this.props.user.usuario}
           </Avatar>
-          </Link>
+          </span>
         </Header>
       </Layout>
     );

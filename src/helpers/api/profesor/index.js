@@ -14,6 +14,8 @@ const putProfesorAPI = (id, data) => put(`http://localhost:8080/profesors/${id}`
 const getExamenAPI = () => get('http://localhost:8080/profexamen')
 const guardarExamenAPI = (data) => post('http://localhost:8080/profexamen', data)
 
+const sumarIntentoAPI = (data) => post(`http://localhost:8080/sumarIntentoExamen/`, data)
+
 
 export {
 getProfesorAPI,
@@ -21,5 +23,6 @@ getExamenAPI,
 guardarExamenAPI,
 addProfesorAPI,
 deleteProfesorAPI,
-putProfesorAPI
+putProfesorAPI,
+sumarIntentoAPI
 }
