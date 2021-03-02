@@ -18,9 +18,9 @@ class AulaAlumno extends Component {
 
     splitExamenes = () => {
         const { examen } = this.props;
-        // const idAula = this.props.location.param1.x.id;
+        const idAula = this.props.location.param1.x.id;
 
-        const idAula = 25;
+        // const idAula = 25;
 
         const examenesDeLAula = examen.filter(x => x.aula === idAula);
 
