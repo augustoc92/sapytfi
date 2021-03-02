@@ -49,7 +49,6 @@ export const put = (
     data
 ) => {
     const body = JSON.stringify(data)
-    console.log('body', body);
     return (
         fetch(endpoint, { method: 'PUT', body, headers: { 'Content-Type': 'application/json' }})
     .then(result => parseResponse(result))
@@ -60,10 +59,12 @@ export const put = (
 
 export const del = (
     endpoint,
+    data,
     opts?
 ) => {
+    const body = JSON.stringify(data)
     return (
-        fetch(endpoint, { method: 'DELETE', ...opts })
+        fetch(endpoint, { method: 'DELETE', body, headers: { 'Content-Type': 'application/json' }, ...opts })
     .then(result => parseResponse(result))
     .catch(err => Promise.reject(JSON.parse(err.message)))
     )

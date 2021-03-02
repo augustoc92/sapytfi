@@ -30,21 +30,30 @@ class NavBar extends React.Component {
   }
 
   handleOk = () => {
-    const { newPassword } = this.state;
+    const { newPassword, cambiarPass } = this.state;
     const { userObj } = this.props;
     const obj = {
       ...userObj,
       password: newPassword
     }
-    this.props.changePass(obj)
 
-    this.setState({
-      visible: false,
-      cambiarPass: false,
-      newPassword: ''
-    });
+    if (cambiarPass) {
+      this.props.changePass(obj)
+      this.setState({
+        visible: false,
+        cambiarPass: false,
+        newPassword: ''
+      });
+      message.info('Cambio de contraseña realizado');
+    } else {
+      this.setState({
+        visible: false,
+        cambiarPass: false,
+        newPassword: ''
+      });
+    }
 
-    message.info('Cambio de contraseña realizado');
+
 
   }
 

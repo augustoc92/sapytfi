@@ -13,6 +13,7 @@ const mapStateToProps = state => {
         selectedRow: state.ui.selectedRow,
         carrera: state.carrera.data,
         collapsed: state.ui.collapsed,
+        userObj: state.ui.userObj,
         cols
     })
 }

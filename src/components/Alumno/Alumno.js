@@ -75,7 +75,7 @@ class Alumno extends React.Component{
     }
 
     handleOkAgregar = e => {
-        const { addAlumno } = this.props;
+        const { addAlumno, userObj } = this.props;
         let nombre = document.getElementById('nombreAlumno').value;
         let email = document.getElementById('emailAlumno').value;
         let dni = document.getElementById('dniAlumno').value;
@@ -125,7 +125,7 @@ class Alumno extends React.Component{
             return;
         }
 
-        addAlumno(objToAdd);
+        addAlumno(objToAdd, userObj);
         this.clearModals();
     }
 
@@ -148,7 +148,7 @@ class Alumno extends React.Component{
     }
 
     handleOkModificar = e => {
-        const { putAlumno, selectedRow } = this.props;
+        const { putAlumno, selectedRow, userObj } = this.props;
         let nombre = document.getElementById('nombreModificar').value;
         let email = document.getElementById('emailModificar').value;
         let dni = document.getElementById('dniModificar').value;
@@ -200,14 +200,14 @@ class Alumno extends React.Component{
             return;
         }
 
-        putAlumno(idToSend, objToAdd);
+        putAlumno(idToSend, objToAdd, userObj);
         this.clearModals();
     }
 
     handleOkEliminar = e => {
-        const { selectedRow, deleteAlumno, selectRow } = this.props;
+        const { selectedRow, deleteAlumno, selectRow, userObj } = this.props;
         if (selectedRow && selectedRow[0]) {
-            deleteAlumno(selectedRow[0].id);
+            deleteAlumno(selectedRow[0].id, userObj);
             selectRow(null);
         }
 

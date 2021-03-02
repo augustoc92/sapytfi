@@ -42,6 +42,7 @@ export default class BarChart extends React.Component {
                         'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)'
                     ],
+                    minBarLength: 1,
                     borderWidth: 1
                 }]
             },

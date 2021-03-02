@@ -15,6 +15,7 @@ import {
     DesktopOutlined,
     ContainerOutlined,
     MailOutlined,
+    DiffOutlined
 } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
@@ -33,7 +34,8 @@ class AulaPorDentro extends Component {
     state = {
         collapsed: false,
         mostrarEst: false,
-        examenId: false
+        mostrarExamenes: false,
+        examenId: ''
     };
 
     toggleCollapsed = () => {
@@ -42,10 +44,10 @@ class AulaPorDentro extends Component {
         });
     };
 
-    getEstadisticasExamenOBJ = (examen, examenId) => {
+    getEstadisticasExamenOBJ = (examen) => {
         const filteredByAulas = examen.filter(x => x.aula === this.props.location.param1.x.id);
         const filterByExam = uniqBy(filteredByAulas, 'id_examen');
-        const filterByExamID = filterByExam.filter(x => x.id_examen === examenId );
+
         return filterByExam.map(x => {
             return ({
                 data: [
@@ -64,19 +66,19 @@ class AulaPorDentro extends Component {
         })
     }
 
-    renderCharts = (examenId) => {
+    renderCharts = () => {
         const { examen } = this.props;
 
-        const examenEst = this.getEstadisticasExamenOBJ(examen, examenId);
+        const examenEst = this.getEstadisticasExamenOBJ(examen);
 
         console.log('examenEst', examenEst);
 
-        const example = examenEst.map(x =>  <LineChart examenId={examenId} dataS={x}/>)
+        const example = examenEst.map(x =>  <LineChart dataS={x}/>)
 
         return [...example];
     }
 
-    renderExamenes = () => {
+    // renderExamenes = () => {
         // const { examen } = this.props;
 
         // const filteredByAulas = examen.filter(x => x.aula === 25);
@@ -89,12 +91,50 @@ class AulaPorDentro extends Component {
         //         </Menu.Item>
         //     )
         // })
+    // }
+
+    renderExamenes = () => {
+        const { examen, deleteExamen } = this.props;
+        const { examenId } = this.state
+        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const filterByExam = uniqBy(filteredByAulas, 'id_examen');
+
+        return filterByExam.filter(j => j.id_examen === examenId).map(x => {
+            console.log('x',x )
+            return(
+                <Button type="primary" danger onClick={() => deleteExamen(x.id_examen)}> Eliminar {x.titulo} </Button>
+            )
+        })
     }
+
+    renderExamenesCreados = () => {
+        const { examen } = this.props;
+
+        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const filterByExam = uniqBy(filteredByAulas, 'id_examen');
+
+        return filterByExam.map(x => {
+            return(
+                <Menu.Item onClick={() => this.handleShowExamenes(x.id_examen)}>
+                    {x.titulo}
+                </Menu.Item>
+            )
+        })
+    }
+
+    handleShowExamenes = (id) => {
+        this.setState({
+            mostrarEst: false,
+            mostrarExamenes: true,
+            examenId: id
+        })
+    }
+
 
     handleShowEstadisticas = (idExamn) => {
         this.setState({
             mostrarEst: true,
-            examenId: 1
+            mostrarExamenes: false
         })
 
     }
@@ -114,14 +154,17 @@ class AulaPorDentro extends Component {
                                 inlineCollapsed={this.state.collapsed}
                             >
                                 <Menu.Item onClick={this.toggleCollapsed} icon={React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)} />
-                                <SubMenu  icon={<MailOutlined />} title="Examenes">
+                                <SubMenu  icon={<DiffOutlined />} title="Examenes">
                                     <Menu.Item >
                                         <CrearExamen
-                                            idAulaExamen={this.props.location.param1.x.id}
+                                            // idAulaExamen={this.props.location.param1.x.id}
                                             idAulaExamen={25}
                                             guardarExamen={guardarExamen}
                                         />
                                     </Menu.Item>
+                                        <SubMenu title="Revisar Examenes">
+                                            { this.renderExamenesCreados() }
+                                        </SubMenu>
                                     <Menu.Item onClick={() => this.handleShowEstadisticas()}>
                                         Estadisticas Examenes
                                     </Menu.Item>
@@ -133,8 +176,10 @@ class AulaPorDentro extends Component {
                         </div>
                         <div className={styles.containerRightBracket}>
                             <div className={styles.containerGraphs}>
-                            { this.state.examenId && this.renderCharts(this.state.examenId)}
+                            { this.state.mostrarEst && this.renderCharts()}
+                            { this.state.mostrarExamenes && this.renderExamenes()}
                             </div>
+
                         </div>
                     </div>
             </div>

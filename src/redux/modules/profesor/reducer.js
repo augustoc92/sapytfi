@@ -8,7 +8,8 @@ import {
   GET_PROFESORMATERIA_FULFILLED,
   GET_EXAMEN_FULLFILLED,
   ADD_EXAMEN_FULLFILLED,
-  SUMAR_INTENTO_EXAMEN
+  SUMAR_INTENTO_EXAMEN,
+  REMOVE_EXAMEN
 } from './const'
 import map from 'lodash/map'
 
@@ -19,6 +20,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         data: action.payload.result
+      }
+    }
+
+    case REMOVE_EXAMEN: {
+      return {
+        ...state,
+        examen: state.examen.filter(x => x.id_examen !== action.payload.id)
       }
     }
 

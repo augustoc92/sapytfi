@@ -12,12 +12,28 @@ import {
     REMOVE_PROFESOR_REJECTED,
     ADD_EXAMEN_FULLFILLED,
     GET_EXAMEN_FULLFILLED,
-    SUMAR_INTENTO_EXAMEN
+    SUMAR_INTENTO_EXAMEN,
+    REMOVE_EXAMEN
 } from './const'
 
 
-import { getProfesorAPI, getExamenAPI, guardarExamenAPI, addProfesorAPI, deleteProfesorAPI, putProfesorAPI, sumarIntentoAPI } from '../../../helpers/api/profesor';
+import { getProfesorAPI, getExamenAPI, guardarExamenAPI,
+    deleteExamenAPI, addProfesorAPI, deleteProfesorAPI,
+    putProfesorAPI, sumarIntentoAPI }
+from '../../../helpers/api/profesor';
 
+
+export const deleteExamen = id => (dispatch) => {
+    deleteExamenAPI(id)
+        .then(res =>
+            dispatch({
+                type: REMOVE_EXAMEN,
+                payload: {
+                    id
+                }
+            })
+        )
+}
 
 export const getProfesor = () => (dispatch) => {
     getProfesorAPI()

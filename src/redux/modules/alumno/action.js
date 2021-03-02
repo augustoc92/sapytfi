@@ -25,8 +25,12 @@ export const getAlumno = () => (dispatch) => {
         )
 }
 
-export const addAlumno = obj => (dispatch) => {
-    addAlumnoAPI(obj)
+export const addAlumno = (obj, user) => (dispatch) => {
+    const objToSend ={
+        obj,
+        user
+    }
+    addAlumnoAPI(objToSend)
         .then(idmax =>
             dispatch({
                 type: ADD_ALUMNO_FULLFILED,
@@ -38,8 +42,12 @@ export const addAlumno = obj => (dispatch) => {
         )
 }
 
-export const putAlumno = (id, obj) => (dispatch) => {
-    putAlumnoAPI(id, obj)
+export const putAlumno = (id, obj, user) => (dispatch) => {
+    const objToSend ={
+        obj,
+        user
+    }
+    putAlumnoAPI(id, objToSend)
         .then(res =>
             dispatch({
                 type: UPDATE_ALUMNO_FULLFILED,
@@ -52,8 +60,8 @@ export const putAlumno = (id, obj) => (dispatch) => {
         )
 }
 
-export const deleteAlumno = id => (dispatch) => {
-    deleteAlumnoAPI(id)
+export const deleteAlumno = (id, user) => (dispatch) => {
+    deleteAlumnoAPI(id, user)
         .then(res =>
             dispatch({
                 type: REMOVE_ALUMNO_FULFILLED,

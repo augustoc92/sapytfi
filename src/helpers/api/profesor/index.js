@@ -15,7 +15,7 @@ const getExamenAPI = () => get('http://localhost:8080/profexamen')
 const guardarExamenAPI = (data) => post('http://localhost:8080/profexamen', data)
 
 const sumarIntentoAPI = (data) => post(`http://localhost:8080/sumarIntentoExamen/`, data)
-
+const deleteExamenAPI = id => del(`http://localhost:8080/examen/${id}`)
 
 export {
 getProfesorAPI,
@@ -24,5 +24,6 @@ guardarExamenAPI,
 addProfesorAPI,
 deleteProfesorAPI,
 putProfesorAPI,
-sumarIntentoAPI
+sumarIntentoAPI,
+deleteExamenAPI
 }
