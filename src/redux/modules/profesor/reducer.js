@@ -30,6 +30,13 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case REMOVE_EXAMEN: {
+      return {
+        ...state,
+        examen: state.examen.filter(x => x.id_examen !== action.payload.id)
+      }
+    }
+
     case SUMAR_INTENTO_EXAMEN: {
       const newList = action.payload.result.data;
 

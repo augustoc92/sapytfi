@@ -10,10 +10,40 @@ import {
     GET_AULAALUMNO_FULFILLED,
     REMOVE_AULA_FULFILLED,
     REMOVE_AULA_REJECTED,
-    GET_ALUMNOS_AULA
+    GET_ALUMNOS_AULA,
+    GET_MATERIAL,
+    DELETE_FILE
 } from './const'
 
-import { getAulaAPI, getAulaAlumnosAPI, addAulaAPI, deleteAulaAPI, putAulaAPI } from '../../../helpers/api/aula';
+import { getAulaAPI,
+    getAulaAlumnosAPI, addAulaAPI, deleteAulaAPI, putAulaAPI,
+    getAulaFilesAPI, deleteFileAPI }
+from '../../../helpers/api/aula';
+
+
+export const deleteFile = id => (dispatch) => {
+    console.log('delete file', id);
+    deleteFileAPI(id)
+        .then(res =>
+            dispatch({
+                type: DELETE_FILE,
+                payload: {
+                    id
+                }
+            }))
+}
+
+export const getMaterialAula = () => (dispatch) => {
+    getAulaFilesAPI()
+        .then(result =>
+            dispatch({
+                type: GET_MATERIAL,
+                payload: {
+                    result
+                }
+            })
+        )
+}
 
 export const getAula = () => (dispatch) => {
     getAulaAPI()

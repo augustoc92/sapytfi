@@ -7,6 +7,7 @@ import CrearExamen from './CrearExamen';
 import LineChart from '../Shared/LineChart'
 import SubirMaterialComp from './SubirMaterial'
 import { Progress } from 'antd';
+import MaterialAula from './MaterialAula';
 
 import {
     AppstoreOutlined,
@@ -17,7 +18,9 @@ import {
     DesktopOutlined,
     ContainerOutlined,
     MailOutlined,
-    DiffOutlined
+    DiffOutlined,
+    OrderedListOutlined,
+    ContactsOutlined
 } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
@@ -27,18 +30,26 @@ const { SubMenu } = Menu;
 
 class AulaPorDentro extends Component {
 
-    componentDidMount() {
-        const { getExamen } = this.props;
-
-        getExamen();
-    }
-
     state = {
         collapsed: false,
         mostrarEst: false,
         mostrarExamenes: false,
+        aula: 0,
         examenId: ''
     };
+
+    componentDidMount() {
+        const { getExamen, getMaterialAula } = this.props;
+
+        getExamen();
+        getMaterialAula();
+
+        this.setState({
+            // aula: this.props.location.param1.x.id
+            aula: 25
+        })
+    }
+
 
     toggleCollapsed = () => {
         this.setState({
@@ -47,8 +58,7 @@ class AulaPorDentro extends Component {
     };
 
     getEstadisticasExamenOBJ = (examen) => {
-        // const filteredByAulas = examen.filter(x => x.aula === this.props.location.param1.x.id);
-        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const filteredByAulas = examen.filter(x => x.aula === this.state.aula);
 
         const filterByExam = uniqBy(filteredByAulas, 'id_examen');
 
@@ -85,7 +95,7 @@ class AulaPorDentro extends Component {
     renderClases = () => {
         const { examen } = this.props;
 
-        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const filteredByAulas = examen.filter(x => x.aula === this.state.aula);
         const filterByExam = uniqBy(filteredByAulas, 'id_examen');
 
         return filterByExam.map(x => {
@@ -100,8 +110,8 @@ class AulaPorDentro extends Component {
 
     renderExamenes = () => {
         const { examen, deleteExamen } = this.props;
-        const { examenId } = this.state
-        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const { examenId, aula } = this.state
+        const filteredByAulas = examen.filter(x => x.aula === aula);
         const filterByExam = uniqBy(filteredByAulas, 'id_examen');
 
         return filterByExam.filter(j => j.id_examen === examenId).map(x => {
@@ -113,8 +123,8 @@ class AulaPorDentro extends Component {
 
     renderExamenesCreados = () => {
         const { examen } = this.props;
-
-        const filteredByAulas = examen.filter(x => x.aula === 25);
+        const { aula } = this.state
+        const filteredByAulas = examen.filter(x => x.aula === aula);
         const filterByExam = uniqBy(filteredByAulas, 'id_examen');
 
         return filterByExam.map(x => {
@@ -127,7 +137,17 @@ class AulaPorDentro extends Component {
     }
 
     renderMaterial = () => {
-        return <SubirMaterialComp />
+        const { userObj } = this.props
+
+        return <SubirMaterialComp aula={this.state.aula} user={userObj.id}/>
+    }
+
+    renderRevisionMaterial = () => {
+        const { aula } = this.state
+        const { deleteFile } = this.props;
+        const filtradoXAula = this.props.material.filter(x => x.aula === aula)
+
+        return <MaterialAula data={filtradoXAula}  deleteFile={deleteFile}/>
     }
 
     handleShowExamenes = (id) => {
@@ -135,6 +155,7 @@ class AulaPorDentro extends Component {
             mostrarEst: false,
             mostrarExamenes: true,
             mostrarMaterial: false,
+            mostrarRevisionmaterial: false,
             examenId: id
         })
     }
@@ -144,7 +165,9 @@ class AulaPorDentro extends Component {
         this.setState({
             mostrarEst: true,
             mostrarExamenes: false,
-            mostrarMaterial: false
+            mostrarMaterial: false,
+            mostrarRevisionmaterial: false
+
         })
 
     }
@@ -153,7 +176,18 @@ class AulaPorDentro extends Component {
         this.setState({
             mostrarEst: false,
             mostrarExamenes: false,
-            mostrarMaterial: true
+            mostrarMaterial: true,
+            mostrarRevisionmaterial: false
+
+        })
+    }
+
+    handleRevisionmaterial = () => {
+        this.setState({
+            mostrarEst: false,
+            mostrarExamenes: false,
+            mostrarMaterial: false,
+            mostrarRevisionmaterial: true
         })
     }
 
@@ -172,7 +206,7 @@ class AulaPorDentro extends Component {
                                 inlineCollapsed={this.state.collapsed}
                             >
                                 <Menu.Item onClick={this.toggleCollapsed} icon={React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)} />
-                                <SubMenu  icon={<DiffOutlined />} title="Clases">
+                                <SubMenu  icon={<ContactsOutlined />} title="Clases">
                                     <Menu.Item >
                                         Crear clase
                                     </Menu.Item>
@@ -190,7 +224,7 @@ class AulaPorDentro extends Component {
                                     <Menu.Item >
                                         <CrearExamen
                                             // idAulaExamen={this.props.location.param1.x.id}
-                                            idAulaExamen={25}
+                                            idAulaExamen={this.state.aula}
                                             guardarExamen={guardarExamen}
                                         />
                                     </Menu.Item>
@@ -205,17 +239,24 @@ class AulaPorDentro extends Component {
                                         </SubMenu> */}
                                 </SubMenu>
                                 <Menu.Item onClick={() => this.handleShownSubirMaterial()} icon={React.createElement(UploadOutlined)}>
-                                        Subir Material
+                                        Subir Material Aula
+                                </Menu.Item>
+                                <Menu.Item onClick={() => this.handleRevisionmaterial()} icon={React.createElement(OrderedListOutlined)}>
+                                        Revisar Material Aula
                                 </Menu.Item>
                             </Menu>
                         </div>
                         <div className={styles.containerRightBracket}>
                             <div className={styles.containerGraphs}>
-                            { this.state.mostrarEst && this.renderCharts()}
-                            { this.state.mostrarExamenes && this.renderExamenes()}
-                            { this.state.mostrarMaterial && this.renderMaterial()}
+                                { this.state.mostrarEst && this.renderCharts()}
+                                { this.state.mostrarExamenes && this.renderExamenes()}
+                                { this.state.mostrarMaterial && this.renderMaterial()}
                             </div>
-
+                            { this.state.mostrarRevisionmaterial &&
+                                <div className={styles.materialContainer}>
+                                    { this.state.mostrarRevisionmaterial && this.renderRevisionMaterial() }
+                                </div>
+                            }
                         </div>
                     </div>
             </div>

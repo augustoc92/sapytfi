@@ -6,13 +6,23 @@ import {
   ADD_AULA_FULLFILED,
   REMOVE_AULA_FULFILLED,
   GET_AULAALUMNO_FULFILLED,
-  GET_ALUMNOS_AULA
+  GET_ALUMNOS_AULA,
+  GET_MATERIAL,
+  DELETE_FILE
 } from './const'
 import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case DELETE_FILE: {
+      return {
+        ...state,
+        material: state.material.filter(x => x.id !== action.payload.id)
+      }
+    }
+
     case GET_AULAALUMNO_FULFILLED: {
       return {
         ...state,
@@ -25,6 +35,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         data: action.payload.result
+      }
+    }
+    case GET_MATERIAL: {
+      return {
+        ...state,
+        material: action.payload.result
       }
     }
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Upload, Button } from 'antd';
-import styles from './AulaPorDentro.module.css';
+import styles from './AulaAlumno.module.css';
 import { UploadOutlined } from '@ant-design/icons';
 
 import axios from 'axios';
@@ -22,7 +22,7 @@ function FileUpload(props) {
         setProgess(0)
         const file = e.target.files[0]; // accesing file
         file.user = props.user;
-        file.esAlumno = false;
+        file.esAlumno = true;
 
         setFile(file); // storing file
     }

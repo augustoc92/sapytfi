@@ -22,7 +22,6 @@ import { getProfesorAPI, getExamenAPI, guardarExamenAPI,
     putProfesorAPI, sumarIntentoAPI }
 from '../../../helpers/api/profesor';
 
-
 export const deleteExamen = id => (dispatch) => {
     deleteExamenAPI(id)
         .then(res =>

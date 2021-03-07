@@ -123,9 +123,9 @@ export default class Examen extends Component {
 
         return (
             <React.Fragment>
-                <Button type="primary" onClick={() => this.setVisible(true)}>
+                <span style={{width: '100%'}} onClick={() => this.setVisible(true)}>
                     Examen: {thisExamen[0].titulo}
-                </Button>
+                </span>
                 <Modal
                     title={thisExamen[0].titulo}
                     centered
