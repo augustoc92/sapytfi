@@ -40,8 +40,8 @@ class AulaAlumno extends Component {
         const { getExamen, getMaterialAula } = this.props;
 
         this.setState({
-            // aula:  this.props.location.param1.x.id
-            aula: 25
+            aula:  this.props.location.param1.x.id
+            // aula: 25
         })
         getExamen();
         getMaterialAula();
