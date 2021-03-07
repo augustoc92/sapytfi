@@ -45,8 +45,8 @@ class AulaPorDentro extends Component {
         getMaterialAula();
 
         this.setState({
-            aula: this.props.location.param1.x.id
-            // aula: 25
+            // aula: this.props.location.param1.x.id
+            aula: 25
         })
     }
 
@@ -137,9 +137,9 @@ class AulaPorDentro extends Component {
     }
 
     renderMaterial = () => {
-        const { userObj } = this.props
+        const { userObj, guardarMaterial } = this.props
 
-        return <SubirMaterialComp aula={this.state.aula} user={userObj.id}/>
+        return <SubirMaterialComp aula={this.state.aula} guardarMaterial={guardarMaterial} user={userObj.id}/>
     }
 
     renderRevisionMaterial = () => {

@@ -8,18 +8,32 @@ import {
   GET_AULAALUMNO_FULFILLED,
   GET_ALUMNOS_AULA,
   GET_MATERIAL,
-  DELETE_FILE
+  DELETE_FILE,
+  GUARDAR_MATERIAL
 } from './const'
 import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-
     case DELETE_FILE: {
       return {
         ...state,
         material: state.material.filter(x => x.id !== action.payload.id)
+      }
+    }
+
+    case GUARDAR_MATERIAL: {
+      const { obj } = action.payload;
+      console.log('actionpayload', action.payload.res.data.body);
+      const id =  action.payload.res.data.body;
+      const newItem = {
+          id: id,
+          ...obj
+      }
+      return {
+        ...state,
+        material: [...state.material, newItem]
       }
     }
 

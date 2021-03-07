@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Upload, Button } from 'antd';
+import { Upload, Button, message } from 'antd';
 import styles from './AulaPorDentro.module.css';
 import { UploadOutlined } from '@ant-design/icons';
-
 import axios from 'axios';
 
 function FileUpload(props) {
@@ -21,25 +20,51 @@ function FileUpload(props) {
     const handleChange = (e) => {
         setProgess(0)
         const file = e.target.files[0]; // accesing file
-        file.user = props.user;
-        file.esAlumno = false;
-
         setFile(file); // storing file
     }
 
+    const success = () => {
+        message.success('El archivo esta guardado con exito');
+    };
+
+    const error = () => {
+        message.error('Hubo un error al guardar el archivo, compruebe su red');
+    };
+
     const uploadFile = () => {
         const formData = new FormData();
-        const { aula } = props;
-        formData.append('file', file); // appending file
+        const { aula, guardarMaterial } = props;
 
+        formData.append('file', file); // appending file
+        let noError = true;
+        console.log('formData', formData)
+        console.log('props.user', props.user)
         console.log('file', file)
         axios.post(`http://localhost:8080/upload/${aula}`, formData, {
             onUploadProgress: (ProgressEvent) => {
                 let progress = Math.round(
                 ProgressEvent.loaded / ProgressEvent.total * 100) + '%';
                 setProgess(progress);
+                setFile(null);
+                success();
             }
-        }).catch(err => console.log(err))}
+        }).catch(err => {
+            error();
+            noError = false;
+            console.log(err);
+        })
+        if (noError) {
+            guardarMaterial({
+                nombre: file.name,
+                esAlumno: false,
+                claseAdjunta: 1,
+                usuarioUpload: props.user,
+                dateUpload: "recently",
+                tipo: 'pdf',
+                aula: aula
+            });
+        }
+    }
 
     return (
         <div>

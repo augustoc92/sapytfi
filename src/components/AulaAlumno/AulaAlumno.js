@@ -40,8 +40,8 @@ class AulaAlumno extends Component {
         const { getExamen, getMaterialAula } = this.props;
 
         this.setState({
-            aula:  this.props.location.param1.x.id
-            // aula: 25
+            // aula:  this.props.location.param1.x.id
+            aula: 25
         })
         getExamen();
         getMaterialAula();
@@ -62,16 +62,15 @@ class AulaAlumno extends Component {
     }
 
     renderMaterial = () => {
-        const { userObj } = this.props
+        const { userObj, guardarMaterial } = this.props
 
-        return <SubirMaterial aula={this.state.aula} user={userObj.id}/>
+        return <SubirMaterial aula={this.state.aula} guardarMaterial={guardarMaterial} user={userObj.id}/>
     }
 
     renderRevisionMaterial = () => {
         const { aula } = this.state
         const { deleteFile, userObj } = this.props;
 
-        console.log('aula', aula);
         const filtradoXAula = this.props.material.filter(x => x.aula === aula)
 
         return <MaterialAula data={filtradoXAula}  user={userObj.id} deleteFile={deleteFile}/>

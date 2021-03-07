@@ -9,7 +9,11 @@ export default class SubirMaterial extends React.Component{
     render() {
         return (
             <div>
-                <FileUpload aula={this.props.aula} user={this.props.user}/>
+                <FileUpload
+                    aula={this.props.aula}
+                    guardarMaterial={this.props.guardarMaterial}
+                    user={this.props.user}
+                />
             </div>
         );
     }

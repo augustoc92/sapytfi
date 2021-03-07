@@ -12,23 +12,37 @@ import {
     REMOVE_AULA_REJECTED,
     GET_ALUMNOS_AULA,
     GET_MATERIAL,
-    DELETE_FILE
+    DELETE_FILE,
+    GUARDAR_MATERIAL
 } from './const'
 
 import { getAulaAPI,
     getAulaAlumnosAPI, addAulaAPI, deleteAulaAPI, putAulaAPI,
-    getAulaFilesAPI, deleteFileAPI }
+    getAulaFilesAPI, deleteFileAPI, guardarMaterialAPI }
 from '../../../helpers/api/aula';
 
 
-export const deleteFile = id => (dispatch) => {
-    console.log('delete file', id);
-    deleteFileAPI(id)
+export const deleteFile = (id, obj) => (dispatch) => {
+    console.log('delete file', id, obj);
+    deleteFileAPI(id, obj)
         .then(res =>
             dispatch({
                 type: DELETE_FILE,
                 payload: {
                     id
+                }
+            }))
+}
+
+
+export const guardarMaterial = obj => (dispatch) => {
+    guardarMaterialAPI(obj)
+        .then(res =>
+            dispatch({
+                type: GUARDAR_MATERIAL,
+                payload: {
+                    obj,
+                    res
                 }
             }))
 }

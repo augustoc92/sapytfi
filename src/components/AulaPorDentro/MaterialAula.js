@@ -1,6 +1,6 @@
 import React from 'react';
 import { Upload, Button, List, Skeleton, Avatar, Card } from 'antd';
-import { UploadOutlined, SettingOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import { UploadOutlined, ZoomInOutlined, SettingOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Base64 } from 'js-base64';
 import FileUpload from './FileUpload';
 
@@ -23,10 +23,12 @@ export default class SubirMaterial extends React.Component{
                             <Card
                                 title={item.nombre}
                                 actions={[
-                                    <EditOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />,
-                                    <DeleteOutlined key="Eliminar" onClick={() => deleteFile(item.id)} />,
+                                    <ZoomInOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />,
+                                    <DeleteOutlined key="Eliminar" onClick={() => deleteFile(item.id, item)} />,
                                 ]}
-                            > <iframe style={{width: '100%'}} id={item.id} src={`http://localhost:8080/${item.aula}/${item.nombre}`}></iframe> </Card>
+                            >
+                                { console.log('http://localhost:8080/${item.aula}/${item.nombre}', `http://localhost:8080/${item.aula}/${item.nombre}`)}
+                            <iframe style={{width: '100%'}} id={item.id} src={`http://localhost:8080/${item.aula}/${item.nombre}`}></iframe> </Card>
                         </List.Item>
                     )}
                 />

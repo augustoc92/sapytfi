@@ -1,6 +1,6 @@
 import React from 'react';
 import { Upload, Button, List, Skeleton, Avatar, Card } from 'antd';
-import { UploadOutlined, SettingOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import { UploadOutlined, ZoomInOutlined, SettingOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Base64 } from 'js-base64';
 import FileUpload from './FileUpload';
 
@@ -11,13 +11,17 @@ export default class SubirMaterial extends React.Component{
 
     checkActions = (item) => {
         const { user, deleteFile } = this.props;
+        console.log('item', item);
+        console.log('user', user);
         if (item.usuarioUpload === user) {
-            return  [<EditOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />]
-        } else {
-            return ([
-                <EditOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />,
-                <DeleteOutlined key="Eliminar" onClick={() => deleteFile(item.id)} />
+            return  ([
+                <ZoomInOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />,
+                <DeleteOutlined key="Eliminar" onClick={() => deleteFile(item.id, item)} />
             ])
+        } else {
+            return (
+                [<ZoomInOutlined key="Revisar" onClick={() => this.openFile(item.aula, item.nombre)} />]
+            )
         }
     }
 
