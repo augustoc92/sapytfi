@@ -24,11 +24,23 @@ const reducer = (state = initialState, action) => {
     }
 
     case CERRAR_CUATRIMESTRE: {
-      console.log('cerrar cuatrimestre', action.payload.res.data)
       const aulas = state.aulasFinalizadas;
+      const aulasNuevas = action.payload.obj;
+
+      const objMaped = aulasNuevas.map(x => {
+        return ({
+          aula: x.aula,
+          cantExamenes: x.cantExamenes,
+          nombre: x.nombre,
+          notaConcepto: x.notaConcepto,
+          nota_final: x.notaFinal,
+          sumaNotas: x.notaSumaExamenes
+        })
+      })
+
       return {
         ...state,
-        aulasFinalizadas: [...aulas, ...action.payload.obj]
+        aulasFinalizadas: [...aulas, ...objMaped]
       }
     }
 

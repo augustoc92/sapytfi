@@ -66,8 +66,8 @@ class AulaPorDentro extends Component {
 
 
         this.setState({
-            // aula: this.props.location.param1.x.id
-            aula: 25
+            aula: this.props.location.param1.x.id
+            // aula: 25
         })
     }
 
@@ -293,7 +293,7 @@ class AulaPorDentro extends Component {
         const { guardarExamen, examenesAlumnos, cerrarCuatrimetre: cierreCuatri, aulasFinalizadas } = this.props;
         const { collapsed, mostrarEst, cerrarCuatrimestre, aula } = this.state
 
-        const aulaCerrada = aulasFinalizadas.filter(x => x.aula === aula.toString())
+        const aulaCerrada = aulasFinalizadas.filter(x => x.aula.toString() === aula.toString())
 
         const alumnosNotas = this.createAlumnosNotas();
 
