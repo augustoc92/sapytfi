@@ -40,16 +40,18 @@ export default class NotaAlumnoPanel extends React.Component {
 
     handleChange = (e) => {
         const { data, createObjCerrarCuatrimstre } = this.props;
-        const cantidadExamenes = 3;
+        const cantidadExamenes = data.cantExamenes;
 
         const notaFinal = (e + data.sumaExamenes)/ (cantidadExamenes + 1)
-
+        console.log('data', data)
         const objToSend = {
-            id: data.id,
             nombre: data.nombre,
+            cantExamenes: cantidadExamenes,
             notaSumaExamenes: data.sumaExamenes,
             asistencias: data.asistencias,
-            notaConcepto: e
+            aula: data.aula,
+            notaConcepto: e,
+            notaFinal: notaFinal
         }
         this.setState({
             notaConcepto: notaFinal

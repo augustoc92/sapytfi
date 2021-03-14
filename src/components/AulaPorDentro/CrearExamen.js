@@ -142,6 +142,7 @@ export default class CrearExamen extends React.Component {
             visible: false,
             rta: [],
             preguntasExamen: [],
+            nombre: '',
             respuesta: '',
             pregunta: '',
             valueRadio: ''

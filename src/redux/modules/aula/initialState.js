@@ -3,6 +3,7 @@ const initialState = {
   alumnoXAula: [],
   isFetching: false,
   material: [],
-  errorMsg: ''
+  errorMsg: '',
+  aulasFinalizadas: []
 }
 export default initialState

@@ -13,7 +13,8 @@ const putAulaAPI = (id, data) => put(`http://localhost:8080/aula/${id}`, data)
 const getAulaFilesAPI = () => get('http://localhost:8080/aulaFiles')
 const deleteFileAPI = (id, data) => del(`http://localhost:8080/deleteFile/${id}`, data)
 const guardarMaterialAPI = obj => post('http://localhost:8080/guardarMaterial', obj)
-
+const cerrarCuatrimetreAPI = data => post('http://localhost:8080/cerrarCuatrimestre', data)
+const getCuatrimestresAPI = () => get('http://localhost:8080/cerrarCuatrimestre');
 
 export {
 getAulaAPI,
@@ -23,5 +24,7 @@ deleteAulaAPI,
 putAulaAPI,
 getAulaFilesAPI,
 deleteFileAPI,
-guardarMaterialAPI
+guardarMaterialAPI,
+cerrarCuatrimetreAPI,
+getCuatrimestresAPI
 }

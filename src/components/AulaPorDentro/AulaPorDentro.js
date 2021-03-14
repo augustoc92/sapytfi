@@ -54,15 +54,20 @@ class AulaPorDentro extends Component {
     };
 
     componentDidMount() {
-        const { getExamen, getMaterialAula, getPreguntas } = this.props;
+        const { getExamen, getCuatrimestres, getMaterialAula, getPreguntas, getExamenNota, getAlumnosXAula, getAlumno } = this.props;
 
         getExamen();
         getMaterialAula();
         getPreguntas();
+        getExamenNota();
+        getAlumnosXAula();
+        getAlumno();
+        getCuatrimestres();
+
 
         this.setState({
-            aula: this.props.location.param1.x.id
-            // aula: 25
+            // aula: this.props.location.param1.x.id
+            aula: 25
         })
     }
 
@@ -242,34 +247,55 @@ class AulaPorDentro extends Component {
         })
     }
 
+    createAlumnosNotas = () => {
+        const { examen, alumnosXAula, alumnos, examenesAlumnos } = this.props
+        const { aula } = this.state
+
+        const examenesAula = examen.filter(x=> x.aula === aula && x.esPrueba);
+        const unicosExamenes =  uniqBy(examenesAula, 'id_examen');
+
+        const alumnosDeEsteAula = alumnosXAula.filter(x => x.id_aula === aula.toString());
+        const cantidadExamenes = unicosExamenes.length;
+        const idExamenesDeEsteAula = unicosExamenes.map(x => x.id)
+
+        let objToFinish = [];
+        let nota = 0;
+
+        alumnosDeEsteAula.forEach(x => {
+                const elAlumno = alumnos.filter(k => k.id.toString() === x.id_alumno);
+                const nombre = elAlumno[0] && elAlumno[0].nombre;
+                idExamenesDeEsteAula.forEach(idExamenAula => {
+                    const examenAlumno = examenesAlumnos.filter(j => j.id_examen.toString() === idExamenAula.toString());
+                    const exmans = examenAlumno.filter(i => i.id_alumno.toString() === x.id_alumno.toString())
+                    if (exmans.length) {
+                        nota = exmans[0].nota + nota
+                    } else {
+                        nota = nota + 1
+                    }
+                });
+                const objFinal = {
+                    nombre: nombre,
+                    sumaExamenes: nota,
+                    cantExamenes: cantidadExamenes,
+                    asistencias: null,
+                    nota_concepto: null,
+                    aula: aula
+                }
+
+                objToFinish.push(objFinal)
+                nota = 0
+        });
+
+        return objToFinish;
+    }
+
     render() {
-        const { guardarExamen } = this.props;
-        const { collapsed, mostrarEst, cerrarCuatrimestre } = this.state
+        const { guardarExamen, examenesAlumnos, cerrarCuatrimetre: cierreCuatri, aulasFinalizadas } = this.props;
+        const { collapsed, mostrarEst, cerrarCuatrimestre, aula } = this.state
 
+        const aulaCerrada = aulasFinalizadas.filter(x => x.aula === aula.toString())
 
-        const alumnos_notas = [
-            {
-                id: 1,
-                nombre: 'Augusto',
-                sumaExamenes: 14,
-                asistencias: '78%',
-                nota_concepto: null
-            },
-            {
-                id: 2,
-                nombre: 'Julia',
-                sumaExamenes: 18,
-                asistencias: '93%',
-                nota_concepto: null
-            },
-            {
-                id: 3,
-                nombre: 'Tito',
-                sumaExamenes: 16,
-                asistencias: '93%',
-                nota_concepto: null
-            },
-        ]
+        const alumnosNotas = this.createAlumnosNotas();
 
         return (
             <div>
@@ -282,20 +308,6 @@ class AulaPorDentro extends Component {
                                 inlineCollapsed={this.state.collapsed}
                             >
                                 <Menu.Item onClick={this.toggleCollapsed} icon={React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)} />
-                                <SubMenu  icon={<ContactsOutlined />} title="Clases">
-                                    <Menu.Item >
-                                        Crear clase
-                                    </Menu.Item>
-                                        <SubMenu title="Revisar clases">
-                                            { this.renderClases() }
-                                        </SubMenu>
-                                    <Menu.Item onClick={() => this.handleShowEstadisticas()}>
-                                        Asistencias clases
-                                    </Menu.Item>
-                                        {/* <SubMenu  icon={<MailOutlined />} title="Estadisticas examenes">
-                                            { this.renderExamenes() }
-                                        </SubMenu> */}
-                                </SubMenu>
                                 <SubMenu  icon={<DiffOutlined />} title="Examenes">
                                     <Menu.Item >
                                         <CrearExamen
@@ -338,7 +350,12 @@ class AulaPorDentro extends Component {
                                 </div>
                             }
                             {   cerrarCuatrimestre &&
-                                    <CerrarCuatrimestre alumnosNotas={alumnos_notas}></CerrarCuatrimestre>
+                                    <CerrarCuatrimestre
+                                        cierreCuatri={cierreCuatri}
+                                        alumnosNotas={alumnosNotas}
+                                        aulaCerrada={aulaCerrada}
+                                    >
+                                    </CerrarCuatrimestre>
                             }
                         </div>
                     </div>

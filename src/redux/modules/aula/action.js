@@ -13,14 +13,41 @@ import {
     GET_ALUMNOS_AULA,
     GET_MATERIAL,
     DELETE_FILE,
-    GUARDAR_MATERIAL
+    GUARDAR_MATERIAL,
+    CERRAR_CUATRIMESTRE,
+    GET_CUATRI
 } from './const'
 
 import { getAulaAPI,
     getAulaAlumnosAPI, addAulaAPI, deleteAulaAPI, putAulaAPI,
-    getAulaFilesAPI, deleteFileAPI, guardarMaterialAPI }
+    getAulaFilesAPI, deleteFileAPI, guardarMaterialAPI, cerrarCuatrimetreAPI,
+    getCuatrimestresAPI  }
 from '../../../helpers/api/aula';
 
+
+
+export const getCuatrimestres = obj => (dispatch) => {
+    getCuatrimestresAPI(obj)
+        .then(result =>
+            dispatch({
+                type: GET_CUATRI,
+                payload: {
+                    result
+                }
+            }))
+}
+
+export const cerrarCuatrimetre = obj => (dispatch) => {
+    cerrarCuatrimetreAPI(obj)
+        .then(res =>
+            dispatch({
+                type: CERRAR_CUATRIMESTRE,
+                payload: {
+                    obj,
+                    res
+                }
+            }))
+}
 
 export const deleteFile = (id, obj) => (dispatch) => {
     console.log('delete file', id, obj);

@@ -23,22 +23,17 @@ export default class CerrarCuatrimestre extends React.Component{
 
     createObjCerrarCuatrimstre = (obj) => {
         const { objCerrarCuatrimestre } = this.state;
-
         // Check obj already in array
         let i;
         let copyArray = objCerrarCuatrimestre
 
-        if (copyArray.length === 0 ) {
-            copyArray.push(obj);
-            return;
-        }
         for (i = 0; i < copyArray.length; i++) {
-            if (copyArray[i].id === obj.id) {
+            if (copyArray[i].nombre === obj.nombre) {
                 copyArray.splice(i, 1)
             }
         }
 
-        copyArray.push(obj);
+        copyArray = [...copyArray, obj];
 
         this.setState({
             objCerrarCuatrimestre: [...copyArray]
@@ -46,9 +41,13 @@ export default class CerrarCuatrimestre extends React.Component{
     }
 
     cerrarCuatrimestre = () => {
+        const { cierreCuatri } = this.props
         const { objCerrarCuatrimestre } = this.state;
 
+
+
         if (objCerrarCuatrimestre.length === this.props.alumnosNotas.length) {
+            cierreCuatri(objCerrarCuatrimestre)
             message.success('Se cargaron las notas del cuatrimestre');
             this.setState({
                 cuatrimestreCerrado: true,
@@ -92,13 +91,16 @@ export default class CerrarCuatrimestre extends React.Component{
     }
 
     render() {
+        const { aulaCerrada } = this.props;
         const { procesoIniciado, cuatrimestreCerrado } = this.state;
+
+        console.log('AULA CERRADA', aulaCerrada)
 
         return (
             <div className={styles.containerPaneles}>
-                {this.iniciarProceso()}
+                { !aulaCerrada.length && this.iniciarProceso()}
                 {
-                    procesoIniciado && this.ponerNotaAlumno()
+                    !aulaCerrada.length && procesoIniciado && this.ponerNotaAlumno()
                 }
                 { procesoIniciado &&
                     <div style={{width: '100%', marginTop: '4%', alignContent: 'center', display: 'flex', justifyContent: 'center'}}>
@@ -106,10 +108,10 @@ export default class CerrarCuatrimestre extends React.Component{
                     </div>
                 }
                 {
-                    cuatrimestreCerrado &&
+                    (aulaCerrada.length > 0 || cuatrimestreCerrado) &&
                     <Table
                         columns={columns}
-                        dataSource={tableData}
+                        dataSource={aulaCerrada}
                 />
                 }
             </div>
@@ -121,32 +123,24 @@ export default class CerrarCuatrimestre extends React.Component{
 
 const columns = [
     {
-        title: 'ID',
-        dataIndex: 'id'
-    },
-    {
         title: 'Nombre',
         dataIndex: 'nombre'
     },
     {
         title: 'Cantidad examenes',
-        dataIndex: 'cantidad',
+        dataIndex: 'cantExamenes',
     },
     {
         title: 'Sumatoria notas',
-        dataIndex: 'sumatoria',
+        dataIndex: 'sumaNotas',
     },
     {
         title: 'Concepto',
-        dataIndex: 'concepto',
-    },
-    {
-        title: 'Asistencias %',
-        dataIndex: 'asistencia',
+        dataIndex: 'notaConcepto',
     },
     {
         title: 'Nota Final',
-        dataIndex: 'final',
+        dataIndex: 'nota_final',
     }
 ];
 

@@ -61,14 +61,17 @@ class AulaAlumno extends Component {
         const examenesDeLAula = examen.filter(x => x.aula === aula);
         const noRepetidos = uniqBy(examenesDeLAula, 'id_examen')
         const examenesdQueNoTomo = noRepetidos.filter(x => {
-            for (let i = 0; i < examenesAlumnos.length; i++) {
-                if (userObj.id === examenesAlumnos[i].id_alumno) {
-                    if (x.id === examenesAlumnos[i].id_examen) {
-                        return false;
+            if (examenesAlumnos.length) {
+                for (let i = 0; i < examenesAlumnos.length; i++) {
+                    if (userObj.id === examenesAlumnos[i].id_alumno) {
+                        if (x.id === examenesAlumnos[i].id_examen) {
+                            return false;
+                        }
                     }
+                    return true;
                 }
-                return true;
             }
+            return true;
         })
 
 

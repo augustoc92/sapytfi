@@ -8,7 +8,9 @@ import {
   GET_AULAALUMNO_FULFILLED,
   GET_MATERIAL,
   DELETE_FILE,
-  GUARDAR_MATERIAL
+  GUARDAR_MATERIAL,
+  CERRAR_CUATRIMESTRE,
+  GET_CUATRI
 } from './const'
 
 
@@ -21,9 +23,18 @@ const reducer = (state = initialState, action) => {
       }
     }
 
+    case CERRAR_CUATRIMESTRE: {
+      console.log('cerrar cuatrimestre', action.payload.res.data)
+      const aulas = state.aulasFinalizadas;
+      return {
+        ...state,
+        aulasFinalizadas: [...aulas, ...action.payload.obj]
+      }
+    }
+
     case GUARDAR_MATERIAL: {
       const { obj } = action.payload;
-      console.log('actionpayload', action.payload.res.data.body);
+      console.log('actionpayload', action.payload.obj);
       const id =  action.payload.res.data.body;
       const newItem = {
           id: id,
@@ -40,6 +51,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         alumnoXAula: action.payload.result
+      }
+    }
+    case GET_CUATRI: {
+      return {
+        ...state,
+        aulasFinalizadas: action.payload.result
       }
     }
     case GET_AULA_FULFILLED: {
