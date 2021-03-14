@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
-const { SubMenu } = Menu;
-
 class VistaAulas extends Component {
 
     state = {
@@ -63,8 +61,8 @@ class VistaAulas extends Component {
                 <Link key={x.id} to={newTo} params={{ testvalue: "hello" }}>
                     <Card
                         hoverable
-                        style={{ width: 240 }}
-                        cover={<img alt="example" src={x.imagenUrl}/>}
+                        style={{ width: 240, height: 100 }}
+                        cover={<img alt="example" style={{height: '120px'}} src={x.imagenUrl}/>}
                     >
                         <Meta title={x.nombre_aula} description={x.horario_clase} />
                     </Card>
@@ -90,7 +88,7 @@ class VistaAulas extends Component {
                     <Card
                         hoverable
                         style={{ width: 240 }}
-                        cover={<img alt="example" src={x.imagenUrl}/>}
+                        cover={<img alt="example" style={{height: '120px'}} src={x.imagenUrl}/>}
                     >
                         <Meta title={x.nombre_aula} description={x.horario_clase} />
                     </Card>
@@ -102,16 +100,9 @@ class VistaAulas extends Component {
     render() {
         const aulas = this.createAulas();
 
-        const { user, userObj } = this.props;
-        const { permisos } = user;
-
-        const isProfe = permisos === '1';
-        const isAlumno = permisos === '2';
-
         return (
             <div>
-                <NavBar>
-                </NavBar>
+                <NavBar />
                     <div className={styles.containerAula}>
                         {aulas}
                     </div>

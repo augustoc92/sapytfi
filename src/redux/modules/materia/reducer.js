@@ -6,7 +6,6 @@ import {
   ADD_MATERIA_FULLFILED,
   REMOVE_MATERIA_FULFILLED,
 } from './const'
-import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {

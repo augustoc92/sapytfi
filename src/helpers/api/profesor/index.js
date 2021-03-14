@@ -14,6 +14,9 @@ const putProfesorAPI = (id, data) => put(`http://localhost:8080/profesors/${id}`
 const getExamenAPI = () => get('http://localhost:8080/profexamen')
 const guardarExamenAPI = (data) => post('http://localhost:8080/profexamen', data)
 
+const getPreguntasExamenesAPI = () => get('http://localhost:8080/preguntasExamen')
+const updatePreguntasExamenesAPI = (id, data) => put('http://localhost:8080/preguntasExamen', data)
+
 const sumarIntentoAPI = (data) => post(`http://localhost:8080/sumarIntentoExamen/`, data)
 const deleteExamenAPI = id => del(`http://localhost:8080/examen/${id}`)
 
@@ -25,5 +28,7 @@ addProfesorAPI,
 deleteProfesorAPI,
 putProfesorAPI,
 sumarIntentoAPI,
-deleteExamenAPI
+deleteExamenAPI,
+getPreguntasExamenesAPI,
+updatePreguntasExamenesAPI
 }

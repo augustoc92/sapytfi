@@ -2,6 +2,7 @@ const initialState = {
   data: [],
   examen: [],
   isFetching: false,
-  errorMsg: ''
+  errorMsg: '',
+  preguntasExamenes: []
 }
 export default initialState

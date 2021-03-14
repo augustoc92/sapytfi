@@ -2,7 +2,6 @@ import React from 'react';
 import NavBar from '../Shared/NavBar';
 import { Modal, Button, Input, Table, InputNumber } from 'antd';
 import styles from './Subject.module.css'
-import { map, omit } from 'lodash'
 
 class Subject extends React.Component{
     constructor(props) {

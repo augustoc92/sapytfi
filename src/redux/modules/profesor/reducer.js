@@ -9,7 +9,9 @@ import {
   GET_EXAMEN_FULLFILLED,
   ADD_EXAMEN_FULLFILLED,
   SUMAR_INTENTO_EXAMEN,
-  REMOVE_EXAMEN
+  REMOVE_EXAMEN,
+  GET_PREGUNTAS,
+  UPDATE_PREGUNTAS
 } from './const'
 import map from 'lodash/map'
 
@@ -23,10 +25,39 @@ const reducer = (state = initialState, action) => {
       }
     }
 
-    case REMOVE_EXAMEN: {
+    case GET_PREGUNTAS: {
+      const { result } = action.payload;
+
+
+      console.log('obj', result)
+
       return {
         ...state,
-        examen: state.examen.filter(x => x.id_examen !== action.payload.id)
+        preguntasExamenes: result
+      }
+    }
+
+    case UPDATE_PREGUNTAS: {
+      const { id, obj, res } = action.payload
+
+      console.log('obj', obj)
+      console.log('id', id)
+
+      const objToAdd = {
+        nombre: obj.nombre,
+        dni: obj.DNI,
+        email: obj.email,
+        password: obj.password,
+        id
+      }
+
+      const index = state.preguntasExamenes.findIndex(x => x.id === id)
+      const newList = [...state.preguntasExamenes]
+      newList[index] = { ...objToAdd, id }
+
+      return {
+        ...state,
+        preguntasExamenes: newList,
       }
     }
 
@@ -100,6 +131,7 @@ const reducer = (state = initialState, action) => {
         errorMsg: action.payload.errorMsg
       }
     }
+
     case UPDATE_PROFESOR_FULLFILED: {
       const { id, obj, res } = action.payload
 

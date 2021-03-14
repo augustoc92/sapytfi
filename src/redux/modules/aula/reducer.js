@@ -6,12 +6,10 @@ import {
   ADD_AULA_FULLFILED,
   REMOVE_AULA_FULFILLED,
   GET_AULAALUMNO_FULFILLED,
-  GET_ALUMNOS_AULA,
   GET_MATERIAL,
   DELETE_FILE,
   GUARDAR_MATERIAL
 } from './const'
-import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {

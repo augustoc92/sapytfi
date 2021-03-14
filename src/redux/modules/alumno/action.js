@@ -9,9 +9,12 @@ import {
     ADD_ALUMNO_REJECTED,
     REMOVE_ALUMNO_FULFILLED,
     REMOVE_ALUMNO_REJECTED,
+    TOMAR_EXAMEN,
+    GET_EXAMEN_NOTA
 } from './const'
 
-import { getAlumnoAPI, addAlumnoAPI, deleteAlumnoAPI, putAlumnoAPI, sumarIntentoAPI } from '../../../helpers/api/alumno';
+import { getAlumnoAPI, addAlumnoAPI, deleteAlumnoAPI, putAlumnoAPI, sumarIntentoAPI, tomarExamenAPI,
+    getExamenesNotaAPI } from '../../../helpers/api/alumno';
 
 export const getAlumno = () => (dispatch) => {
     getAlumnoAPI()
@@ -20,6 +23,30 @@ export const getAlumno = () => (dispatch) => {
                 type: GET_ALUMNO_FULFILLED,
                 payload: {
                     result
+                }
+            })
+        )
+}
+
+export const getExamenNota = () => (dispatch) => {
+    getExamenesNotaAPI()
+        .then(result =>
+            dispatch({
+                type: GET_EXAMEN_NOTA,
+                payload: {
+                    result
+                }
+            })
+        )
+}
+
+export const tomarExamen = (obj) => (dispatch) => {
+    tomarExamenAPI(obj)
+        .then(id =>
+            dispatch({
+                type: TOMAR_EXAMEN,
+                payload: {
+                    id
                 }
             })
         )

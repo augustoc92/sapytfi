@@ -8,10 +8,10 @@ import RadioPreguntasGroup from './radioPreguntasGroup';
 export default class Examen extends Component {
 
     checkExamen = () => {
-        const { examen }  = this.props;
-        const idAula = this.props.location.param1.x.id
+        const { examen, aula }  = this.props;
+        // const idAula = this.props.location.param1.x.id
 
-        return examen.filter(x => x.aula === idAula);
+        return examen.filter(x => x.aula === aula);
     }
 
     state = {
@@ -41,15 +41,42 @@ export default class Examen extends Component {
     };
 
     handleOk = () => {
-        const { examen, idExamen, intentoExamen } = this.props;
+        const { examen, idExamen, intentoExamen, userObj, tomarExamen} = this.props;
         const { respuestasCorrectas, intento } = this.state;
 
+
         const thisExamen = examen.filter(x => x.id_examen === idExamen);
-        const aprobo = this.getPorcentaje();
 
-        intentoExamen(thisExamen[0].id_examen, thisExamen[0], aprobo);
+        const nota = (respuestasCorrectas.length/thisExamen.length) * 10;
+        const porcentaje = this.getPorcentaje();
 
-        if (aprobo) {
+        console.log('nota', nota);
+        console.log('thisExamen[0]', thisExamen[0]);
+        console.log('UserOBJ', userObj)
+
+        if (thisExamen[0].esPrueba) {
+            const objToSend = {
+                id_alumno: userObj.id,
+                nota: nota,
+                id_examen: thisExamen[0].id
+            }
+
+            tomarExamen(objToSend);
+
+            message.success('Se entrego el examen con excito');
+
+            this.setState({
+                visible: false,
+                intento: !intento,
+                respuestasCorrectas: []
+            })
+
+            return;
+        }
+
+        intentoExamen(thisExamen[0].id_examen, thisExamen[0], porcentaje);
+
+        if (porcentaje) {
             this.success();
         } else {
             this.error();
@@ -70,9 +97,8 @@ export default class Examen extends Component {
         const TotalPreguntas = thisExamen.length;
         const totalRtasCorrectas = respuestasCorrectas.length;
 
-        const porcentaje = (totalRtasCorrectas/TotalPreguntas) * 100;
 
-        return  porcentaje > 50
+        return  totalRtasCorrectas/TotalPreguntas
     }
 
     createValidation = (id) => {
@@ -107,9 +133,9 @@ export default class Examen extends Component {
 
         return (
             <RadioPreguntasGroup elementos={elemen} indice={indx}
-            removeFromValidation={this.removeFromValidation}
-            createValidation={this.createValidation}
-            intento={intento}
+                removeFromValidation={this.removeFromValidation}
+                createValidation={this.createValidation}
+                intento={intento}
             >
 
             </RadioPreguntasGroup>

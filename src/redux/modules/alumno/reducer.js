@@ -5,8 +5,9 @@ import {
   UPDATE_ALUMNO_REJETED,
   ADD_ALUMNO_FULLFILED,
   REMOVE_ALUMNO_FULFILLED,
+  TOMAR_EXAMEN,
+  GET_EXAMEN_NOTA
 } from './const'
-import map from 'lodash/map'
 
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,23 @@ const reducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         data: action.payload.result
+      }
+    }
+    case GET_EXAMEN_NOTA: {
+      console.log('actionpaylod', action.payload)
+      return {
+        ...state,
+        isFetching: false,
+        examenesAlumnos: action.payload.result
+      }
+    }
+
+    case TOMAR_EXAMEN: {
+
+      console.log('EXAMENES CON NOTA', action.payload);
+
+      return {
+        ...state
       }
     }
 
@@ -50,7 +68,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     case UPDATE_ALUMNO_FULLFILED: {
-      const { id, obj, res } = action.payload
+      const { id, obj } = action.payload
 
       const objToAdd = {
         nombre: obj.nombre,

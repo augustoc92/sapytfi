@@ -2,7 +2,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React from 'react';
 import styles from './LoginForm.module.css'
-import { getAlumno } from '../../redux/modules/alumno/action';
 
 class LoginForm extends React.Component {
 
@@ -101,7 +100,7 @@ class LoginForm extends React.Component {
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                         <Checkbox>Recordarme</Checkbox>
                         </Form.Item>
-                        <a className="login-form-forgot" href="">
+                        <a className="login-form-forgot" href="https://tpp.com">
                             Olvide Contraseña
                         </a>
                     </Form.Item>

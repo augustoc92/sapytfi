@@ -1,10 +1,12 @@
 import React from 'react';
 import NavBar from '../Shared/NavBar';
 import { Modal, Button, Input, Table } from 'antd';
-import { Menu, Dropdown, message, Space, Tooltip } from 'antd';
+import { Menu, Dropdown, message, Space } from 'antd';
 import styles from './Carrera.module.css'
 import { map, omit, differenceBy } from 'lodash'
 import { DownOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
+
+
 
 class Carrera extends React.Component{
 
@@ -26,6 +28,22 @@ class Carrera extends React.Component{
         errorMessage: '',
         materias: []
     }
+
+
+    listaLugares = ['Cordoba', 'Buenos Aires', 'Rosario']
+    listaPlanes = ['DW40', 'AK47', 'M416', 'P009', 'P201', 'M16A']
+
+    menuPlanes =(
+        <Menu>
+            {this.listaPlanes.map(x => <Menu.Item onClick={() => this.setState({planCarrera: x})}> {x} </Menu.Item>)}
+        </Menu>
+    );
+
+    menu = (
+        <Menu>
+            {this.listaLugares.map(x => <Menu.Item onClick={() => this.setState({lugarCarrera: x})}> {x} </Menu.Item>)}
+        </Menu>
+    );
 
     clearModals = () => {
         const { selectRow } = this.props;
@@ -336,11 +354,13 @@ class Carrera extends React.Component{
     }
 
     render() {
-        const { data, cols, selectedRow } = this.props;
+        const { data, selectedRow } = this.props;
         const { visibleAgregar, visibleEliminar, visibleModificar, errorMessage,
         nombreCarrera, duracionCarrera, planCarrera, lugarCarrera } = this.state;
         const tableData = this.createKeys(data);
         const hasSelectedRow = selectedRow && !!selectedRow[0]
+
+        console.log('lugarCarrera', lugarCarrera);
 
         return(
             <div>
@@ -368,20 +388,20 @@ class Carrera extends React.Component{
                             onChange={(e) => this.handleNameChange(e.target.value)}
                             maxLength="25"
                         />
-                        <label htmlFor="planDeEstudio">Plan de estudio (de 4 a 25 caracteres)</label>
-                        <Input
-                            id="planDeEstudio"
-                            value={planCarrera}
-                            onChange={(e) => this.handlePlanChange(e.target.value)}
-                            maxLength="25"
-                        />
-                        <label htmlFor="lugarCarrera">Lugar</label>
-                        <Input
-                            id="lugarCarrera"
-                            value={lugarCarrera}
-                            onChange={(e) => this.handleLugarChange(e.target.value)}
-                            maxLength="8"
-                        />
+                        <div style={{marginTop: '14px'}}>
+                        <Dropdown arrow overlay={this.menuPlanes}>
+                            <Button>
+                                {planCarrera || 'Elegir un plan'}  <DownOutlined />
+                            </Button>
+                        </Dropdown>
+                        </div>
+                        <div style={{marginTop: '10px'}}>
+                        <Dropdown arrow overlay={this.menu}>
+                                <Button>
+                                    {lugarCarrera || 'Elegir Lugar'}  <DownOutlined />
+                                </Button>
+                        </Dropdown>
+                        </div>
                         <label htmlFor="duracionCarrera">Duracion</label>
                         <Input
                             id="duracionCarrera"
@@ -391,7 +411,7 @@ class Carrera extends React.Component{
                         />
                         <br></br>
                         <Space>
-                            <Dropdown overlay={this.createMenu()}>
+                            <Dropdown arrow overlay={this.createMenu()}>
                             <Button>
                                 Agregar Materias <DownOutlined />
                             </Button>
@@ -414,7 +434,7 @@ class Carrera extends React.Component{
                 >
                     <div className={styles.formContainer}>
                         { selectedRow && selectedRow[0]
-                            &&
+                            ?
                             <React.Fragment>
                                 <label htmlFor="nombreCarreraModificar">Nombre (de 4 a 20 caracteres)</label>
                                 <Input
@@ -423,20 +443,20 @@ class Carrera extends React.Component{
                                     onChange={(e) => this.handleNameChange(e.target.value)}
                                     maxLength="20"
                                 />
-                                <label htmlFor="planDeEstudioModificar">Plan de estudio (de 4 a 12 caracteres)</label>
-                                <Input
-                                    id="planDeEstudioModificar"
-                                    value={planCarrera}
-                                    onChange={(e) => this.handlePlanChange(e.target.value)}
-                                    maxLength="12"
-                                />
-                                <label htmlFor="lugarCarreraModificar">Lugar</label>
-                                <Input
-                                    id="lugarCarreraModificar"
-                                    value={lugarCarrera}
-                                    onChange={(e) => this.handleLugarChange(e.target.value)}
-                                    maxLength="8"
-                                />
+                                <div style={{marginTop: '14px'}}>
+                                <Dropdown arrow overlay={this.menuPlanes}>
+                                    <Button>
+                                        {planCarrera || 'Elegir un plan'}  <DownOutlined />
+                                    </Button>
+                                </Dropdown>
+                                </div>
+                                <div style={{marginTop: '14px'}}>
+                                <Dropdown arrow overlay={this.menu}>
+                                    <Button>
+                                        {lugarCarrera || 'Elegir Lugar'}  <DownOutlined />
+                                    </Button>
+                                </Dropdown>
+                                </div>
                                 <label htmlFor="duracionCarreraModificar">Duracion</label>
                                 <Input
                                     id="duracionCarreraModificar"
@@ -460,7 +480,7 @@ class Carrera extends React.Component{
                                     <label className={styles.errorMessage}> {errorMessage} </label>
                                 }
                             </React.Fragment>
-                            ||
+                            :
                             <div> Seleccione una materia para modificar </div>
                         }
                     </div>
@@ -473,7 +493,10 @@ class Carrera extends React.Component{
                 >
                     <div className={styles.formContainer}>
                         {
-                            selectedRow && selectedRow[0] && <div> Esta seguro que desea eliminar la carrera {selectedRow[0].nombre} </div> ||
+                            selectedRow && selectedRow[0]
+                            ?
+                            <div> Esta seguro que desea eliminar la carrera {selectedRow[0].nombre} </div>
+                            :
                             <div> Seleccione una carrera </div>
                         }
 

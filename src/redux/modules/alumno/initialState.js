@@ -1,6 +1,7 @@
 const initialState = {
   data: [],
   isFetching: false,
-  errorMsg: ''
+  errorMsg: '',
+  examenesAlumnos: []
 }
 export default initialState

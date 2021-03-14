@@ -13,13 +13,15 @@ import {
     ADD_EXAMEN_FULLFILLED,
     GET_EXAMEN_FULLFILLED,
     SUMAR_INTENTO_EXAMEN,
-    REMOVE_EXAMEN
+    REMOVE_EXAMEN,
+    GET_PREGUNTAS,
+    UPDATE_PREGUNTAS
 } from './const'
 
 
 import { getProfesorAPI, getExamenAPI, guardarExamenAPI,
     deleteExamenAPI, addProfesorAPI, deleteProfesorAPI,
-    putProfesorAPI, sumarIntentoAPI }
+    putProfesorAPI, sumarIntentoAPI, getPreguntasExamenesAPI, updatePreguntasExamenesAPI }
 from '../../../helpers/api/profesor';
 
 export const deleteExamen = id => (dispatch) => {
@@ -29,6 +31,32 @@ export const deleteExamen = id => (dispatch) => {
                 type: REMOVE_EXAMEN,
                 payload: {
                     id
+                }
+            })
+        )
+}
+
+export const getPreguntas = () => (dispatch) => {
+    getPreguntasExamenesAPI()
+        .then(result =>
+            dispatch({
+                type: GET_PREGUNTAS,
+                payload: {
+                    result
+                }
+            })
+        )
+}
+
+export const putPreguntasExamenes = (id, obj) => (dispatch) => {
+    updatePreguntasExamenesAPI(id, obj)
+        .then(res =>
+            dispatch({
+                type: UPDATE_PREGUNTAS,
+                payload: {
+                    id,
+                    obj,
+                    res
                 }
             })
         )
@@ -46,7 +74,7 @@ export const getProfesor = () => (dispatch) => {
         )
 }
 
-export const intentoExamen = (id, obj, aprobo) => (dispatch) => {
+export const intentoExamen = (id, obj, aprobo, user) => (dispatch) => {
     const data = {
         id: id,
         aprobo: aprobo
@@ -61,7 +89,8 @@ export const intentoExamen = (id, obj, aprobo) => (dispatch) => {
                     result,
                     obj,
                     id,
-                    aprobo
+                    aprobo,
+                    user
                 }
             })
     )

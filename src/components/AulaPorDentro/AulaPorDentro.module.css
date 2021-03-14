@@ -113,3 +113,57 @@ input[type="file"] {
     display: flex;
     justify-content: space-around;
 }
+
+
+
+.editable-cell {
+    position: relative;
+}
+
+.editableCellValueWrap {
+    padding: 5px 12px;
+    cursor: pointer;
+}
+
+.editable-row:hover .editableCellValueWrap {
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
+[data-theme='dark'] .editable-row:hover .editableCellValueWrap {
+    border: 1px solid #434343;
+}
+
+.contenedorNota {
+    display: flex;
+    justify-content: space-around;
+}
+
+.itemNota {
+    width: 35%;
+    align-items: center;
+    text-align: center;
+}
+
+.containerPaneles {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.probandoContainer {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.preguntasContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center
+}

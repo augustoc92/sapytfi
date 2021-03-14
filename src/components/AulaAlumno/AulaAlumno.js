@@ -37,14 +37,16 @@ class AulaAlumno extends Component {
         showMaterial: false,
     }
     componentDidMount() {
-        const { getExamen, getMaterialAula } = this.props;
+        const { getExamen, getMaterialAula, getExamenNota } = this.props;
 
         this.setState({
             aula:  this.props.location.param1.x.id
             // aula: 25
         })
+
         getExamen();
         getMaterialAula();
+        getExamenNota();
     }
 
     toggleCollapsed = () => {
@@ -54,11 +56,23 @@ class AulaAlumno extends Component {
     };
 
     splitExamenes = () => {
-        const { examen } = this.props;
+        const { examen, examenesAlumnos, userObj } = this.props;
         const { aula } = this.state;
         const examenesDeLAula = examen.filter(x => x.aula === aula);
+        const noRepetidos = uniqBy(examenesDeLAula, 'id_examen')
+        const examenesdQueNoTomo = noRepetidos.filter(x => {
+            for (let i = 0; i < examenesAlumnos.length; i++) {
+                if (userObj.id === examenesAlumnos[i].id_alumno) {
+                    if (x.id === examenesAlumnos[i].id_examen) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        })
 
-        return uniqBy(examenesDeLAula, 'id_examen');
+
+        return examenesdQueNoTomo;
     }
 
     renderMaterial = () => {
@@ -91,8 +105,8 @@ class AulaAlumno extends Component {
     }
 
     render() {
-        const { examen, intentoExamen } = this.props;
-        const { collapsed } = this.state
+        const { examen, intentoExamen, tomarExamen, userObj, examenesAlumnos } = this.props;
+        const { collapsed, aula } = this.state
         const examenesDelAula = this.splitExamenes();
 
         return (
@@ -112,7 +126,15 @@ class AulaAlumno extends Component {
                                                 {
                                                     return (
                                                         <Menu.Item>
-                                                            <ExamenComp examen={examen} idExamen={exam.id_examen} intentoExamen={intentoExamen}/>
+                                                            <ExamenComp
+                                                                examen={examen}
+                                                                idExamen={exam.id_examen}
+                                                                intentoExamen={intentoExamen}
+                                                                tomarExamen={tomarExamen}
+                                                                userObj={userObj}
+                                                                aula={aula}
+                                                                examenesAlumnos={examenesAlumnos}
+                                                            />
                                                         </Menu.Item>
                                                 )
                                             }
