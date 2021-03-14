@@ -150,9 +150,8 @@ class Subject extends React.Component{
     };
 
     onChangeHours = (val) => {
-        const res = val.replace(/\D/g, "");
         this.setState({
-            hoursValue: res
+            hoursValue: val
         });
     }
 
