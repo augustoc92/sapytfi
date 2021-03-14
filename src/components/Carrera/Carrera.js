@@ -160,13 +160,11 @@ class Carrera extends React.Component{
 
     handleOkAgregar = e => {
         const { addCarrera, getCarrera, getMateria, getMateriaXCarrera } = this.props;
-        const { materias } = this.state;
+        const { materias, lugarCarrera, planCarrera } = this.state;
 
         let nombre = document.getElementById('nombreCarrera').value;
-        let plan = document.getElementById('planDeEstudio').value;
-        let lugarCarrera = document.getElementById('lugarCarrera').value;
         let duracion = document.getElementById('duracionCarrera').value;
-
+        const plan = planCarrera;
 
         let objToAdd = {
             nombre,
@@ -189,7 +187,6 @@ class Carrera extends React.Component{
             this.setState({
                 errorMessage: 'Ingrese un plan'
             })
-            document.getElementById('planDeEstudio').focus();
             return ;
         }
 
@@ -197,7 +194,6 @@ class Carrera extends React.Component{
             this.setState({
                 errorMessage: 'Ya existe una carrera con este plan'
             })
-            document.getElementById('planDeEstudio').focus();
             return ;
         }
 
@@ -205,7 +201,6 @@ class Carrera extends React.Component{
             this.setState({
                 errorMessage: 'Ingrese un lugar'
             })
-            document.getElementById('lugarCarrera').focus();
             return ;
         }
 
@@ -252,12 +247,10 @@ class Carrera extends React.Component{
     handleOkModificar = e => {
         const { putCarrera, selectedRow } = this.props;
         const { getCarrera, getMateria, getMateriaXCarrera } = this.props;
-        const { materias } = this.state;
+        const { materias, lugarCarrera, planCarrera } = this.state;
         let nombre = document.getElementById('nombreCarreraModificar').value;
-        let plan = document.getElementById('planDeEstudioModificar').value;
-        let lugarCarrera = document.getElementById('lugarCarreraModificar').value;
         let duracion = document.getElementById('duracionCarreraModificar').value;
-
+        const plan = planCarrera;
         const idToSend = selectedRow[0].id
 
         let objToAdd = {
@@ -281,14 +274,12 @@ class Carrera extends React.Component{
             this.setState({
                 errorMessage: 'Ingrese un plan'
             })
-            document.getElementById('planDeEstudioModificar').focus();
             return ;
         }
         if (planes.indexOf(plan) > -1) {
             this.setState({
                 errorMessage: 'Ya existe una carrera con este plan'
             })
-            document.getElementById('planDeEstudioModificar').focus();
             return ;
         }
 
@@ -296,7 +287,6 @@ class Carrera extends React.Component{
             this.setState({
                 errorMessage: 'Ingrese un lugar'
             })
-            document.getElementById('lugarCarreraModificar').focus();
             return ;
         }
 
