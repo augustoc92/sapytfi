@@ -70,18 +70,21 @@ const reducer = (state = initialState, action) => {
     case UPDATE_ALUMNO_FULLFILED: {
       const { id, obj } = action.payload
 
+      console.log('obj', obj);
+
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.dni,
         email: obj.email,
         password: obj.password,
-        carrera: obj.id_carrera ,
+        carrera: obj.id_carrera,
         id
       }
 
       const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
-      newList[index] = { ...objToAdd, id }
+      newList[index] = { ...objToAdd}
+
       return {
         ...state,
         data: newList,

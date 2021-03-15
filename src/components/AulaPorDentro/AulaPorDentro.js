@@ -66,8 +66,8 @@ class AulaPorDentro extends Component {
 
 
         this.setState({
-            aula: this.props.location.param1.x.id
-            // aula: 25
+            // aula: this.props.location.param1.x.id
+            aula: 25
         })
     }
 

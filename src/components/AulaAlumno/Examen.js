@@ -63,7 +63,7 @@ export default class Examen extends Component {
 
             tomarExamen(objToSend);
 
-            message.success('Se entrego el examen con excito');
+            message.success('Se entrego el examen con éxito');
 
             this.setState({
                 visible: false,

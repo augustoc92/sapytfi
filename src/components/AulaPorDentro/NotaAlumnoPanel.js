@@ -71,10 +71,10 @@ export default class NotaAlumnoPanel extends React.Component {
                         <label className={styles.itemNota}> Sumatoria notas examenes </label>
                         <span className={styles.itemNota}> {data.sumaExamenes} </span>
                     </div>
-                    <div className={styles.contenedorNota} style={{marginTop: '10px'}}>
+                    {/* <div className={styles.contenedorNota} style={{marginTop: '10px'}}>
                         <label className={styles.itemNota}> Asistencias </label>
-                        <span className={styles.itemNota}> {data.asistencias} </span>
-                    </div>
+                        <span className={styles.itemNota}> {data.asistencias} </span> */}
+                    {/* </div> */}
                     <div className={styles.contenedorNota} style={{marginTop: '10px'}}>
                         <label className={styles.itemNota}> Nota Concepto </label>
                         <InputNumber

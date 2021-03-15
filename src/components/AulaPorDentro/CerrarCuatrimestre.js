@@ -3,7 +3,7 @@ import { Upload, Button, Form, Input, Collapse, message, Table } from 'antd';
 import { UploadOutlined, UserOutlined, LockOutlined} from '@ant-design/icons';
 import NotaAlumnoPanel from './NotaAlumnoPanel'
 import styles from './AulaPorDentro.module.css'
-
+import Doughnout from './Doughnout';
 
 const { Panel } = Collapse;
 
@@ -44,8 +44,6 @@ export default class CerrarCuatrimestre extends React.Component{
         const { cierreCuatri } = this.props
         const { objCerrarCuatrimestre } = this.state;
 
-
-
         if (objCerrarCuatrimestre.length === this.props.alumnosNotas.length) {
             cierreCuatri(objCerrarCuatrimestre)
             message.success('Se cargaron las notas del cuatrimestre');
@@ -58,7 +56,6 @@ export default class CerrarCuatrimestre extends React.Component{
             message.warning('Faltan poner notas de concepto');
         }
     }
-
     iniciarProceso = () => {
         const { procesoIniciado, cuatrimestreCerrado } = this.state;
 
@@ -66,13 +63,13 @@ export default class CerrarCuatrimestre extends React.Component{
             return (
                 <div className={styles.probandoContainer}>
                     <h1>
-                        Se comenzara el proceso de terminado de cuatrimestre, esta de acuerdo?
+                        Se dará inicio al proceso de cierre del cuatrimestre, está de acuerdo?
                     </h1>
                     <h3>
-                        El proceso consiste en analizar las notas una por una de los alumnos para definir su promedio
+                        El proceso consiste en analizar una por una las notas para definir su promedio.
                     </h3>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <Button type="primary" onClick={this.handleIniciarProceso}> Si, continuemos </Button>
+                        <Button type="primary" onClick={this.handleIniciarProceso}> Si, continuar </Button>
                     </div>
                 </div>
             )
@@ -94,8 +91,6 @@ export default class CerrarCuatrimestre extends React.Component{
         const { aulaCerrada } = this.props;
         const { procesoIniciado, cuatrimestreCerrado } = this.state;
 
-        console.log('AULA CERRADA', aulaCerrada)
-
         return (
             <div className={styles.containerPaneles}>
                 { !aulaCerrada.length && this.iniciarProceso()}
@@ -109,10 +104,13 @@ export default class CerrarCuatrimestre extends React.Component{
                 }
                 {
                     (aulaCerrada.length > 0 || cuatrimestreCerrado) &&
-                    <Table
-                        columns={columns}
-                        dataSource={aulaCerrada}
-                />
+                    <React.Fragment>
+                        <Table
+                            columns={columns}
+                            dataSource={aulaCerrada}
+                        />
+                        <Doughnout info={aulaCerrada}></Doughnout>
+                    </React.Fragment>
                 }
             </div>
         );

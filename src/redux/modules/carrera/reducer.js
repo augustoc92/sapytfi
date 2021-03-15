@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        data: action.payload.result
+        data: [...action.payload.result]
       }
     }
 
