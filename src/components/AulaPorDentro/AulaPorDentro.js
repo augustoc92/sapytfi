@@ -67,7 +67,7 @@ class AulaPorDentro extends Component {
 
         this.setState({
             // aula: this.props.location.param1.x.id
-            aula: 25
+            aula: 27
         })
     }
 
@@ -260,7 +260,7 @@ class AulaPorDentro extends Component {
 
         const alumnosDeEsteAula = alumnosXAula.filter(x => x.id_aula === aula.toString());
         const cantidadExamenes = unicosExamenes.length;
-        const idExamenesDeEsteAula = unicosExamenes.map(x => x.id)
+        const idExamenesDeEsteAula = unicosExamenes.map(x => x.id_examen)
 
         let objToFinish = [];
         let nota = 0;
@@ -271,6 +271,7 @@ class AulaPorDentro extends Component {
                 idExamenesDeEsteAula.forEach(idExamenAula => {
                     const examenAlumno = examenesAlumnos.filter(j => j.id_examen.toString() === idExamenAula.toString());
                     const exmans = examenAlumno.filter(i => i.id_alumno.toString() === x.id_alumno.toString())
+
                     if (exmans.length) {
                         nota = exmans[0].nota + nota
                     } else {
@@ -289,6 +290,8 @@ class AulaPorDentro extends Component {
                 objToFinish.push(objFinal)
                 nota = 0
         });
+
+        console.log(objToFinish)
 
         return objToFinish;
     }

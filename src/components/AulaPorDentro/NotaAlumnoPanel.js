@@ -43,7 +43,9 @@ export default class NotaAlumnoPanel extends React.Component {
         const cantidadExamenes = data.cantExamenes;
 
         const notaFinal = (e + data.sumaExamenes)/ (cantidadExamenes + 1)
-        console.log('data', data)
+
+        const trimmed = notaFinal.toFixed(2);
+
         const objToSend = {
             nombre: data.nombre,
             cantExamenes: cantidadExamenes,
@@ -51,10 +53,10 @@ export default class NotaAlumnoPanel extends React.Component {
             asistencias: data.asistencias,
             aula: data.aula,
             notaConcepto: e,
-            notaFinal: notaFinal
+            notaFinal: trimmed
         }
         this.setState({
-            notaConcepto: notaFinal
+            notaConcepto: trimmed
         })
 
         createObjCerrarCuatrimstre(objToSend)

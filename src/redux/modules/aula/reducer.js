@@ -135,6 +135,8 @@ const reducer = (state = initialState, action) => {
         imagenDelAula: obj.imagenDelAula
       }
 
+      console.log('alumnosAula', alumnosAula);
+
       const index = state.data.findIndex(x => x.id === id)
       const newList = [...state.data]
       newList[index] = formatObject
