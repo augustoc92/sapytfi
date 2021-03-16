@@ -44,6 +44,7 @@ export default class Examen extends Component {
         const { examen, idExamen, intentoExamen, userObj, tomarExamen} = this.props;
         const { respuestasCorrectas, intento } = this.state;
         const thisExamen = examen.filter(x => x.id_examen === idExamen);
+
         const nota = (respuestasCorrectas.length/thisExamen.length) * 10;
         const porcentaje = this.getPorcentaje();
 
@@ -56,7 +57,7 @@ export default class Examen extends Component {
 
             tomarExamen(objToSend);
 
-            if (porcentaje) {
+            if (nota > 5) {
                 this.success();
             } else {
                 this.error();
@@ -71,9 +72,9 @@ export default class Examen extends Component {
             return;
         }
 
-        intentoExamen(thisExamen[0].id_examen, thisExamen[0], porcentaje);
+        intentoExamen(thisExamen[0].id_examen, thisExamen[0], nota);
 
-        if (porcentaje) {
+        if (nota > 5) {
             this.success();
         } else {
             this.error();
