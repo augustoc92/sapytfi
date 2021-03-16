@@ -46,7 +46,8 @@ export const tomarExamen = (obj) => (dispatch) => {
             dispatch({
                 type: TOMAR_EXAMEN,
                 payload: {
-                    id
+                    id,
+                    obj
                 }
             })
         )

@@ -43,27 +43,24 @@ export default class Examen extends Component {
     handleOk = () => {
         const { examen, idExamen, intentoExamen, userObj, tomarExamen} = this.props;
         const { respuestasCorrectas, intento } = this.state;
-
-
         const thisExamen = examen.filter(x => x.id_examen === idExamen);
-
         const nota = (respuestasCorrectas.length/thisExamen.length) * 10;
         const porcentaje = this.getPorcentaje();
-
-        console.log('nota', nota);
-        console.log('thisExamen[0]', thisExamen[0]);
-        console.log('UserOBJ', userObj)
 
         if (thisExamen[0].esPrueba) {
             const objToSend = {
                 id_alumno: userObj.id,
                 nota: nota,
-                id_examen: thisExamen[0].id
+                id_examen: thisExamen[0].id_examen
             }
 
             tomarExamen(objToSend);
 
-            message.success('Se entrego el examen con éxito');
+            if (porcentaje) {
+                this.success();
+            } else {
+                this.error();
+            }
 
             this.setState({
                 visible: false,

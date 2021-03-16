@@ -104,11 +104,14 @@ class AulaPorDentro extends Component {
     renderCharts = () => {
         const { examen } = this.props;
 
-        const examenEst = this.getEstadisticasExamenOBJ(examen);
+        const examenesSinNota = examen.filter(j => j.esPrueba === false);
+        const examenEst = this.getEstadisticasExamenOBJ(examenesSinNota);
 
-        const example = examenEst.map(x =>  <LineChart dataS={x}/>)
-
-        return [...example];
+        if (examenEst.length) {
+            return examenEst.map(x =>  <LineChart dataS={x}/>)
+        } else {
+            return <div> No estadisticas de examen en este aula </div>
+        }
     }
 
     renderClases = () => {
@@ -134,20 +137,21 @@ class AulaPorDentro extends Component {
         const elExamen = filterByExam.filter(j => j.id_examen === examenId);
         const preguntas = preguntasExamen.filter(x => x.id_examen === examenId.toString());
 
-        console.log(elExamen);
-
         return elExamen.map(x => (
                     <div className={styles.preguntasContainer}>
                         <h3> {elExamen[0].titulo} </h3>
                         <Collapse defaultActiveKey={['1']} style={{width: '60%'}}>
                         {
-                            preguntas.map(preg => {
+                            preguntas.map((preg, index) => {
                                 return (
                                         <Panel header={preg.pregunta} key={preg.id}>
                                             {
-                                                preg.posibles_rtas.split('-').map(item => (
-                                                <p> {item} </p>
-                                                ))
+                                                preg.posibles_rtas.split('-').map((item, indexItem) => {
+                                                    const isCorrect = indexItem.toString() === preg.respuesta
+                                                    return (
+                                                        <p style={ isCorrect ? { fontWeight:'800'} : {}}> {item} </p>
+                                                    )
+                                                })
                                             }
                                         </Panel>
                                 )
@@ -155,7 +159,7 @@ class AulaPorDentro extends Component {
                         }
                     </Collapse>
                     <div style={{marginTop: '20px', display: 'flex'}}>
-                        <Button type="primary"  onClick={() => deleteExamen(x.id_examen)}> Editar {x.titulo} </Button>
+                        {/* <Button type="primary"  onClick={() => deleteExamen(x.id_examen)}> Editar {x.titulo} </Button> */}
                         <Button type="primary"  danger onClick={() => deleteExamen(x.id_examen)}> Eliminar {x.titulo} </Button>
                     </div>
 

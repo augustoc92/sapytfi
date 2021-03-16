@@ -74,7 +74,6 @@ const options = {
 export default function Doughnout(props) {
     let chartInstance = null;
 
-    console.log(props.info);
     let aprobados = 0;
     let noAprobados = 0;
     props.info.forEach(element => {

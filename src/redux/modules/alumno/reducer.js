@@ -20,7 +20,6 @@ const reducer = (state = initialState, action) => {
       }
     }
     case GET_EXAMEN_NOTA: {
-      console.log('actionpaylod', action.payload)
       return {
         ...state,
         isFetching: false,
@@ -29,11 +28,22 @@ const reducer = (state = initialState, action) => {
     }
 
     case TOMAR_EXAMEN: {
+      const id = action.payload.id.data;
+      const objViejo = action.payload.obj;
+      const idExamen = parseInt(objViejo.id_examen);
+      const objNuevo = {
+        id: id,
+        id_alumno: objViejo.id_alumno,
+        id_examen: idExamen,
+        nota: objViejo.nota
+      }
 
-      console.log('EXAMENES CON NOTA', action.payload);
+      const examenesAlumnos = state.examenesAlumnos
+      const copiaDeexamenesAlumnos = [...examenesAlumnos]
 
       return {
-        ...state
+        ...state,
+        examenesAlumnos: [...copiaDeexamenesAlumnos, objNuevo]
       }
     }
 
@@ -69,9 +79,6 @@ const reducer = (state = initialState, action) => {
     }
     case UPDATE_ALUMNO_FULLFILED: {
       const { id, obj } = action.payload
-
-      console.log('obj', obj);
-
       const objToAdd = {
         nombre: obj.nombre,
         dni: obj.dni,
